@@ -1,0 +1,9 @@
+package it.unicam.cs.mpgc.rpg125936.model.Item;
+
+import it.unicam.cs.mpgc.rpg125936.ambiente.GameLocation;
+import it.unicam.cs.mpgc.rpg125936.model.User.Player;
+
+public interface ToolItem extends Item {
+    // Ha bisogno del giocatore e della mappa per funzionare
+    void interact(Player user, GameLocation currentLocation);
+}
