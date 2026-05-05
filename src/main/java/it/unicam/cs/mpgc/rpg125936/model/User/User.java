@@ -7,15 +7,25 @@ import java.util.List;
 
 public class User {
 
+    private String name;
     private double health;
     private int lives;
     // Lista di oggetti (armi, materiali, etc.)
     private List<Item> inventory;
 
-    public User() {
+    public User(String name) {
+        this.name = name;
         this.health = 100;
         this.lives = 3;
         this.inventory = new ArrayList<>();
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     //public void reducePickaxe() { this.pickaxeDurability--; }
@@ -53,8 +63,8 @@ public class User {
     }
 
     public User copy() {
-        User clone = new User();
-        clone.setHealth((int)this.getHealth());
+        User clone = new User(this.name);
+        clone.setHealth(this.getHealth());
         clone.setLives(this.getLives());
         for(Item i : this.inventory) {
             clone.addItem(i.copy());

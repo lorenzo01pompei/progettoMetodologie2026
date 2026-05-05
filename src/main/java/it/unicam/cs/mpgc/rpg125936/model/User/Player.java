@@ -10,8 +10,8 @@ public class Player extends User{
     // private int pickaxeDurability;
     // Lista di oggetti (armi, materiali, etc.)
 
-    public Player(int initialMoney) {
-        super();
+    public Player(String name, int initialMoney) {
+        super(name);
         this.money = initialMoney;
     }
 
@@ -28,19 +28,6 @@ public class Player extends User{
     }
 
 
-
-    public boolean usePickaxe() {
-        for(Item i : this.getInventory()) {
-            if(i instanceof Pickaxe) {
-                Pickaxe piccone = (Pickaxe) i;
-                if (piccone.getDurability() > 0) {
-                    piccone.decreaseDurability();
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
 
     @Override
     public Player copy() {
