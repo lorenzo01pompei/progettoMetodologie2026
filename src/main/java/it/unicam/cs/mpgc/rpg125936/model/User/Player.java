@@ -29,14 +29,17 @@ public class Player extends User{
 
 
 
-    public void scava() {
+    public boolean usePickaxe() {
         for(Item i : this.getInventory()) {
             if(i instanceof Pickaxe) {
                 Pickaxe piccone = (Pickaxe) i;
-                piccone.decreaseDurability();
-                break;
+                if (piccone.getDurability() > 0) {
+                    piccone.decreaseDurability();
+                    return true;
+                }
             }
         }
+        return false;
     }
 
     @Override
