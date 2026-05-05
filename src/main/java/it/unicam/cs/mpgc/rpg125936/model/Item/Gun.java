@@ -4,7 +4,7 @@ import it.unicam.cs.mpgc.rpg125936.model.User.Enemy;
 import it.unicam.cs.mpgc.rpg125936.model.User.Player;
 import it.unicam.cs.mpgc.rpg125936.model.User.User;
 
-public class Gun implements Item {
+public class Gun implements FightItem {
 
     private String name;
     private double damage;
@@ -48,5 +48,9 @@ public class Gun implements Item {
         target.decreaseHealth(this.getDamage());
     }
 
+    @Override
+    public Item copy() {
+        return new Gun(this.name, this.damage, this.price);
+    }
 
 }

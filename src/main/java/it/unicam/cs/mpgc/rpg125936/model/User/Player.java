@@ -39,5 +39,15 @@ public class Player extends User{
         }
     }
 
+    @Override
+    public Player copy() {
+        Player clone = new Player(this.getMoney());
+        clone.setHealth(this.getHealth());
+        clone.setLives(this.getLives());
+        for(Item i : this.getInventory()) {
+            clone.addItem(i.copy());
+        }
+        return clone;
+    }
 
 }

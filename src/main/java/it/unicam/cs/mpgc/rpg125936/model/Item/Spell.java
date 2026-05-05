@@ -38,4 +38,9 @@ public class Spell implements FightItem {
             }
         }
     }
+
+    @Override
+    public Item copy() {
+        return new Spell(this.name, this.damage);
+    }
 }

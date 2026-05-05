@@ -26,4 +26,11 @@ public class Pickaxe implements ToolItem {
     }
     public void interact(Player player, GameLocation miniera){}
 
+    @Override
+    public Item copy() {
+        Pickaxe p = new Pickaxe();
+        p.setDurability(this.durability);
+        return p;
+    }
+
 }

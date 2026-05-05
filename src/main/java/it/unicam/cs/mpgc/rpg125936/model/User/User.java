@@ -24,7 +24,7 @@ public class User {
         return health;
     }
 
-    public void setHealth(int health) {
+    public void setHealth(double health) {
         this.health = health;
     }
 
@@ -50,6 +50,16 @@ public class User {
 
     public void decreaseHealth(double danno){
         this.health-=danno;
+    }
+
+    public User copy() {
+        User clone = new User();
+        clone.setHealth((int)this.getHealth());
+        clone.setLives(this.getLives());
+        for(Item i : this.inventory) {
+            clone.addItem(i.copy());
+        }
+        return clone;
     }
 
 }
