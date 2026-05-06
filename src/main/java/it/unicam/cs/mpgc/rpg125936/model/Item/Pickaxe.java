@@ -12,12 +12,14 @@ import it.unicam.cs.mpgc.rpg125936.model.User.Player;
 public class Pickaxe implements ToolItem {
 
     private double durability;
+    private double price;
 
     /**
      * Costruttore di default. Imposta la durabilità iniziale a 500.
      */
     public Pickaxe(){
         this.durability = 500;
+        this.price =40;
     }
 
     public double getDurability() {

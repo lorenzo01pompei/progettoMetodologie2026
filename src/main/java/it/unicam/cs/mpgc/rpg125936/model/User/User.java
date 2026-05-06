@@ -59,7 +59,7 @@ public class User {
     }
 
     public void decreaseHealth(double danno){
-        this.health-=danno;
+        this.health= this.health-danno;
     }
 
     public User copy() {

@@ -1,7 +1,9 @@
 package it.unicam.cs.mpgc.rpg125936.model.Fight;
 
 import it.unicam.cs.mpgc.rpg125936.model.Item.FightItem;
+import it.unicam.cs.mpgc.rpg125936.model.Item.Gun;
 import it.unicam.cs.mpgc.rpg125936.model.Item.Item;
+import it.unicam.cs.mpgc.rpg125936.model.Item.Spell;
 import it.unicam.cs.mpgc.rpg125936.model.User.Enemy;
 import it.unicam.cs.mpgc.rpg125936.model.User.Player;
 
@@ -67,23 +69,32 @@ public class FightManager {
             return false;
         }
 
+
         // viene recuperata l'arma scelta dall'inventario clonato del player
         FightItem playerItem = null;
         if (inventoryIndex >= 0 && inventoryIndex < battlePlayer.getInventory().size()) {
             Item item = battlePlayer.getInventory().get(inventoryIndex);
             if (item instanceof FightItem) {
-                playerItem = (FightItem) item;
+                if(item instanceof Gun){
+                    playerItem = (Gun) item;
+                }
+                if(item instanceof Spell){
+                    playerItem = (Spell) item;
+                }
+
             }
         }
+
 
         // turno del player
         if (playerItem != null) {
             playerItem.useInFight(battleEnemy);
         }
 
+        System.out.println(battleEnemy.getHealth());
         // se la vita dell'enemy scende a/o sotto lo zero finisce il fight
         if (battleEnemy.getHealth() <= 0) {
-            System.out.println("L'enemy è stato sconfitto!");
+            System.out.println("L'enemy eè stato sconfitto!");
             endFight();
             return false;
         }
@@ -92,6 +103,11 @@ public class FightManager {
         FightItem enemyItem = getRandomFightItem(battleEnemy);
         if (enemyItem != null) {
             enemyItem.useInFight(battlePlayer);
+
+            if (enemyItem instanceof Spell) {
+                battleEnemy.getInventory().remove(enemyItem);
+                System.out.println("Il Mago ha lanciato la sua magia e l'ha consumata per questo scontro!");
+            }
         }
 
         // se la vita del player scende a/o sotto lo zero finisce il fight
