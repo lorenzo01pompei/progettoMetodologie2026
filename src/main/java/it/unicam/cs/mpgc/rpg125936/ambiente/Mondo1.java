@@ -14,8 +14,8 @@ public class Mondo1 extends Mondo {
 
     @Override
     protected void setupWorld() {
-        // viene istanziata la miniera specifica per il mondo 1 passandole le probabilità: Rame(3%), Argento(1%), Oro(0.5%)
-        this.miniera = new Miniera("Miniera del Mondo 1", 3.0, 1.0, 0.5);
+        // viene istanziata la miniera specifica per il mondo 1 passandole le probabilità: Rame(6%), Argento(2%), Oro(1%)
+        this.miniera = new Miniera("Miniera del Mondo 1", 6.0, 2.0, 1.0);
         
         // creazione dei nemici specifici del mondo 1
 

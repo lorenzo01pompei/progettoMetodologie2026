@@ -62,13 +62,13 @@ public class Miniera implements GameLocation {
         // Le probabilità sono gestite ad intervalli cumulativi
         if (chance < goldProb) {
             System.out.println("Hai trovato un Lingotto d'Oro!");
-            player.addItem(new Material("Lingotto d'Oro", 10.0));
+            player.addMaterial(new Material("Lingotto d'Oro", 10.0));
         } else if (chance < goldProb + silverProb) {
             System.out.println("Hai trovato un Lingotto d'Argento!");
-            player.addItem(new Material("Lingotto d'Argento", 5.0));
+            player.addMaterial(new Material("Lingotto d'Argento", 5.0));
         } else if (chance < goldProb + silverProb + copperProb) {
             System.out.println("Hai trovato del Rame.");
-            player.addItem(new Material("Lingotto di Rame", 2.0));
+            player.addMaterial(new Material("Lingotto di Rame", 2.0));
         } else {
             System.out.println("Nulla di fatto, solo sassi...");
         }

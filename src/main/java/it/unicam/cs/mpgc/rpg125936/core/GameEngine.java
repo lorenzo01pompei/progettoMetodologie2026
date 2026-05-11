@@ -1,5 +1,7 @@
 package it.unicam.cs.mpgc.rpg125936.core;
 
+import it.unicam.cs.mpgc.rpg125936.ambiente.Miniera;
+import it.unicam.cs.mpgc.rpg125936.model.Item.Material;
 import it.unicam.cs.mpgc.rpg125936.model.Fight.FightManager;
 import it.unicam.cs.mpgc.rpg125936.model.Item.FightItem;
 import it.unicam.cs.mpgc.rpg125936.model.Item.Gun;
@@ -22,6 +24,7 @@ public class GameEngine {
     private Item arma2;
     private List<Item> inventario;
     private FightManager fightManager;
+    private Miniera miniera;
 
     // 2. Costruttore: qui dentro mettiamo tutte le istruzioni
     public GameEngine() {
@@ -50,7 +53,28 @@ public class GameEngine {
             fightManager.playRound(1);
         }
 
+        // Test Miniera
+        System.out.println("\n--- TEST MINIERA ---");
+        miniera = new Miniera("Miniera d'Oro", 6.0, 2.0, 1.0);
+        miniera.enter((Player) player);
 
+        System.out.println("Provo a scavare 505 volte...");
+        for (int i = 0; i < 505; i++) {
+            miniera.executeAction((Player) player);
+        }
 
+        System.out.println("\n--- RISULTATO MATERIALI ---");
+        List<List<Material>> materials = player.getMaterials();
+        if (materials.isEmpty()) {
+            System.out.println("Nessun materiale trovato.");
+        } else {
+            for (List<Material> list : materials) {
+                if (!list.isEmpty()) {
+                    String materialName = list.get(0).getName();
+                    int count = list.size();
+                    System.out.println("Materiale: " + materialName + " - Quantità: " + count);
+                }
+            }
+        }
     }
 }

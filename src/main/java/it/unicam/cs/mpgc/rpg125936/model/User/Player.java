@@ -1,8 +1,10 @@
 package it.unicam.cs.mpgc.rpg125936.model.User;
 
 import it.unicam.cs.mpgc.rpg125936.model.Item.Item;
+import it.unicam.cs.mpgc.rpg125936.model.Item.Material;
 import it.unicam.cs.mpgc.rpg125936.model.Item.Pickaxe;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Player extends User{
@@ -36,6 +38,13 @@ public class Player extends User{
         clone.setLives(this.getLives());
         for(Item i : this.getInventory()) {
             clone.addItem(i.copy());
+        }
+        for(List<Material> list : this.getMaterials()) {
+            List<Material> newList = new ArrayList<>();
+            for(Material m : list) {
+                newList.add((Material) m.copy());
+            }
+            clone.addMaterialList(newList);
         }
         return clone;
     }
