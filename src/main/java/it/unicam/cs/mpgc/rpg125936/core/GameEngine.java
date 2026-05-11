@@ -44,13 +44,26 @@ public class GameEngine {
         player.setInventory(inventario);
 
         nemico1 = new Mago("mago1");
+        // Aggiungiamo un'arma al nemico per testare il drop
+        nemico1.addItem(new Gun("Bastone Oscuro", 50, 100));
 
         fightManager = new FightManager();
 
+        System.out.println("\n--- INIZIO COMBATTIMENTO ---");
         fightManager.startFight((Player)player,(Enemy)nemico1);
 
-        for (int i =0; i<30; i++){
-            fightManager.playRound(1);
+        // Continua a combattere finché uno dei due non muore
+        while (fightManager.playRound(1)) {
+            // ... il combattimento continua ...
+        }
+
+        System.out.println("\n--- INVENTARIO GIOCATORE DOPO IL COMBATTIMENTO ---");
+        for (Item item : player.getInventory()) {
+            if (item instanceof FightItem) {
+                System.out.println("Arma: " + ((FightItem) item).getName() + " (Danno: " + ((FightItem) item).getDamage() + ")");
+            } else {
+                System.out.println("Oggetto: " + item.getClass().getSimpleName());
+            }
         }
 
         // Test Miniera
@@ -58,8 +71,8 @@ public class GameEngine {
         miniera = new Miniera("Miniera d'Oro", 6.0, 2.0, 1.0);
         miniera.enter((Player) player);
 
-        System.out.println("Provo a scavare 505 volte...");
-        for (int i = 0; i < 505; i++) {
+        System.out.println("Provo a scavare 5 volte...");
+        for (int i = 0; i < 5; i++) {
             miniera.executeAction((Player) player);
         }
 
