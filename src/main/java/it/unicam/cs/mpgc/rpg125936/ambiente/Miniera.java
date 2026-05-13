@@ -1,9 +1,9 @@
 package it.unicam.cs.mpgc.rpg125936.ambiente;
 
-import it.unicam.cs.mpgc.rpg125936.model.Item.Item;
-import it.unicam.cs.mpgc.rpg125936.model.Item.ToolItem;
-import it.unicam.cs.mpgc.rpg125936.model.User.Player;
-import it.unicam.cs.mpgc.rpg125936.model.Item.Material;
+import it.unicam.cs.mpgc.rpg125936.domain.item.Item;
+import it.unicam.cs.mpgc.rpg125936.domain.item.ToolItem;
+import it.unicam.cs.mpgc.rpg125936.domain.user.Player;
+import it.unicam.cs.mpgc.rpg125936.domain.material.Material;
 import java.util.Random;
 
 public class Miniera implements GameLocation {
@@ -20,6 +20,11 @@ public class Miniera implements GameLocation {
         this.silverProb = silverProb;
         this.goldProb = goldProb;
         this.random = new Random();
+    }
+
+    @Override
+    public boolean canBeMined() {
+        return true;
     }
 
     @Override

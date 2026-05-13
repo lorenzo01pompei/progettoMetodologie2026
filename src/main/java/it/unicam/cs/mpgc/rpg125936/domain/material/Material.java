@@ -1,4 +1,6 @@
-package it.unicam.cs.mpgc.rpg125936.model.Item;
+package it.unicam.cs.mpgc.rpg125936.domain.material;
+
+import it.unicam.cs.mpgc.rpg125936.domain.item.Item;
 
 public class Material implements Item {
     private String name;

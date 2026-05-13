@@ -1,8 +1,4 @@
-package it.unicam.cs.mpgc.rpg125936.model.Item;
-
-import it.unicam.cs.mpgc.rpg125936.model.User.Enemy;
-import it.unicam.cs.mpgc.rpg125936.model.User.Player;
-import it.unicam.cs.mpgc.rpg125936.model.User.User;
+package it.unicam.cs.mpgc.rpg125936.domain.item;
 
 public class Spell implements FightItem {
 
@@ -30,11 +26,14 @@ public class Spell implements FightItem {
         this.damage = damage;
     }
 
-    public void useInFight(User target){
+    @Override
+    public void applyDamageReduction(double amount) {
+    }
+
+    public void useInFight(DamageTarget target){
         for(Item i : target.getInventory()) {
-            if(i instanceof Gun) {
-                Gun arma = (Gun)i;
-                arma.decreaseDamage(this.damage);
+            if(i instanceof FightItem fightItem) {
+                fightItem.applyDamageReduction(this.damage);
             }
         }
     }

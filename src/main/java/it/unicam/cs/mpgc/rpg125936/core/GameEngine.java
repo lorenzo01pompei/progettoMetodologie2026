@@ -1,16 +1,16 @@
 package it.unicam.cs.mpgc.rpg125936.core;
 
 import it.unicam.cs.mpgc.rpg125936.ambiente.Miniera;
-import it.unicam.cs.mpgc.rpg125936.model.Item.Material;
-import it.unicam.cs.mpgc.rpg125936.model.Fight.FightManager;
-import it.unicam.cs.mpgc.rpg125936.model.Item.FightItem;
-import it.unicam.cs.mpgc.rpg125936.model.Item.Gun;
-import it.unicam.cs.mpgc.rpg125936.model.Item.Item;
-import it.unicam.cs.mpgc.rpg125936.model.Item.Pickaxe;
-import it.unicam.cs.mpgc.rpg125936.model.User.Enemy;
-import it.unicam.cs.mpgc.rpg125936.model.User.Mago;
-import it.unicam.cs.mpgc.rpg125936.model.User.Player;
-import it.unicam.cs.mpgc.rpg125936.model.User.User;
+import it.unicam.cs.mpgc.rpg125936.domain.material.Material;
+import it.unicam.cs.mpgc.rpg125936.service.FightManager;
+import it.unicam.cs.mpgc.rpg125936.domain.item.FightItem;
+import it.unicam.cs.mpgc.rpg125936.domain.item.Gun;
+import it.unicam.cs.mpgc.rpg125936.domain.item.Item;
+import it.unicam.cs.mpgc.rpg125936.domain.item.Pickaxe;
+import it.unicam.cs.mpgc.rpg125936.domain.user.Enemy;
+import it.unicam.cs.mpgc.rpg125936.domain.user.Mago;
+import it.unicam.cs.mpgc.rpg125936.domain.user.Player;
+import it.unicam.cs.mpgc.rpg125936.domain.user.User;
 
 import java.util.ArrayList;
 import java.util.List;

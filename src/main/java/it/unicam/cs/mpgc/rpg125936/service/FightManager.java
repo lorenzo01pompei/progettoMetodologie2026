@@ -1,11 +1,10 @@
-package it.unicam.cs.mpgc.rpg125936.model.Fight;
+package it.unicam.cs.mpgc.rpg125936.service;
 
-import it.unicam.cs.mpgc.rpg125936.model.Item.FightItem;
-import it.unicam.cs.mpgc.rpg125936.model.Item.Gun;
-import it.unicam.cs.mpgc.rpg125936.model.Item.Item;
-import it.unicam.cs.mpgc.rpg125936.model.Item.Spell;
-import it.unicam.cs.mpgc.rpg125936.model.User.Enemy;
-import it.unicam.cs.mpgc.rpg125936.model.User.Player;
+import it.unicam.cs.mpgc.rpg125936.domain.item.FightItem;
+import it.unicam.cs.mpgc.rpg125936.domain.item.Item;
+import it.unicam.cs.mpgc.rpg125936.domain.item.Spell;
+import it.unicam.cs.mpgc.rpg125936.domain.user.Enemy;
+import it.unicam.cs.mpgc.rpg125936.domain.user.Player;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +19,7 @@ import java.util.Random;
 public class FightManager {
 
     private Random random;
+    private LootManager lootManager;
 
     private Player originalPlayer;
     private Enemy originalEnemy;
@@ -29,12 +29,9 @@ public class FightManager {
 
     private boolean active;
 
-    /**
-     * Costruttore base di FightManager.
-     * Inizializza il generatore di numeri casuali.
-     */
     public FightManager() {
         this.random = new Random();
+        this.lootManager = new LootManager();
     }
 
     /**
@@ -70,32 +67,22 @@ public class FightManager {
         }
 
 
-        // viene recuperata l'arma scelta dall'inventario clonato del player
         FightItem playerItem = null;
         if (inventoryIndex >= 0 && inventoryIndex < battlePlayer.getInventory().size()) {
             Item item = battlePlayer.getInventory().get(inventoryIndex);
             if (item instanceof FightItem) {
-                if(item instanceof Gun){
-                    playerItem = (Gun) item;
-                }
-                if(item instanceof Spell){
-                    playerItem = (Spell) item;
-                }
-
+                playerItem = (FightItem) item;
             }
         }
 
-
-        // turno del player
         if (playerItem != null) {
             playerItem.useInFight(battleEnemy);
         }
 
         System.out.println(battleEnemy.getHealth());
-        // se la vita dell'enemy scende a/o sotto lo zero finisce il fight
         if (battleEnemy.getHealth() <= 0) {
             System.out.println("L'enemy è stato sconfitto!");
-            handleEnemyDrop();
+            lootManager.handleDrop(originalPlayer, originalEnemy);
             endFight();
             return false;
         }
@@ -173,43 +160,4 @@ public class FightManager {
         return battleEnemy;
     }
 
-    /**
-     * Gestisce il drop dell'arma con il danno maggiore da parte del nemico sconfitto.
-     * Chiede all'utente se vuole raccogliere l'arma tramite input da console.
-     */
-    private void handleEnemyDrop() {
-        FightItem bestWeapon = null;
-        for (Item item : originalEnemy.getInventory()) {
-            if (item instanceof FightItem) {
-                FightItem current = (FightItem) item;
-                if (bestWeapon == null || current.getDamage() > bestWeapon.getDamage()) {
-                    bestWeapon = current;
-                }
-            }
-        }
-
-        if (bestWeapon != null) {
-            System.out.println("Il nemico ha droppato la sua arma migliore: " + bestWeapon.getName() + " (Danno: " + bestWeapon.getDamage() + ")");
-            System.out.println("Vuoi raccoglierla? (s/n)");
-            java.util.Scanner scanner = new java.util.Scanner(System.in);
-            String input = "n";
-            try {
-                if (scanner.hasNextLine()) {
-                    input = scanner.nextLine();
-                } else {
-                    System.out.println("[Nessun input rilevato, presumo 's' per il test automatico]");
-                    input = "s";
-                }
-            } catch (Exception e) {
-                System.out.println("[Errore di input, presumo 's' per il test automatico]");
-                input = "s";
-            }
-            if (input.equalsIgnoreCase("s")) {
-                originalPlayer.addItem(bestWeapon.copy());
-                System.out.println("Hai aggiunto l'arma al tuo inventario.");
-            } else {
-                System.out.println("Hai ignorato l'arma.");
-            }
-        }
-    }
 }

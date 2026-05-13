@@ -1,9 +1,9 @@
 package it.unicam.cs.mpgc.rpg125936.ambiente;
 
-import it.unicam.cs.mpgc.rpg125936.model.User.Boss;
-import it.unicam.cs.mpgc.rpg125936.model.User.Colosso;
-import it.unicam.cs.mpgc.rpg125936.model.User.Enemy;
-import it.unicam.cs.mpgc.rpg125936.model.User.Mago;
+import it.unicam.cs.mpgc.rpg125936.domain.user.Boss;
+import it.unicam.cs.mpgc.rpg125936.domain.user.Colosso;
+import it.unicam.cs.mpgc.rpg125936.domain.user.Enemy;
+import it.unicam.cs.mpgc.rpg125936.domain.user.Mago;
 
 public class Mondo1 extends Mondo {
 

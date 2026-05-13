@@ -1,4 +1,8 @@
-package it.unicam.cs.mpgc.rpg125936.model.Item;
+package it.unicam.cs.mpgc.rpg125936.repository;
+
+import it.unicam.cs.mpgc.rpg125936.domain.item.FightItem;
+import it.unicam.cs.mpgc.rpg125936.domain.item.Gun;
+import it.unicam.cs.mpgc.rpg125936.domain.item.Spell;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,13 +31,13 @@ public class ItemRegistry {
         spells.add(new Spell("Meteora", 90.0));
     }
 
-    public static Gun getRandomGun() {
+    public static FightItem getRandomGun() {
         int index = random.nextInt(guns.size());
-        return (Gun) guns.get(index).copy(); // Restituiamo una copia per non modificare il "database"
+        return (FightItem) guns.get(index).copy();
     }
 
-    public static Spell getRandomSpell() {
+    public static FightItem getRandomSpell() {
         int index = random.nextInt(spells.size());
-        return (Spell) spells.get(index).copy();
+        return (FightItem) spells.get(index).copy();
     }
 }

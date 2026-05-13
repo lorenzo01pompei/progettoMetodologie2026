@@ -1,8 +1,4 @@
-package it.unicam.cs.mpgc.rpg125936.model.Item;
-
-import it.unicam.cs.mpgc.rpg125936.model.User.Enemy;
-import it.unicam.cs.mpgc.rpg125936.model.User.Player;
-import it.unicam.cs.mpgc.rpg125936.model.User.User;
+package it.unicam.cs.mpgc.rpg125936.domain.item;
 
 public class Gun implements FightItem {
 
@@ -40,11 +36,12 @@ public class Gun implements FightItem {
         this.price = price;
     }
 
-    public void decreaseDamage(double malus){
-        this.damage-=malus;
+    @Override
+    public void applyDamageReduction(double amount){
+        this.damage -= amount;
     }
 
-    public void useInFight(User target){
+    public void useInFight(DamageTarget target){
         target.decreaseHealth(this.getDamage());
     }
 

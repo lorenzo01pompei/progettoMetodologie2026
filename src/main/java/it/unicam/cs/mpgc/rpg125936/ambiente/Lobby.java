@@ -1,6 +1,6 @@
 package it.unicam.cs.mpgc.rpg125936.ambiente;
 
-import it.unicam.cs.mpgc.rpg125936.model.User.Player;
+import it.unicam.cs.mpgc.rpg125936.domain.user.Player;
 
 public class Lobby implements GameLocation {
     @Override
@@ -9,6 +9,11 @@ public class Lobby implements GameLocation {
     @Override
     public void enter(Player player) {
         System.out.println("Benvenuto nella Lobby! Qui puoi potenziare il tuo equipaggiamento.");
+    }
+
+    @Override
+    public boolean canBeMined() {
+        return false;
     }
 
     @Override

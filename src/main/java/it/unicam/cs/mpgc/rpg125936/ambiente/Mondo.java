@@ -1,7 +1,7 @@
 package it.unicam.cs.mpgc.rpg125936.ambiente;
 
-import it.unicam.cs.mpgc.rpg125936.model.User.Enemy;
-import it.unicam.cs.mpgc.rpg125936.model.User.Player;
+import it.unicam.cs.mpgc.rpg125936.domain.user.Enemy;
+import it.unicam.cs.mpgc.rpg125936.domain.user.Player;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +37,11 @@ public abstract class Mondo implements GameLocation {
     @Override
     public String getName() {
         return name;
+    }
+
+    @Override
+    public boolean canBeMined() {
+        return false;
     }
 
     @Override

@@ -1,4 +1,6 @@
-package it.unicam.cs.mpgc.rpg125936.model.User;
+package it.unicam.cs.mpgc.rpg125936.domain.user;
+
+import it.unicam.cs.mpgc.rpg125936.domain.item.Item;
 
 public class Enemy extends User {
 
@@ -11,7 +13,7 @@ public class Enemy extends User {
         Enemy clone = new Enemy(this.getName());
         clone.setHealth(this.getHealth());
         clone.setLives(this.getLives());
-        for(it.unicam.cs.mpgc.rpg125936.model.Item.Item i : this.getInventory()) {
+        for(Item i : this.getInventory()) {
             clone.addItem(i.copy());
         }
         return clone;

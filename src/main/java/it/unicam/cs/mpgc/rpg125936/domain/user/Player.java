@@ -1,8 +1,7 @@
-package it.unicam.cs.mpgc.rpg125936.model.User;
+package it.unicam.cs.mpgc.rpg125936.domain.user;
 
-import it.unicam.cs.mpgc.rpg125936.model.Item.Item;
-import it.unicam.cs.mpgc.rpg125936.model.Item.Material;
-import it.unicam.cs.mpgc.rpg125936.model.Item.Pickaxe;
+import it.unicam.cs.mpgc.rpg125936.domain.item.Item;
+import it.unicam.cs.mpgc.rpg125936.domain.material.Material;
 
 import java.util.ArrayList;
 import java.util.List;

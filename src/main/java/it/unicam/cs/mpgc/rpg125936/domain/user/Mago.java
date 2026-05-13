@@ -1,7 +1,6 @@
-package it.unicam.cs.mpgc.rpg125936.model.User;
+package it.unicam.cs.mpgc.rpg125936.domain.user;
 
-import it.unicam.cs.mpgc.rpg125936.model.Item.ItemRegistry;
-import it.unicam.cs.mpgc.rpg125936.model.Item.Gun; // Assicurati di importare l'arma
+import it.unicam.cs.mpgc.rpg125936.repository.ItemRegistry;
 
 public class Mago extends Enemy {
 

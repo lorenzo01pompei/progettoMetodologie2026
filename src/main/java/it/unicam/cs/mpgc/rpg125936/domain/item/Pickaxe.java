@@ -1,8 +1,6 @@
-package it.unicam.cs.mpgc.rpg125936.model.Item;
+package it.unicam.cs.mpgc.rpg125936.domain.item;
 
 import it.unicam.cs.mpgc.rpg125936.ambiente.GameLocation;
-import it.unicam.cs.mpgc.rpg125936.ambiente.Miniera;
-import it.unicam.cs.mpgc.rpg125936.model.User.Player;
 
 /**
  * Rappresenta un piccone (strumento) che il giocatore può utilizzare all'interno del gioco.
@@ -54,12 +52,9 @@ public class Pickaxe implements ToolItem {
      */
     @Override
     public boolean interact(GameLocation location){
-        // Il piccone funziona solo se ci troviamo in una Miniera
-        if (location instanceof Miniera) {
-            if (this.durability > 0) {
-                this.decreaseDurability();
-                return true;
-            }
+        if (location.canBeMined() && this.durability > 0) {
+            this.decreaseDurability();
+            return true;
         }
         return false;
     }
