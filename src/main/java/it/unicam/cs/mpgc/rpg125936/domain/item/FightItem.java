@@ -1,7 +1,9 @@
 package it.unicam.cs.mpgc.rpg125936.domain.item;
 
+import it.unicam.cs.mpgc.rpg125936.domain.user.User;
+
 public interface FightItem extends Item {
-    void useInFight(DamageTarget target);
+    void useInFight(User target);
     double getDamage();
     String getName();
     void applyDamageReduction(double amount);

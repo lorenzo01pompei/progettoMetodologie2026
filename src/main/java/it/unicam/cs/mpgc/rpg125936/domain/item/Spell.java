@@ -1,5 +1,7 @@
 package it.unicam.cs.mpgc.rpg125936.domain.item;
 
+import it.unicam.cs.mpgc.rpg125936.domain.user.User;
+
 public class Spell implements FightItem {
 
     private String name;
@@ -30,7 +32,7 @@ public class Spell implements FightItem {
     public void applyDamageReduction(double amount) {
     }
 
-    public void useInFight(DamageTarget target){
+    public void useInFight(User target){
         for(Item i : target.getInventory()) {
             if(i instanceof FightItem fightItem) {
                 fightItem.applyDamageReduction(this.damage);

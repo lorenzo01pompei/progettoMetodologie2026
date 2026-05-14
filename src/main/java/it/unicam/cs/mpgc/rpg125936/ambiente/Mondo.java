@@ -53,12 +53,6 @@ public abstract class Mondo implements GameLocation {
         System.out.println("Sei entrato nel " + name + ".");
     }
 
-    @Override
-    public void executeAction(Player player) {
-        // Logica generale di un mondo (es. mostra il menu: 1. Combatti, 2. Vai in Miniera, 3. Torna alla Lobby)
-        System.out.println("Ti trovi nel " + name + ". Ci sono " + enemies.size() + " nemici da sconfiggere.");
-    }
-
     /**
      * Factory Method che ogni mondo concreto deve implementare.
      * Serve a istanziare la propria Miniera e i propri Nemici specifici.

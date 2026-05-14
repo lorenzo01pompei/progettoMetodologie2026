@@ -3,6 +3,13 @@ package it.unicam.cs.mpgc.rpg125936.ambiente;
 import it.unicam.cs.mpgc.rpg125936.domain.user.Player;
 
 public class Lobby implements GameLocation {
+
+    private final Shop shop;
+
+    public Lobby() {
+        this.shop = new Shop();
+    }
+
     @Override
     public String getName() { return "Lobby Iniziale"; }
 
@@ -16,9 +23,7 @@ public class Lobby implements GameLocation {
         return false;
     }
 
-    @Override
-    public void executeAction(Player player) {
-        // Logica per lo shop: es. player.addMoney(-10) se compra qualcosa
-        System.out.println("Accesso allo Shop... (Logica da implementare)");
+    public Shop getShop() {
+        return shop;
     }
 }

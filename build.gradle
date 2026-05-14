@@ -1,6 +1,7 @@
 plugins {
     id 'java'
     id 'application'
+    id 'org.openjfx.javafxplugin' version '0.1.0'
 }
 
 group = 'it.unicam.cs.mpgc.rpg125936'
@@ -8,6 +9,11 @@ version = '1.0-SNAPSHOT'
 
 repositories {
     mavenCentral()
+}
+
+javafx {
+    version = '21'
+    modules = ['javafx.controls', 'javafx.fxml']
 }
 
 dependencies {
@@ -19,7 +25,6 @@ test {
     useJUnitPlatform()
 }
 
-// Configurazione per far funzionare ./gradlew run
 application {
     mainClass = 'it.unicam.cs.mpgc.rpg125936.core.App'
 }

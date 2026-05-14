@@ -1,5 +1,7 @@
 package it.unicam.cs.mpgc.rpg125936.domain.item;
 
+import it.unicam.cs.mpgc.rpg125936.domain.user.User;
+
 public class Gun implements FightItem {
 
     private String name;
@@ -41,7 +43,7 @@ public class Gun implements FightItem {
         this.damage -= amount;
     }
 
-    public void useInFight(DamageTarget target){
+    public void useInFight(User target){
         target.decreaseHealth(this.getDamage());
     }
 

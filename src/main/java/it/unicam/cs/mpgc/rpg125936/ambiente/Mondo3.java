@@ -17,9 +17,11 @@ public class Mondo3 extends Mondo {
         // miniera per il mondo 3: Rame(18%), Argento(10%), Oro(5%)
         this.miniera = new Miniera("Miniera del Mondo 3", 18.0, 10.0, 5.0);
         
-        // TODO: creare nemici specifici del mondo 3
+        // creazione nemici specifici del mondo 3
         Enemy nemico1 = new Mago("Mago del Gelo");
         Enemy nemico2 = new Colosso("Gigante di Ghiaccio");
+
+        // boss del mondo3
         Enemy boss = new Boss("Re dei Ghiacci");
 
         this.enemies.add(nemico1);

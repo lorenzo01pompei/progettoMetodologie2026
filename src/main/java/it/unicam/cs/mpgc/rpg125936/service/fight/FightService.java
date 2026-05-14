@@ -1,4 +1,4 @@
-package it.unicam.cs.mpgc.rpg125936.service;
+package it.unicam.cs.mpgc.rpg125936.service.fight;
 
 import it.unicam.cs.mpgc.rpg125936.domain.item.FightItem;
 import it.unicam.cs.mpgc.rpg125936.domain.item.Item;
@@ -11,15 +11,14 @@ import java.util.List;
 import java.util.Random;
 
 /**
- * Classe responsabile della gestione delle sessioni di combattimento.
+ * Classe che gestisce il combattimento.
  * Utilizza il pattern Prototype (tramite clonazione) per creare istanze isolate
- * di Player ed Enemy ad ogni scontro, preservando le statistiche originali
- * in caso di sconfitta o fuga.
+ * di Player ed Enemy ad ogni scontro, mantenendo le statistiche originali
+ * recuperabili dopo il combattimento.
  */
-public class FightManager {
+public class FightService {
 
     private Random random;
-    private LootManager lootManager;
 
     private Player originalPlayer;
     private Enemy originalEnemy;
@@ -29,25 +28,21 @@ public class FightManager {
 
     private boolean active;
 
-    public FightManager() {
+    public FightService() {
         this.random = new Random();
-        this.lootManager = new LootManager();
     }
 
     /**
      * Inizia una nuova sessione di combattimento clonando le entità per evitare che
      * i dati modificati durante un combattimento impattino le classi originali.
      *
-     * @param player L'istanza del giocatore originale che sta per combattere.
-     * @param enemy  L'istanza del nemico originale da affrontare.
+     * @param player l'istanza del giocatore originale che sta per combattere.
+     * @param enemy  l'istanza del nemico originale da affrontare.
      */
     public void startFight(Player player, Enemy enemy) {
         this.originalPlayer = player;
         this.originalEnemy = enemy;
 
-        // viene creata un'istanza isolata per il combattimento in modo che
-        // danni alle armi e vita del nemico si resettino
-        // per i combattimenti successivi
         this.battlePlayer = player.copy();
         this.battleEnemy = enemy.copy();
 
@@ -57,7 +52,7 @@ public class FightManager {
     /**
      * Avvia un round di combattimento con l'arma scelta tra quelle nell'inventario.
      *
-     * @param inventoryIndex L'indice dell'arma nell'inventario del player da usare in questo turno.
+     * @param inventoryIndex l'indice dell'arma nell'inventario del player da usare in questo turno.
      * @return true se il combattimento continua, false se uno dei due è morto e lo scontro è terminato.
      */
     public boolean playRound(int inventoryIndex) {
@@ -66,58 +61,52 @@ public class FightManager {
             return false;
         }
 
-
+        //scelta arma
         FightItem playerItem = null;
         if (inventoryIndex >= 0 && inventoryIndex < battlePlayer.getInventory().size()) {
             Item item = battlePlayer.getInventory().get(inventoryIndex);
-            if (item instanceof FightItem) {
-                playerItem = (FightItem) item;
+            if (item instanceof FightItem fi) {
+                playerItem = fi;
             }
         }
 
+        //turno player
         if (playerItem != null) {
             playerItem.useInFight(battleEnemy);
         }
 
-        System.out.println(battleEnemy.getHealth());
         if (battleEnemy.getHealth() <= 0) {
-            System.out.println("L'enemy è stato sconfitto!");
-            lootManager.handleDrop(originalPlayer, originalEnemy);
             endFight();
             return false;
         }
 
-        // turno dell'enemy
+        //turno enemy
         FightItem enemyItem = getRandomFightItem(battleEnemy);
         if (enemyItem != null) {
             enemyItem.useInFight(battlePlayer);
 
             if (enemyItem instanceof Spell) {
                 battleEnemy.getInventory().remove(enemyItem);
-                System.out.println("Il Mago ha lanciato la sua magia e l'ha consumata per questo scontro!");
             }
         }
 
-        // se la vita del player scende a/o sotto lo zero finisce il fight
         if (battlePlayer.getHealth() <= 0) {
-            System.out.println("Il player è stato sconfitto!");
             endFight();
             return false;
         }
 
-        // il round è terminato con entrambi gli attacchi e si può procedere al prossimo
         return true;
     }
 
     /**
      * Termina la sessione di combattimento in corso.
-     * Si occupa di sincronizzare la salute e le vite perse sul Player originale.
+     * Si occupa di salvare la salute e le vite perse sul Player originale.
      * Le statistiche del nemico (es. la vita persa) non vengono sincronizzate,
      * permettendo il ripristino al riavvio del combattimento.
      */
     private void endFight() {
         this.active = false;
-        // la salute e le vite vengono salvate sul player originale alla fine del fight
+
         originalPlayer.setHealth((int) battlePlayer.getHealth());
         originalPlayer.setLives(battlePlayer.getLives());
     }
@@ -126,7 +115,7 @@ public class FightManager {
      * Seleziona casualmente un oggetto di tipo FightItem dall'inventario del nemico.
      *
      * @param enemy Il nemico da cui estrarre l'arma.
-     * @return Il FightItem scelto casualmente, oppure null se il nemico non ne possiede.
+     * @return Il FightItem scelto casualmente, oppure null se il nemico non ha item.
      */
     private FightItem getRandomFightItem(Enemy enemy) {
         List<FightItem> fightItems = new ArrayList<>();
@@ -135,11 +124,13 @@ public class FightManager {
                 fightItems.add((FightItem) item);
             }
         }
-        
+
+        // L'enemy non ha armi per combattere
         if (fightItems.isEmpty()) {
-            return null; // L'enemy non ha armi per combattere
+            return null;
         }
 
+        //scelta casuale dell'arma
         int index = random.nextInt(fightItems.size());
         return fightItems.get(index);
     }
@@ -158,6 +149,16 @@ public class FightManager {
      */
     public Enemy getBattleEnemy() {
         return battleEnemy;
+    }
+
+    /**
+     * Restituisce l'istanza originale del nemico affrontato.
+     * Utile per accedere al loot (inventario) dopo la sconfitta.
+     *
+     * @return il nemico originale (non clonato)
+     */
+    public Enemy getOriginalEnemy() {
+        return originalEnemy;
     }
 
 }

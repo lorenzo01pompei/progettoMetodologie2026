@@ -25,4 +25,26 @@ public class MaterialStorage {
         newList.add(material);
         this.materials.add(newList);
     }
+
+    public int countMaterial(String materialName) {
+        for (List<Material> list : materials) {
+            if (!list.isEmpty() && list.get(0).getName().equals(materialName)) {
+                return list.size();
+            }
+        }
+        return 0;
+    }
+
+    public boolean removeMaterials(String materialName, int quantity) {
+        for (List<Material> list : materials) {
+            if (!list.isEmpty() && list.get(0).getName().equals(materialName)) {
+                if (list.size() < quantity) return false;
+                for (int i = 0; i < quantity; i++) {
+                    list.remove(0);
+                }
+                return true;
+            }
+        }
+        return false;
+    }
 }

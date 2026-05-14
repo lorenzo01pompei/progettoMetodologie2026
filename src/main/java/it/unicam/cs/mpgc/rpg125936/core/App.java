@@ -1,10 +1,22 @@
 package it.unicam.cs.mpgc.rpg125936.core;
 
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
-public class App {
-    public static void main(String[] args) {
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
 
-        GameEngine gameEngine = new GameEngine();
+public class App extends Application {
+
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/main-view.fxml"));
+        Scene scene = new Scene(loader.load(), 1024, 768);
+        primaryStage.setScene(scene);
+        primaryStage.setTitle("RPG Game");
+        primaryStage.show();
+    }
+
+    public static void main(String[] args) {
+        launch(args);
     }
 }

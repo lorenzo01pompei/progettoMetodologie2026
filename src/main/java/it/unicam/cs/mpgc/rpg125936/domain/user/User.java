@@ -4,13 +4,12 @@ import it.unicam.cs.mpgc.rpg125936.domain.health.Health;
 import it.unicam.cs.mpgc.rpg125936.domain.inventory.Inventory;
 import it.unicam.cs.mpgc.rpg125936.domain.item.Item;
 import it.unicam.cs.mpgc.rpg125936.domain.material.Material;
-import it.unicam.cs.mpgc.rpg125936.domain.item.DamageTarget;
 import it.unicam.cs.mpgc.rpg125936.domain.material.MaterialStorage;
 
 
 import java.util.List;
 
-public class User implements DamageTarget {
+public class User {
 
     private String name;
     private Health healthStatus;
@@ -84,6 +83,14 @@ public class User implements DamageTarget {
 
     public void addMaterial(Material material) {
         this.materialStorage.addMaterial(material);
+    }
+
+    public int countMaterial(String materialName) {
+        return materialStorage.countMaterial(materialName);
+    }
+
+    public boolean removeMaterials(String materialName, int quantity) {
+        return materialStorage.removeMaterials(materialName, quantity);
     }
 
     public void decreaseHealth(double danno){
