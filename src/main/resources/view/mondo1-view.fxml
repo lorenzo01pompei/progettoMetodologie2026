@@ -16,7 +16,10 @@
     </top>
 
     <center>
-        <VBox fx:id="enemyList" spacing="10" style="-fx-padding: 20;" />
+        <VBox spacing="10" style="-fx-padding: 20;">
+            <VBox fx:id="enemyList" spacing="10" />
+            <Label fx:id="feedbackLabel" style="-fx-text-fill: #e74c3c; -fx-font-size: 14;" text="" />
+        </VBox>
     </center>
 
     <bottom>

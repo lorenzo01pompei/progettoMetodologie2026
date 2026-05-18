@@ -1,6 +1,7 @@
 package it.unicam.cs.mpgc.rpg125936.controller;
 
 import it.unicam.cs.mpgc.rpg125936.ambiente.Mondo1;
+import it.unicam.cs.mpgc.rpg125936.domain.item.FightItem;
 import it.unicam.cs.mpgc.rpg125936.domain.user.Enemy;
 import it.unicam.cs.mpgc.rpg125936.domain.user.Player;
 import it.unicam.cs.mpgc.rpg125936.service.game.GameSetup;
@@ -16,6 +17,7 @@ import javafx.stage.Stage;
 public class Mondo1Controller {
 
     @FXML private Label titleLabel;
+    @FXML private Label feedbackLabel;
     @FXML private VBox enemyList;
     @FXML private Button backBtn;
     @FXML private Button mineBtn;
@@ -47,7 +49,27 @@ public class Mondo1Controller {
     }
 
     private void handleFight(Enemy enemy) {
-        // logica combattimento
+        boolean hasWeapon = false;
+        for (var item : player.getInventory()) {
+            if (item instanceof FightItem) {
+                hasWeapon = true;
+                break;
+            }
+        }
+        if (!hasWeapon) {
+            feedbackLabel.setText("Non hai armi nell'inventario! Acquistane una dal negozio.");
+            return;
+        }
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/fight-view.fxml"));
+            Scene scene = new Scene(loader.load(), 1024, 768);
+            FightController fightController = loader.getController();
+            fightController.startFight(player, enemy);
+            Stage stage = (Stage) backBtn.getScene().getWindow();
+            stage.setScene(scene);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
