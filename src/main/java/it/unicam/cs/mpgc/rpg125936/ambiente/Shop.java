@@ -1,5 +1,6 @@
 package it.unicam.cs.mpgc.rpg125936.ambiente;
 
+import it.unicam.cs.mpgc.rpg125936.service.shop.SpellOffer;
 import it.unicam.cs.mpgc.rpg125936.service.shop.ToolOffer;
 import it.unicam.cs.mpgc.rpg125936.service.shop.WeaponOffer;
 
@@ -9,6 +10,7 @@ public class Shop {
 
     private final List<WeaponOffer> weapons = new ArrayList<>();
     private final List<ToolOffer> tools = new ArrayList<>();
+    private final List<SpellOffer> spells = new ArrayList<>();
     private final Map<String, Double> materialPrices = new LinkedHashMap<>();
 
     public Shop() {
@@ -18,6 +20,9 @@ public class Shop {
         weapons.add(new WeaponOffer("weapon-4", "Spada dell'Eroe", 75.0, 100.0));
 
         tools.add(new ToolOffer("tool-pickaxe", "Piccone", 500.0, 40.0));
+
+        spells.add(new SpellOffer("spell-1","Veleno", 20.0, 10.0));
+        spells.add(new SpellOffer("spell-2","Scarica elettrica", 12.0, 8.0));
 
         materialPrices.put("Lingotto d'Oro", 10.0);
         materialPrices.put("Lingotto d'Argento", 5.0);
@@ -30,6 +35,10 @@ public class Shop {
 
     public List<ToolOffer> getTools() {
         return tools;
+    }
+
+    public List<SpellOffer> getSpells() {
+        return spells;
     }
 
     public Map<String, Double> getMaterialPrices() {
@@ -49,4 +58,13 @@ public class Shop {
         }
         return null;
     }
+
+    public SpellOffer findSpellById(String id) {
+        for (SpellOffer s : spells) {
+            if (s.getId().equals(id)) return s;
+        }
+        return null;
+    }
+
+
 }

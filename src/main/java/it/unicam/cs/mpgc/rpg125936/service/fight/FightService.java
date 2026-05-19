@@ -53,13 +53,15 @@ public class FightService {
      * Avvia un round di combattimento con l'arma scelta tra quelle nell'inventario.
      *
      * @param inventoryIndex l'indice dell'arma nell'inventario del player da usare in questo turno.
-     * @return true se il combattimento continua, false se uno dei due è morto e lo scontro è terminato.
+     * @return una stringa con il log del round, oppure null se il combattimento è terminato.
      */
-    public boolean playRound(int inventoryIndex) {
+    public String playRound(int inventoryIndex) {
         if (!active || battlePlayer.getHealth() <= 0 || battleEnemy.getHealth() <= 0) {
             endFight();
-            return false;
+            return null;
         }
+
+        StringBuilder log = new StringBuilder();
 
         //scelta arma
         FightItem playerItem = null;
@@ -72,18 +74,20 @@ public class FightService {
 
         //turno player
         if (playerItem != null) {
-            playerItem.useInFight(battleEnemy);
+            String msg = playerItem.useInFight(battleEnemy, battlePlayer.getName());
+            log.append(msg);
         }
 
         if (battleEnemy.getHealth() <= 0) {
             endFight();
-            return false;
+            return null;
         }
 
         //turno enemy
         FightItem enemyItem = getRandomFightItem(battleEnemy);
         if (enemyItem != null) {
-            enemyItem.useInFight(battlePlayer);
+            String msg = enemyItem.useInFight(battlePlayer, battleEnemy.getName());
+            log.append("\n").append(msg);
 
             if (enemyItem instanceof Spell) {
                 battleEnemy.getInventory().remove(enemyItem);
@@ -92,10 +96,10 @@ public class FightService {
 
         if (battlePlayer.getHealth() <= 0) {
             endFight();
-            return false;
+            return null;
         }
 
-        return true;
+        return log.toString();
     }
 
     /**

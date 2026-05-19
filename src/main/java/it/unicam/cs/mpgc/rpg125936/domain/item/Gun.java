@@ -43,8 +43,9 @@ public class Gun implements FightItem {
         this.damage -= amount;
     }
 
-    public void useInFight(User target){
+    public String useInFight(User target, String attackerName){
         target.decreaseHealth(this.getDamage());
+        return attackerName + " attacca con " + this.getName() + " infliggendo " + this.getDamage() + " danni!";
     }
 
     @Override

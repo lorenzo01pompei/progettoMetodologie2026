@@ -7,10 +7,7 @@ import it.unicam.cs.mpgc.rpg125936.domain.item.FightItem;
 import it.unicam.cs.mpgc.rpg125936.domain.item.Item;
 import it.unicam.cs.mpgc.rpg125936.domain.user.Player;
 import it.unicam.cs.mpgc.rpg125936.service.game.GameSetup;
-import it.unicam.cs.mpgc.rpg125936.service.shop.PurchaseDTO;
 import it.unicam.cs.mpgc.rpg125936.service.shop.ShopService;
-import it.unicam.cs.mpgc.rpg125936.service.shop.ToolOffer;
-import it.unicam.cs.mpgc.rpg125936.service.shop.WeaponOffer;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -28,17 +25,15 @@ public class MainController {
     @FXML private Label healthLabel;
     @FXML private Label livesLabel;
     @FXML private Label moneyLabel;
-    @FXML private VBox weaponList;
-    @FXML private VBox toolList;
     @FXML private VBox inventoryPanel;
     @FXML private Button mondo1Btn;
     @FXML private Button mondo2Btn;
     @FXML private Button mondo3Btn;
+    @FXML private ShopController shopController;
 
     private GameSetup gameSetup;
     private Player player;
     private Lobby lobby;
-    private Shop shop;
     private ShopService shopService;
     private List<Mondo> worlds;
 
@@ -47,11 +42,13 @@ public class MainController {
         gameSetup = GameSetup.getInstance();
         player = gameSetup.getPlayer();
         lobby = gameSetup.getLobby();
-        shop = lobby.getShop();
-        shopService = new ShopService(shop);
+        shopService = new ShopService(lobby.getShop());
         worlds = gameSetup.getWorlds();
 
-        loadShop();
+        shopController.init(player, shopService);
+        shopController.setOnPurchase(() -> { loadInventory(); updateProfile(); });
+        shopController.setOnFeedback(msg -> feedbackLabel.setText(msg));
+
         loadInventory();
         updateProfile();
         updateWorldButtons();
@@ -84,50 +81,6 @@ public class MainController {
     @FXML
     private void handleMondo3() {
         feedbackLabel.setText("Mondo 3 bloccato.");
-    }
-
-    private void loadShop() {
-        weaponList.getChildren().clear();
-        for (WeaponOffer offer : shopService.getWeaponCatalog()) {
-            Label info = new Label(offer.getName() + "  \u2022  Danno: " + (int) offer.getDamage());
-            info.setStyle("-fx-font-weight: bold; -fx-font-size: 14;");
-
-            Button buyBtn = new Button("Compra (" + (int) offer.getPrice() + " monete)");
-            buyBtn.setStyle("-fx-background-color: #27ae60; -fx-text-fill: white; -fx-font-size: 13;");
-            buyBtn.setOnAction(e -> buyWeapon(offer));
-
-            VBox row = new VBox(5, info, buyBtn);
-            row.setStyle("-fx-border-color: #e0d5b0; -fx-border-width: 0 0 1 0; -fx-padding: 8 0;");
-            weaponList.getChildren().add(row);
-        }
-
-        toolList.getChildren().clear();
-        for (ToolOffer offer : shopService.getToolCatalog()) {
-            Label info = new Label(offer.getName() + "  \u2022  Usi: " + (int) offer.getMaxUses());
-            info.setStyle("-fx-font-weight: bold; -fx-font-size: 14;");
-
-            Button buyBtn = new Button("Compra (" + (int) offer.getPrice() + " monete)");
-            buyBtn.setStyle("-fx-background-color: #27ae60; -fx-text-fill: white; -fx-font-size: 13;");
-            buyBtn.setOnAction(e -> buyTool(offer));
-
-            VBox row = new VBox(5, info, buyBtn);
-            row.setStyle("-fx-border-color: #e0d5b0; -fx-border-width: 0 0 1 0; -fx-padding: 8 0;");
-            toolList.getChildren().add(row);
-        }
-    }
-
-    private void buyWeapon(WeaponOffer offer) {
-        PurchaseDTO result = shopService.buyWeapon(player, offer.getId());
-        feedbackLabel.setText(result.getMessage());
-        loadInventory();
-        updateProfile();
-    }
-
-    private void buyTool(ToolOffer offer) {
-        PurchaseDTO result = shopService.buyTool(player, offer.getId());
-        feedbackLabel.setText(result.getMessage());
-        loadInventory();
-        updateProfile();
     }
 
     private void loadInventory() {

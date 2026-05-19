@@ -41,6 +41,15 @@ public class ShopService {
     }
 
     /**
+     * Restituisce la lista di strumenti acquistabili nel negozio.
+     *
+     * @return lista immutabile di {@link ToolOffer}
+     */
+    public List<SpellOffer> getSpellCatalog() {
+        return shop.getSpells();
+    }
+
+    /**
      * Restituisce la legenda per la conversione dei materiali in monete.
      *
      * @return mappa (nome materiale &rarr; valore unitario in monete)
@@ -70,6 +79,28 @@ public class ShopService {
     }
 
     /**
+     * Acquista un'arma per il giocatore.
+     *
+     * @param player  il giocatore acquirente
+     * @param spellId id dell'incantesimo da acquistare
+     * @return {@link PurchaseDTO} con esito e messaggio descrittivo
+     */
+    public PurchaseDTO buySpell(Player player, String spellId) {
+        SpellOffer offer = shop.findSpellById(spellId);
+        if (offer == null) {
+            return new PurchaseDTO(false, "Incantesimo non trovato nel catalogo.");
+        }
+        if (player.getMoney() < offer.getPrice()) {
+            return new PurchaseDTO(false, "Soldi insufficienti. Servono " + offer.getPrice() + " monete.");
+        }
+        player.addMoney(-offer.getPrice());
+        player.addItem(offer.createSpell());
+        return new PurchaseDTO(true, "Hai acquistato " + offer.getName() + " per " + offer.getPrice() + " monete.");
+    }
+
+
+
+    /**
      * Acquista uno strumento per il giocatore.
      *
      * @param player il giocatore acquirente
@@ -88,6 +119,7 @@ public class ShopService {
         player.addItem(offer.createItem());
         return new PurchaseDTO(true, "Hai acquistato " + offer.getName() + " per " + offer.getPrice() + " monete.");
     }
+
 
     /**
      * Vende una quantità di materiale per il giocatore.

@@ -49,26 +49,7 @@
             </VBox>
 
             <!-- NEGOZIO (destra) -->
-            <VBox spacing="10" style="-fx-background-color: #fdf6e3; -fx-padding: 20;" HBox.hgrow="ALWAYS">
-                <Label style="-fx-font-weight: bold;" text="NEGOZIO">
-                    <font>
-                        <Font size="20" />
-                    </font>
-                </Label>
-
-                <VBox spacing="5">
-                    <TitledPane text="ARMI" expanded="false">
-                        <content>
-                            <VBox fx:id="weaponList" spacing="8" style="-fx-padding: 10;" />
-                        </content>
-                    </TitledPane>
-                    <TitledPane text="STRUMENTI" expanded="false">
-                        <content>
-                            <VBox fx:id="toolList" spacing="8" style="-fx-padding: 10;" />
-                        </content>
-                    </TitledPane>
-                </VBox>
-            </VBox>
+            <fx:include fx:id="shop" source="shop-view.fxml" HBox.hgrow="ALWAYS" />
         </HBox>
     </center>
 
