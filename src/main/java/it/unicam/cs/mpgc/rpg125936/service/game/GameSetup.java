@@ -12,11 +12,13 @@ import java.util.List;
 
 public class GameSetup {
 
+    private static GameSetup instance;
+
     private final Player player;
     private final Lobby lobby;
     private final List<Mondo> worlds;
 
-    public GameSetup() {
+    private GameSetup() {
         this.player = new Player("Eroe", 100);
         this.lobby = new Lobby();
 
@@ -29,6 +31,13 @@ public class GameSetup {
         this.worlds.add(mondo1);
         this.worlds.add(mondo2);
         this.worlds.add(mondo3);
+    }
+
+    public static GameSetup getInstance() {
+        if (instance == null) {
+            instance = new GameSetup();
+        }
+        return instance;
     }
 
     public Player getPlayer() {

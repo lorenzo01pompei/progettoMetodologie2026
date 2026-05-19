@@ -27,7 +27,7 @@ public class Mondo1Controller {
 
     @FXML
     public void initialize() {
-        GameSetup gameSetup = new GameSetup();
+        GameSetup gameSetup = GameSetup.getInstance();
         player = gameSetup.getPlayer();
         mondo1 = (Mondo1) gameSetup.getWorlds().get(0);
 

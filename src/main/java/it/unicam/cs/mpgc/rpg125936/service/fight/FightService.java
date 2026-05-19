@@ -100,15 +100,28 @@ public class FightService {
 
     /**
      * Termina la sessione di combattimento in corso.
-     * Si occupa di salvare la salute e le vite perse sul Player originale.
-     * Le statistiche del nemico (es. la vita persa) non vengono sincronizzate,
+     * Se il player è morto, scala una vita e ripristina la salute (se ha ancora vite).
+     * Le statistiche del nemico non vengono sincronizzate,
      * permettendo il ripristino al riavvio del combattimento.
      */
     private void endFight() {
         this.active = false;
 
-        originalPlayer.setHealth((int) battlePlayer.getHealth());
-        originalPlayer.setLives(battlePlayer.getLives());
+        if (battlePlayer.getHealth() <= 0) {
+            int remaining = originalPlayer.getLives() - 1;
+            originalPlayer.setLives(remaining);
+            battlePlayer.setLives(remaining);
+            if (remaining > 0) {
+                originalPlayer.setHealth(100);
+                battlePlayer.setHealth(100);
+            } else {
+                originalPlayer.setHealth(0);
+                battlePlayer.setHealth(0);
+            }
+        } else {
+            originalPlayer.setHealth((int) battlePlayer.getHealth());
+            originalPlayer.setLives(battlePlayer.getLives());
+        }
     }
 
     /**

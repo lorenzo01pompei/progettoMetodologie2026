@@ -44,7 +44,7 @@ public class MainController {
 
     @FXML
     public void initialize() {
-        gameSetup = new GameSetup();
+        gameSetup = GameSetup.getInstance();
         player = gameSetup.getPlayer();
         lobby = gameSetup.getLobby();
         shop = lobby.getShop();
