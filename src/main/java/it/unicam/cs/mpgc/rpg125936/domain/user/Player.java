@@ -22,6 +22,13 @@ public class Player extends User{
         return money;
     }
 
+    public void decreaseLives(){
+        if(this.getLives()!=0){
+            this.setLives(this.getLives()-1);
+        }
+
+    }
+
     public void setMoney(double money) {
         this.money = money;
     }

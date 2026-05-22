@@ -33,16 +33,17 @@ public class Spell implements FightItem {
     }
 
     public String useInFight(User target, String attackerName){
+        String feedback = attackerName + " lancia " + this.getName() + ": il danno delle armi dell'avversario viene ridotto di " + this.damage + " punti!";
         for(Item i : target.getInventory()) {
             if(i instanceof FightItem fightItem) {
                 if(fightItem.getDamage()-this.damage<=0){
                     target.getInventory().remove(fightItem);
-                    return attackerName + " ha distrutto l'arma " + fightItem.getName() + ", non puo piu essere utilizzata";
+                    return feedback + '\n' + attackerName + " ha distrutto l'arma " + fightItem.getName() + " di " + target.getName() +", non puo piu essere utilizzata";
                 }
                 fightItem.applyDamageReduction(this.damage);
             }
         }
-        return attackerName + " lancia " + this.getName() + ": il danno delle armi dell'avversario viene ridotto di " + this.damage + " punti!";
+        return feedback;
     }
 
     @Override

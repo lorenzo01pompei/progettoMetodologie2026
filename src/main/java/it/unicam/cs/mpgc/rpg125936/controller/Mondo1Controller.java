@@ -18,6 +18,8 @@ public class Mondo1Controller {
 
     @FXML private Label titleLabel;
     @FXML private Label feedbackLabel;
+    @FXML private Label playerHpLabel;
+    @FXML private Label playerLivesLabel;
     @FXML private VBox enemyList;
     @FXML private Button backBtn;
     @FXML private Button mineBtn;
@@ -32,6 +34,8 @@ public class Mondo1Controller {
         mondo1 = (Mondo1) gameSetup.getWorlds().get(0);
 
         titleLabel.setText("Mondo 1");
+        playerHpLabel.setText("HP: " + (int) player.getHealth());
+        playerLivesLabel.setText("Vite: " + player.getLives());
 
         for (Enemy enemy : mondo1.getEnemies()) {
             String className = enemy.getClass().getSimpleName();

@@ -114,13 +114,10 @@ public class FightService {
         if (battlePlayer.getHealth() <= 0) {
             int remaining = originalPlayer.getLives() - 1;
             originalPlayer.setLives(remaining);
-            battlePlayer.setLives(remaining);
             if (remaining > 0) {
                 originalPlayer.setHealth(100);
-                battlePlayer.setHealth(100);
             } else {
                 originalPlayer.setHealth(0);
-                battlePlayer.setHealth(0);
             }
         } else {
             originalPlayer.setHealth((int) battlePlayer.getHealth());

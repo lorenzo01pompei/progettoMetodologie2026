@@ -21,8 +21,8 @@ public class Shop {
 
         tools.add(new ToolOffer("tool-pickaxe", "Piccone", 500.0, 40.0));
 
-        spells.add(new SpellOffer("spell-1","Veleno", 20.0, 10.0));
-        spells.add(new SpellOffer("spell-2","Scarica elettrica", 12.0, 8.0));
+        spells.add(new SpellOffer("spell-1","Veleno", 10.0, 10.0));
+        spells.add(new SpellOffer("spell-2","Scarica elettrica", 7.0, 8.0));
 
         materialPrices.put("Lingotto d'Oro", 10.0);
         materialPrices.put("Lingotto d'Argento", 5.0);

@@ -1,6 +1,7 @@
 package it.unicam.cs.mpgc.rpg125936.controller;
 
 import it.unicam.cs.mpgc.rpg125936.domain.item.FightItem;
+import it.unicam.cs.mpgc.rpg125936.domain.item.Item;
 import it.unicam.cs.mpgc.rpg125936.domain.user.Enemy;
 import it.unicam.cs.mpgc.rpg125936.domain.user.Player;
 import it.unicam.cs.mpgc.rpg125936.service.fight.FightService;
@@ -26,6 +27,8 @@ public class FightController {
     @FXML private VBox weaponList;
     @FXML private Label feedbackLabel;
     @FXML private Button backButton;
+    @FXML private Button giveUpButton;
+    @FXML private Label giveUpLabel;
 
     private FightService fightService;
     private LootService lootService;
@@ -38,12 +41,26 @@ public class FightController {
         this.fightService = new FightService();
         this.lootService = new LootService();
 
-        fightService.startFight(player, enemy);
-
         playerNameLabel.setText(player.getName());
         enemyNameLabel.setText(enemy.getName());
-        updateHp();
-        showPlayerWeapons();
+        playerLivesLabel.setText("Vite: " + player.getLives());
+
+        if (player.getLives() <= 0) {
+            feedbackLabel.setText("Hai esaurito le tue vite, corri allo shop per comprarne altre!!");
+            weaponList.setDisable(true);
+            backButton.setVisible(true);
+            backButton.setManaged(true);
+            giveUpButton.setVisible(false);
+            giveUpButton.setManaged(false);
+        } else {
+            fightService.startFight(player, enemy);
+            updateHp();
+            showPlayerWeapons();
+            giveUpButton.setVisible(true);
+            giveUpButton.setManaged(true);
+        }
+
+
     }
 
     private void updateHp() {
@@ -61,13 +78,15 @@ public class FightController {
             }
         }
 
-        for (int i = 0; i < items.size(); i++) {
-            FightItem fi = items.get(i);
-            int index = i;
-            Button btn = new Button(fi.getName() + " (Danno: " + fi.getDamage() + ")");
-            btn.setStyle("-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-size: 14; -fx-padding: 10 20;");
-            btn.setOnAction(e -> attack(index));
-            weaponList.getChildren().add(btn);
+        for (int i = 0; i < fightService.getBattlePlayer().getInventory().size(); i++) {
+            Item item = fightService.getBattlePlayer().getInventory().get(i);
+            if (item instanceof FightItem fi) {
+                int actualIndex = i;
+                Button btn = new Button(fi.getName() + " (Danno: " + fi.getDamage() + ")");
+                btn.setStyle("-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-size: 14; -fx-padding: 10 20;");
+                btn.setOnAction(e -> attack(actualIndex));
+                weaponList.getChildren().add(btn);
+            }
         }
 
         if (items.isEmpty()) {
@@ -82,7 +101,6 @@ public class FightController {
         }
 
         String roundLog = fightService.playRound(weaponIndex);
-        updateHp();
 
         if (roundLog == null) {
             weaponList.setDisable(true);
@@ -90,12 +108,22 @@ public class FightController {
             backButton.setManaged(true);
 
             if (fightService.getBattleEnemy().getHealth() <= 0) {
+                updateHp();
                 feedbackLabel.setText("VITTORIA!");
+                giveUpLabel.setVisible(false);
+                giveUpButton.setVisible(false);
+                giveUpButton.setManaged(false);
                 handleVictory();
             } else if (fightService.getBattlePlayer().getHealth() <= 0) {
+                updateHp();
                 feedbackLabel.setText("SCONFITTA!");
+                giveUpLabel.setVisible(false);
+                giveUpButton.setVisible(false);
+                giveUpButton.setManaged(false);
             }
         } else {
+            updateHp();
+            showPlayerWeapons();
             feedbackLabel.setText(roundLog);
         }
     }
@@ -126,4 +154,20 @@ public class FightController {
             ex.printStackTrace();
         }
     }
+
+    @FXML
+    private void giveUp(){
+        String view = "/view/mondo1-view.fxml";
+        player.decreaseLives();
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(view));
+            Scene scene = new Scene(loader.load(), 1024, 768);
+            Stage stage = (Stage) giveUpButton.getScene().getWindow();
+            stage.setScene(scene);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+
 }
