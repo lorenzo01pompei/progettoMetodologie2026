@@ -28,5 +28,10 @@
                 <VBox fx:id="toolList" spacing="8" style="-fx-padding: 10;" />
             </content>
         </TitledPane>
+        <TitledPane text="VITE" expanded="false">
+            <content>
+                <VBox fx:id="lifeList" spacing="8" style="-fx-padding: 10;" />
+            </content>
+        </TitledPane>
     </VBox>
 </VBox>

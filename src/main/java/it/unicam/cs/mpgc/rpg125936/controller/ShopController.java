@@ -1,5 +1,6 @@
 package it.unicam.cs.mpgc.rpg125936.controller;
 
+import it.unicam.cs.mpgc.rpg125936.domain.health.Health;
 import it.unicam.cs.mpgc.rpg125936.domain.user.Player;
 import it.unicam.cs.mpgc.rpg125936.service.shop.*;
 import javafx.fxml.FXML;
@@ -14,6 +15,7 @@ public class ShopController {
     @FXML private VBox weaponList;
     @FXML private VBox toolList;
     @FXML private VBox spellList;
+    @FXML private VBox lifeList;
 
     private Player player;
     private ShopService shopService;
@@ -81,6 +83,13 @@ public class ShopController {
             row.setStyle("-fx-border-color: #e0d5b0; -fx-border-width: 0 0 1 0; -fx-padding: 8 0;");
             spellList.getChildren().add(row);
         }
+
+        lifeList.getChildren().clear();
+        int lifePrice = player.getHealthStatus().getLivesPrice();
+        Button buyLifeBtn = new Button("Compra una vita (" + lifePrice + " monete)");
+        buyLifeBtn.setStyle("-fx-background-color: #e67e22; -fx-text-fill: white; -fx-font-size: 13;");
+        buyLifeBtn.setOnAction(e -> buyLives());
+        lifeList.getChildren().add(buyLifeBtn);
     }
 
     /**
@@ -99,6 +108,15 @@ public class ShopController {
      */
     private void buySpell(SpellOffer offer) {
         PurchaseDTO result = shopService.buySpell(player, offer.getId());
+        if (onFeedback != null) onFeedback.accept(result.getMessage());
+        if (onPurchase != null) onPurchase.run();
+    }
+
+    /**
+     * usato per comprare una vita dallo shop
+     */
+    private void buyLives() {
+        PurchaseDTO result = shopService.buyLives(player);
         if (onFeedback != null) onFeedback.accept(result.getMessage());
         if (onPurchase != null) onPurchase.run();
     }

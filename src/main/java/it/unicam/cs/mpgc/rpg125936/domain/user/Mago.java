@@ -1,7 +1,11 @@
 package it.unicam.cs.mpgc.rpg125936.domain.user;
 
 import it.unicam.cs.mpgc.rpg125936.repository.ItemRegistry;
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
 
+@Entity
+@DiscriminatorValue("MAGO")
 public class Mago extends Enemy {
 
     public Mago(String name) {
@@ -16,4 +20,6 @@ public class Mago extends Enemy {
         this.addItem(ItemRegistry.getRandomGun());
         this.addItem(ItemRegistry.getRandomGun());
     }
+
+    public Mago(){}
 }

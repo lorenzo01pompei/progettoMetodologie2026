@@ -1,7 +1,11 @@
 package it.unicam.cs.mpgc.rpg125936.domain.user;
 
 import it.unicam.cs.mpgc.rpg125936.repository.ItemRegistry;
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
 
+@Entity
+@DiscriminatorValue("COLOSSO")
 public class Colosso extends Enemy {
 
     public Colosso(String name) {
@@ -11,4 +15,6 @@ public class Colosso extends Enemy {
         // Il Colosso usa solo armi fisiche pesanti
         this.addItem(ItemRegistry.getRandomGun());
     }
+
+    public Colosso(){}
 }

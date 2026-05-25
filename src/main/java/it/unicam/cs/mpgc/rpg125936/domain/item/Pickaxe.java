@@ -1,15 +1,23 @@
 package it.unicam.cs.mpgc.rpg125936.domain.item;
 
-import it.unicam.cs.mpgc.rpg125936.ambiente.GameLocation;
+import it.unicam.cs.mpgc.rpg125936.domain.location.GameLocation;
+import jakarta.persistence.Column;
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
 
 /**
  * Rappresenta un piccone (strumento) che il giocatore può utilizzare all'interno del gioco.
  * Implementa l'interfaccia ToolItem, il che gli permette di interagire in modo specifico
  * con determinati ambienti (come la Miniera).
  */
-public class Pickaxe implements ToolItem {
 
+@Entity
+@DiscriminatorValue("PICKAXE")
+public class Pickaxe extends AbstractItem implements ToolItem {
+
+    @Column(name= "durability")
     private double durability;
+    @Column(name= "price")
     private double price;
 
     /**

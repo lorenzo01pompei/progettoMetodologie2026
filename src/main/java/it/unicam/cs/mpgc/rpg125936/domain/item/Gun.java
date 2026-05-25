@@ -1,11 +1,19 @@
 package it.unicam.cs.mpgc.rpg125936.domain.item;
 
 import it.unicam.cs.mpgc.rpg125936.domain.user.User;
+import jakarta.persistence.Column;
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
 
-public class Gun implements FightItem {
+@Entity
+@DiscriminatorValue("GUN")
+public class Gun extends AbstractItem implements FightItem {
 
+    @Column(name= "name")
     private String name;
+    @Column(name= "damage")
     private double damage;
+    @Column(name= "price")
     private double price;
 
     public Gun(String name, double damage, double price) {
@@ -13,6 +21,8 @@ public class Gun implements FightItem {
         this.damage = damage;
         this.price = price;
     }
+
+    public Gun(){}
 
     public String getName() {
         return name;

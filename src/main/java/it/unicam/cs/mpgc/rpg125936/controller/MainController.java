@@ -1,8 +1,7 @@
 package it.unicam.cs.mpgc.rpg125936.controller;
 
-import it.unicam.cs.mpgc.rpg125936.ambiente.Lobby;
-import it.unicam.cs.mpgc.rpg125936.ambiente.Mondo;
-import it.unicam.cs.mpgc.rpg125936.ambiente.Shop;
+import it.unicam.cs.mpgc.rpg125936.domain.location.Lobby;
+import it.unicam.cs.mpgc.rpg125936.domain.location.Mondo;
 import it.unicam.cs.mpgc.rpg125936.domain.item.FightItem;
 import it.unicam.cs.mpgc.rpg125936.domain.item.Item;
 import it.unicam.cs.mpgc.rpg125936.domain.user.Player;

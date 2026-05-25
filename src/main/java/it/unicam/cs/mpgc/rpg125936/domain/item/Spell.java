@@ -1,16 +1,25 @@
 package it.unicam.cs.mpgc.rpg125936.domain.item;
 
 import it.unicam.cs.mpgc.rpg125936.domain.user.User;
+import jakarta.persistence.Column;
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
 
-public class Spell implements FightItem {
+@Entity
+@DiscriminatorValue("SPELL")
+public class Spell extends AbstractItem implements FightItem {
 
+    @Column(name= "name")
     private String name;
+    @Column(name= "damage")
     private double damage;
 
     public Spell(String name, double damage) {
         this.name = name;
         this.damage = damage;
     }
+
+    public Spell(){}
 
     public String getName() {
         return name;

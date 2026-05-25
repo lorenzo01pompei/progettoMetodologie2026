@@ -1,6 +1,6 @@
 package it.unicam.cs.mpgc.rpg125936.controller;
 
-import it.unicam.cs.mpgc.rpg125936.ambiente.Mondo1;
+import it.unicam.cs.mpgc.rpg125936.domain.location.Mondo1;
 import it.unicam.cs.mpgc.rpg125936.domain.item.FightItem;
 import it.unicam.cs.mpgc.rpg125936.domain.user.Enemy;
 import it.unicam.cs.mpgc.rpg125936.domain.user.Player;

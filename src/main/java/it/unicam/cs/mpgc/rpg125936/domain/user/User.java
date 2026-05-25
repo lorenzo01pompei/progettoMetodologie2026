@@ -5,15 +5,28 @@ import it.unicam.cs.mpgc.rpg125936.domain.inventory.Inventory;
 import it.unicam.cs.mpgc.rpg125936.domain.item.Item;
 import it.unicam.cs.mpgc.rpg125936.domain.material.Material;
 import it.unicam.cs.mpgc.rpg125936.domain.material.MaterialStorage;
+import jakarta.persistence.*;
 
 
 import java.util.List;
 
+@Entity
+@Inheritance(strategy = InheritanceType.JOINED)
+@DiscriminatorColumn(name = "user_type", discriminatorType = DiscriminatorType.STRING)
+@Table(name="Users")
 public class User {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    @Column(name= "name", nullable = false)
     private String name;
+
+    @Embedded
     private Health healthStatus;
+    @Transient
     private Inventory inventory;
+    @Transient
     private MaterialStorage materialStorage;
 
     public User(String name) {
@@ -22,7 +35,10 @@ public class User {
         this.inventory = new Inventory();
         this.materialStorage = new MaterialStorage();
     }
+    public User(){}
 
+    public Long getId(){ return id;}
+    public void setId(Long id) {this.id=id;}
     public String getName() {
         return name;
     }
@@ -33,6 +49,10 @@ public class User {
 
     public double getHealth() {
         return healthStatus.getHealth();
+    }
+
+    public Health getHealthStatus() {
+        return healthStatus;
     }
 
     public void setHealth(double health) {
@@ -97,18 +117,6 @@ public class User {
         this.healthStatus.decreaseHealth(danno);
     }
 
-    public User copy() {
-        User clone = new User(this.name);
-        clone.setHealth(this.getHealth());
-        for(Item i : inventory.getItems()) {
-            clone.addItem(i.copy());
-        }
-        for(List<Material> list : materialStorage.getMaterials()) {
-            for(Material m : list) {
-                clone.addMaterial((Material) m.copy());
-            }
-        }
-        return clone;
-    }
+
 
 }

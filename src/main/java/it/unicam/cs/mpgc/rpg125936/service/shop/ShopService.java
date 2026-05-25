@@ -1,6 +1,6 @@
 package it.unicam.cs.mpgc.rpg125936.service.shop;
 
-import it.unicam.cs.mpgc.rpg125936.ambiente.Shop;
+import it.unicam.cs.mpgc.rpg125936.domain.location.Shop;
 import it.unicam.cs.mpgc.rpg125936.domain.user.Player;
 
 import java.util.List;
@@ -120,6 +120,27 @@ public class ShopService {
         return new PurchaseDTO(true, "Hai acquistato " + offer.getName() + " per " + offer.getPrice() + " monete.");
     }
 
+    /**
+     * Acquista una vita per il giocatore.
+     *
+     * @param player  il giocatore acquirente
+     * @return @PurchaseDTO con esito e messaggio descrittivo
+     */
+    public PurchaseDTO buyLives(Player player) {
+        int price = player.getHealthStatus().getLivesPrice();
+        if (player.getMoney() < price) {
+            return new PurchaseDTO(false, "Soldi insufficienti. Servono " + price + " monete.");
+        }
+        if(player.getLives()<3){
+            player.addMoney(-price);
+            player.setLives(player.getLives()+1);
+            return new PurchaseDTO(true, "Hai acquistato una vita per " + price + " monete.");
+        }else{
+            return new PurchaseDTO(false, "Non puoi comprare vite, ne hai già il massimo numero.");
+        }
+
+
+    }
 
     /**
      * Vende una quantità di materiale per il giocatore.

@@ -1,6 +1,6 @@
 package it.unicam.cs.mpgc.rpg125936.service.mine;
 
-import it.unicam.cs.mpgc.rpg125936.ambiente.Miniera;
+import it.unicam.cs.mpgc.rpg125936.domain.location.Miniera;
 import it.unicam.cs.mpgc.rpg125936.domain.item.Item;
 import it.unicam.cs.mpgc.rpg125936.domain.item.Pickaxe;
 import it.unicam.cs.mpgc.rpg125936.domain.material.Material;

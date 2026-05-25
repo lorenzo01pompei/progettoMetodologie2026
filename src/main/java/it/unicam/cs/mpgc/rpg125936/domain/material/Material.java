@@ -1,10 +1,22 @@
 package it.unicam.cs.mpgc.rpg125936.domain.material;
 
+import it.unicam.cs.mpgc.rpg125936.domain.item.AbstractItem;
 import it.unicam.cs.mpgc.rpg125936.domain.item.Item;
+import jakarta.persistence.Column;
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
 
-public class Material implements Item {
+@Entity
+@DiscriminatorValue("MATERIAL")
+public class Material extends AbstractItem {
+
+    @Column(name = "name")
     private String name;
+
+    @Column(name = "price")
     private double price;
+
+    public Material() {}
 
     public Material(String name, double price) {
         this.name = name;

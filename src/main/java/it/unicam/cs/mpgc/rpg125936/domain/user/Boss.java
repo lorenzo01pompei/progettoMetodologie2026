@@ -1,7 +1,11 @@
 package it.unicam.cs.mpgc.rpg125936.domain.user;
 
 import it.unicam.cs.mpgc.rpg125936.repository.ItemRegistry;
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
 
+@Entity
+@DiscriminatorValue("BOSS")
 public class Boss extends Enemy {
 
     public Boss(String name) {
@@ -13,4 +17,6 @@ public class Boss extends Enemy {
         this.addItem(ItemRegistry.getRandomGun());
         this.addItem(ItemRegistry.getRandomSpell());
     }
+
+    public Boss(){}
 }

@@ -1,4 +1,4 @@
-package it.unicam.cs.mpgc.rpg125936.ambiente;
+package it.unicam.cs.mpgc.rpg125936.domain.location;
 
 import it.unicam.cs.mpgc.rpg125936.domain.user.Enemy;
 import it.unicam.cs.mpgc.rpg125936.domain.user.Player;

@@ -1,10 +1,10 @@
 package it.unicam.cs.mpgc.rpg125936.service.game;
 
-import it.unicam.cs.mpgc.rpg125936.ambiente.Lobby;
-import it.unicam.cs.mpgc.rpg125936.ambiente.Mondo;
-import it.unicam.cs.mpgc.rpg125936.ambiente.Mondo1;
-import it.unicam.cs.mpgc.rpg125936.ambiente.Mondo2;
-import it.unicam.cs.mpgc.rpg125936.ambiente.Mondo3;
+import it.unicam.cs.mpgc.rpg125936.domain.location.Lobby;
+import it.unicam.cs.mpgc.rpg125936.domain.location.Mondo;
+import it.unicam.cs.mpgc.rpg125936.domain.location.Mondo1;
+import it.unicam.cs.mpgc.rpg125936.domain.location.Mondo2;
+import it.unicam.cs.mpgc.rpg125936.domain.location.Mondo3;
 import it.unicam.cs.mpgc.rpg125936.domain.user.Player;
 
 import java.util.ArrayList;
