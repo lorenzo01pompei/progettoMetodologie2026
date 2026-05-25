@@ -1,5 +1,6 @@
 package it.unicam.cs.mpgc.rpg125936.core;
 
+import it.unicam.cs.mpgc.rpg125936.repository.DatabaseSeeder;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -17,6 +18,7 @@ public class App extends Application {
     }
 
     public static void main(String[] args) {
+        DatabaseSeeder.seed();
         launch(args);
     }
 }

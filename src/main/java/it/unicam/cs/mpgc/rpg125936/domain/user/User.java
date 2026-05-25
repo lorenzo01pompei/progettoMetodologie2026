@@ -24,9 +24,9 @@ public class User {
 
     @Embedded
     private Health healthStatus;
-    @Transient
+    @Embedded
     private Inventory inventory;
-    @Transient
+    @Embedded
     private MaterialStorage materialStorage;
 
     public User(String name) {

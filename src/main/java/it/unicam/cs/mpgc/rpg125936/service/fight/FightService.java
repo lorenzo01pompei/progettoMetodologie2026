@@ -33,8 +33,7 @@ public class FightService {
     }
 
     /**
-     * Inizia una nuova sessione di combattimento clonando le entità per evitare che
-     * i dati modificati durante un combattimento impattino le classi originali.
+     * Inizia una nuova sessione di combattimento
      *
      * @param player l'istanza del giocatore originale che sta per combattere.
      * @param enemy  l'istanza del nemico originale da affrontare.
@@ -43,8 +42,8 @@ public class FightService {
         this.originalPlayer = player;
         this.originalEnemy = enemy;
 
-        this.battlePlayer = player.copy();
-        this.battleEnemy = enemy.copy();
+        this.battlePlayer = player;
+        this.battleEnemy = enemy;
 
         this.active = true;
     }

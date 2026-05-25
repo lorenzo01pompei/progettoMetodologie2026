@@ -22,5 +22,11 @@
         <mapping class="it.unicam.cs.mpgc.rpg125936.domain.user.Boss"/>
         <mapping class="it.unicam.cs.mpgc.rpg125936.domain.user.Colosso"/>
         <mapping class="it.unicam.cs.mpgc.rpg125936.domain.user.Mago"/>
+
+        <mapping class="it.unicam.cs.mpgc.rpg125936.domain.item.AbstractItem"/>
+        <mapping class="it.unicam.cs.mpgc.rpg125936.domain.item.Gun"/>
+        <mapping class="it.unicam.cs.mpgc.rpg125936.domain.item.Spell"/>
+        <mapping class="it.unicam.cs.mpgc.rpg125936.domain.item.Pickaxe"/>
+        <mapping class="it.unicam.cs.mpgc.rpg125936.domain.material.Material"/>
     </session-factory>
 </hibernate-configuration>
