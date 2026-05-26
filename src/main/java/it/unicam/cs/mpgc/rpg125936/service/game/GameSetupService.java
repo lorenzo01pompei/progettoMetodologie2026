@@ -11,15 +11,15 @@ import it.unicam.cs.mpgc.rpg125936.repository.PlayerRepository;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GameSetup {
+public class GameSetupService {
 
-    private static GameSetup instance;
+    private static GameSetupService instance;
 
     private Player player;
     private final Lobby lobby;
     private final List<Mondo> worlds;
 
-    private GameSetup() {
+    private GameSetupService() {
         this.lobby = new Lobby();
         this.worlds = new ArrayList<>();
         this.player = new Player("Eroe", 100);
@@ -32,20 +32,20 @@ public class GameSetup {
         worlds.add(new Mondo3(true));
     }
 
-    public static GameSetup getInstance() {
+    public static GameSetupService getInstance() {
         if (instance == null) {
-            instance = new GameSetup();
+            instance = new GameSetupService();
         }
         return instance;
     }
 
     public static void reset() {
-        instance = new GameSetup();
+        instance = new GameSetupService();
     }
 
     public static void loadFromSave() {
         if (instance == null) {
-            instance = new GameSetup();
+            instance = new GameSetupService();
         }
         PlayerRepository repo = new PlayerRepository();
         Player saved = repo.loadPlayer();

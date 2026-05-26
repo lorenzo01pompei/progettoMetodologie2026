@@ -1,7 +1,16 @@
 package it.unicam.cs.mpgc.rpg125936.service.shop;
 
-import it.unicam.cs.mpgc.rpg125936.domain.location.Shop;
+import it.unicam.cs.mpgc.rpg125936.domain.item.Gun;
+import it.unicam.cs.mpgc.rpg125936.domain.item.Pickaxe;
+import it.unicam.cs.mpgc.rpg125936.domain.item.Spell;
+import it.unicam.cs.mpgc.rpg125936.domain.shop.Shop;
+import it.unicam.cs.mpgc.rpg125936.domain.shop.SpellOffer;
+import it.unicam.cs.mpgc.rpg125936.domain.shop.ToolOffer;
+import it.unicam.cs.mpgc.rpg125936.domain.shop.WeaponOffer;
 import it.unicam.cs.mpgc.rpg125936.domain.user.Player;
+import it.unicam.cs.mpgc.rpg125936.repository.GunRepository;
+import it.unicam.cs.mpgc.rpg125936.repository.PickaxeRepository;
+import it.unicam.cs.mpgc.rpg125936.repository.SpellRepository;
 
 import java.util.List;
 import java.util.Map;
@@ -17,9 +26,15 @@ import java.util.Map;
 public class ShopService {
 
     private final Shop shop;
+    private final GunRepository gunRepository;
+    private final SpellRepository spellRepository;
+    private final PickaxeRepository pickaxeRepository;
 
     public ShopService(Shop shop) {
         this.shop = shop;
+        this.gunRepository = new GunRepository();
+        this.spellRepository = new SpellRepository();
+        this.pickaxeRepository = new PickaxeRepository();
     }
 
     /**
@@ -65,37 +80,37 @@ public class ShopService {
      * @param weaponId id dell'arma da acquistare
      * @return {@link PurchaseDTO} con esito e messaggio descrittivo
      */
-    public PurchaseDTO buyWeapon(Player player, String weaponId) {
-        WeaponOffer offer = shop.findWeaponById(weaponId);
-        if (offer == null) {
-            return new PurchaseDTO(false, "Arma non trovata nel catalogo.");
+    public PurchaseDTO buyWeapon(Player player, long weaponId) {
+        Gun gun = gunRepository.findById(weaponId);
+        if (gun == null) {
+            return new PurchaseDTO(false, "Arma non trovata.");
         }
-        if (player.getMoney() < offer.getPrice()) {
-            return new PurchaseDTO(false, "Soldi insufficienti. Servono " + offer.getPrice() + " monete.");
+        if (player.getMoney() < gun.getPrice()) {
+            return new PurchaseDTO(false, "Soldi insufficienti. Servono " + gun.getPrice() + " monete.");
         }
-        player.addMoney(-offer.getPrice());
-        player.addItem(offer.createItem());
-        return new PurchaseDTO(true, "Hai acquistato " + offer.getName() + " per " + offer.getPrice() + " monete.");
+        player.addMoney(-gun.getPrice());
+        player.addItem(gun.copy());
+        return new PurchaseDTO(true, "Hai acquistato " + gun.getName() + " per " + gun.getPrice() + " monete.");
     }
 
     /**
-     * Acquista un'arma per il giocatore.
+     * Acquista un incantesimo per il giocatore.
      *
      * @param player  il giocatore acquirente
      * @param spellId id dell'incantesimo da acquistare
      * @return {@link PurchaseDTO} con esito e messaggio descrittivo
      */
-    public PurchaseDTO buySpell(Player player, String spellId) {
-        SpellOffer offer = shop.findSpellById(spellId);
-        if (offer == null) {
-            return new PurchaseDTO(false, "Incantesimo non trovato nel catalogo.");
+    public PurchaseDTO buySpell(Player player, long spellId) {
+        Spell spell = spellRepository.findById(spellId);
+        if (spell == null) {
+            return new PurchaseDTO(false, "Incantesimo non trovato.");
         }
-        if (player.getMoney() < offer.getPrice()) {
-            return new PurchaseDTO(false, "Soldi insufficienti. Servono " + offer.getPrice() + " monete.");
+        if (player.getMoney() < spell.getPrice()) {
+            return new PurchaseDTO(false, "Soldi insufficienti. Servono " + spell.getPrice() + " monete.");
         }
-        player.addMoney(-offer.getPrice());
-        player.addItem(offer.createSpell());
-        return new PurchaseDTO(true, "Hai acquistato " + offer.getName() + " per " + offer.getPrice() + " monete.");
+        player.addMoney(-spell.getPrice());
+        player.addItem(spell.copy());
+        return new PurchaseDTO(true, "Hai acquistato " + spell.getName() + " per " + spell.getPrice() + " monete.");
     }
 
 
@@ -107,17 +122,17 @@ public class ShopService {
      * @param toolId id dello strumento da acquistare
      * @return {@link PurchaseDTO} con esito e messaggio descrittivo
      */
-    public PurchaseDTO buyTool(Player player, String toolId) {
-        ToolOffer offer = shop.findToolById(toolId);
-        if (offer == null) {
-            return new PurchaseDTO(false, "Strumento non trovato nel catalogo.");
+    public PurchaseDTO buyTool(Player player, long toolId) {
+        Pickaxe pickaxe = pickaxeRepository.findById(toolId);
+        if (pickaxe == null) {
+            return new PurchaseDTO(false, "Strumento non trovato.");
         }
-        if (player.getMoney() < offer.getPrice()) {
-            return new PurchaseDTO(false, "Soldi insufficienti. Servono " + offer.getPrice() + " monete.");
+        if (player.getMoney() < pickaxe.getPrice()) {
+            return new PurchaseDTO(false, "Soldi insufficienti. Servono " + pickaxe.getPrice() + " monete.");
         }
-        player.addMoney(-offer.getPrice());
-        player.addItem(offer.createItem());
-        return new PurchaseDTO(true, "Hai acquistato " + offer.getName() + " per " + offer.getPrice() + " monete.");
+        player.addMoney(-pickaxe.getPrice());
+        player.addItem(pickaxe.copy());
+        return new PurchaseDTO(true, "Hai acquistato " + "Piccone" + " per " + pickaxe.getPrice() + " monete.");
     }
 
     /**

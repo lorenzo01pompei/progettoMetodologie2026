@@ -36,8 +36,15 @@ public class Pickaxe extends AbstractItem implements ToolItem {
         this.durability = durability;
     }
 
-    /**
-     * Decrementa la durabilità del piccone di 1 unità, a patto che non sia già a 0.
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    /**Decrementa la durabilità del piccone di 1 unità, a patto che non sia già a 0.
      */
     public void decreaseDurability(){
         if(durability!=0){
@@ -45,11 +52,8 @@ public class Pickaxe extends AbstractItem implements ToolItem {
         }
     }
 
-    /**
-     * Metodo per l'uso dell'oggetto nell'ambiente di gioco.
-     * Riceve la posizione corrente e determina se l'oggetto può essere utilizzato.
+    /**metodo che riceve la posizione corrente e determina se l'oggetto può essere utilizzato.
      *
-     * PARAMETRO location:
      * Passando l'istanza di GameLocation (l'ambiente in cui ci si trova), l'oggetto "Piccone"
      * il piccone verifica di trovarsi effettivamente in una Miniera. Se l'utente provasse ad usare
      * il piccone nella Lobby o in una ipotetica Foresta, l'interazione fallirebbe, restituendo false.

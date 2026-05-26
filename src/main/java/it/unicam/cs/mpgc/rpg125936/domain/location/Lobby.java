@@ -1,5 +1,6 @@
 package it.unicam.cs.mpgc.rpg125936.domain.location;
 
+import it.unicam.cs.mpgc.rpg125936.domain.shop.Shop;
 import it.unicam.cs.mpgc.rpg125936.domain.user.Player;
 
 public class Lobby implements GameLocation {

@@ -1,6 +1,7 @@
 package it.unicam.cs.mpgc.rpg125936.repository;
 
 import it.unicam.cs.mpgc.rpg125936.domain.item.Gun;
+import it.unicam.cs.mpgc.rpg125936.domain.item.Pickaxe;
 import it.unicam.cs.mpgc.rpg125936.domain.item.Spell;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -21,10 +22,15 @@ public class DatabaseSeeder {
 
         long spellCount = (long) session.createQuery("SELECT COUNT(s) FROM Spell s").getSingleResult();
         if (spellCount == 0) {
-            session.persist(new Spell("Scintilla", 15.0));
-            session.persist(new Spell("Palla di Fuoco", 35.0));
-            session.persist(new Spell("Fulmine", 50.0));
-            session.persist(new Spell("Meteora", 90.0));
+            session.persist(new Spell("Scintilla", 15.0, 10.0));
+            session.persist(new Spell("Palla di Fuoco", 35.0, 25.0));
+            session.persist(new Spell("Fulmine", 50.0, 40.0));
+            session.persist(new Spell("Meteora", 90.0, 80.0));
+        }
+
+        long pickaxeCount = (long) session.createQuery("SELECT COUNT(p) FROM Pickaxe p").getSingleResult();
+        if (pickaxeCount == 0) {
+            session.persist(new Pickaxe());
         }
 
         t.commit();

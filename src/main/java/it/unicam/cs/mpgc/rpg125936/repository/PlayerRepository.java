@@ -8,11 +8,20 @@ import java.util.List;
 
 public class PlayerRepository {
 
-    public void save(Player player) {
+    public Player save(Player player) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             Transaction t = session.beginTransaction();
-            session.merge(player);
+            if (player.getId() == null) {
+                Player existing = session.createQuery("FROM Player", Player.class)
+                    .setMaxResults(1)
+                    .uniqueResult();
+                if (existing != null) {
+                    player.setId(existing.getId());
+                }
+            }
+            player = session.merge(player);
             t.commit();
+            return player;
         }
     }
 

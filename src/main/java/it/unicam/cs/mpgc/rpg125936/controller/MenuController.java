@@ -2,7 +2,7 @@ package it.unicam.cs.mpgc.rpg125936.controller;
 
 import it.unicam.cs.mpgc.rpg125936.repository.HibernateUtil;
 import it.unicam.cs.mpgc.rpg125936.repository.PlayerRepository;
-import it.unicam.cs.mpgc.rpg125936.service.game.GameSetup;
+import it.unicam.cs.mpgc.rpg125936.service.game.GameSetupService;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -29,7 +29,7 @@ public class MenuController {
 
     /**si apre una sessione don il db e viene svuotato dai contenuti
        relativi ai salvataggi precedenti;
-       dopodiché viene fatto un reset generale su GameSetup
+       viene fatto un reset generale su GameSetupService
        invoca la game view per portare il player alla lobby
      */
     @FXML
@@ -41,18 +41,18 @@ public class MenuController {
             session.createMutationQuery("DELETE FROM Player").executeUpdate();
             t.commit();
         }
-        GameSetup.reset();
+        GameSetupService.reset();
         loadGameView();
     }
 
-    //carica i salvataggi da GameSetup e invoca la game view per portare il player alla lobby
+    ///carica i salvataggi da GameSetupService e invoca la game view per portare il player alla lobby
     @FXML
     private void handleContinue() {
-        GameSetup.loadFromSave();
+        GameSetupService.loadFromSave();
         loadGameView();
     }
 
-    //carica la lobby del gioco
+    ///carica la lobby del gioco
     private void loadGameView() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/main-view.fxml"));

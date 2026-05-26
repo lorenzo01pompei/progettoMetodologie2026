@@ -13,10 +13,13 @@ public class Spell extends AbstractItem implements FightItem {
     private String name;
     @Column(name= "damage")
     private double damage;
+    @Column(name= "price")
+    private double price;
 
-    public Spell(String name, double damage) {
+    public Spell(String name, double damage, double price) {
         this.name = name;
         this.damage = damage;
+        this.price = price;
     }
 
     public Spell(){}
@@ -35,6 +38,14 @@ public class Spell extends AbstractItem implements FightItem {
 
     public void setDamage(double damage) {
         this.damage = damage;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
     }
 
     @Override
@@ -57,6 +68,6 @@ public class Spell extends AbstractItem implements FightItem {
 
     @Override
     public Item copy() {
-        return new Spell(this.name, this.damage);
+        return new Spell(this.name, this.damage, this.price);
     }
 }

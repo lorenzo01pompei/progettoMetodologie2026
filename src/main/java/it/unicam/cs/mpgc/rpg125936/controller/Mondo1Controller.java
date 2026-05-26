@@ -4,7 +4,7 @@ import it.unicam.cs.mpgc.rpg125936.domain.location.Mondo1;
 import it.unicam.cs.mpgc.rpg125936.domain.item.FightItem;
 import it.unicam.cs.mpgc.rpg125936.domain.user.Enemy;
 import it.unicam.cs.mpgc.rpg125936.domain.user.Player;
-import it.unicam.cs.mpgc.rpg125936.service.game.GameSetup;
+import it.unicam.cs.mpgc.rpg125936.service.game.GameSetupService;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -29,13 +29,13 @@ public class Mondo1Controller {
 
 
     /**inizializza il mondo:
-      carica lo status del player
-      carica i nemici con relativo status
+      carica lo status di salute del player
+      carica i nemici con relativo status di salute
       configura i bottoni per combattere i relativi nemici ancora imbattuti
      */
     @FXML
     public void initialize() {
-        GameSetup gameSetup = GameSetup.getInstance();
+        GameSetupService gameSetup = GameSetupService.getInstance();
         player = gameSetup.getPlayer();
         mondo1 = (Mondo1) gameSetup.getWorlds().get(0);
 
@@ -93,13 +93,13 @@ public class Mondo1Controller {
         }
     }
 
-    //gestisce gli scavi nella miniera; non ancora implementato
+    ///gestisce gli scavi nella miniera; non ancora implementato
     @FXML
     private void handleMine() {
         // logica della miniera
     }
 
-    //gestisce il ritorno alla lobby caricando mainView
+    ///gestisce il ritorno alla lobby caricando mainView
     @FXML
     private void handleBack() {
         try {

@@ -5,7 +5,7 @@ import it.unicam.cs.mpgc.rpg125936.domain.location.Mondo;
 import it.unicam.cs.mpgc.rpg125936.domain.item.FightItem;
 import it.unicam.cs.mpgc.rpg125936.domain.item.Item;
 import it.unicam.cs.mpgc.rpg125936.domain.user.Player;
-import it.unicam.cs.mpgc.rpg125936.service.game.GameSetup;
+import it.unicam.cs.mpgc.rpg125936.service.game.GameSetupService;
 import it.unicam.cs.mpgc.rpg125936.service.shop.ShopService;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -30,7 +30,7 @@ public class MainController {
     @FXML private Button mondo3Btn;
     @FXML private ShopController shopController;
 
-    private GameSetup gameSetup;
+    private GameSetupService gameSetup;
     private Player player;
     private Lobby lobby;
     private ShopService shopService;
@@ -43,7 +43,7 @@ public class MainController {
      */
     @FXML
     public void initialize() {
-        gameSetup = GameSetup.getInstance();
+        gameSetup = GameSetupService.getInstance();
         player = gameSetup.getPlayer();
         lobby = gameSetup.getLobby();
         shopService = new ShopService(lobby.getShop());
@@ -58,7 +58,7 @@ public class MainController {
         updateWorldButtons();
     }
 
-    //gestisce le richiesta di trasferimento al mondo1 caricando mondo1View
+    ///gestisce le richiesta di trasferimento al mondo1 caricando mondo1View
     @FXML
     private void handleMondo1() {
         try {
@@ -71,19 +71,19 @@ public class MainController {
         }
     }
 
-    //gestisce le richiesta di trasferimento al mondo2; non ancora implementato
+    ///gestisce le richiesta di trasferimento al mondo2; non ancora implementato
     @FXML
     private void handleMondo2() {
         feedbackLabel.setText("Mondo 2 bloccato.");
     }
 
-    //gestisce le richiesta di trasferimento al mondo3; non ancora implementato
+    ///gestisce le richiesta di trasferimento al mondo3; non ancora implementato
     @FXML
     private void handleMondo3() {
         feedbackLabel.setText("Mondo 3 bloccato.");
     }
 
-    //carica l'inventario del player in una label che viene inserita nell'inventoryPanel
+    ///carica l'inventario del player in una label che viene inserita nell'inventoryPanel
     private void loadInventory() {
         inventoryPanel.getChildren().clear();
         for (Item item : player.getInventory()) {
@@ -101,7 +101,7 @@ public class MainController {
         }
     }
 
-    //aggiorna lo status del player
+    ///aggiorna lo status di salute del player
     private void updateProfile() {
         playerNameLabel.setText(player.getName());
         healthLabel.setText("HP: " + player.getHealthStatus().getHealth());
@@ -109,7 +109,7 @@ public class MainController {
         moneyLabel.setText("Monete: " + (int) player.getMoney());
     }
 
-    //aggiorna il funzionamento dei bottoni relativi ai mondi controllando se sono sbloccati o meno
+    ///aggiorna il funzionamento dei bottoni relativi ai mondi controllando se sono sbloccati o meno
     private void updateWorldButtons() {
         for (int i = 0; i < worlds.size(); i++) {
             Button btn = switch (i) {

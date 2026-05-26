@@ -3,7 +3,7 @@ package it.unicam.cs.mpgc.rpg125936.core;
 import it.unicam.cs.mpgc.rpg125936.domain.user.Player;
 import it.unicam.cs.mpgc.rpg125936.repository.DatabaseSeeder;
 import it.unicam.cs.mpgc.rpg125936.repository.PlayerRepository;
-import it.unicam.cs.mpgc.rpg125936.service.game.GameSetup;
+import it.unicam.cs.mpgc.rpg125936.service.game.GameSetupService;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -23,7 +23,7 @@ public class App extends Application {
    @Override
    public void stop(){
         PlayerRepository playerRepository = new PlayerRepository();
-        Player player = GameSetup.getInstance().getPlayer();
+        Player player = GameSetupService.getInstance().getPlayer();
         if(player!=null){
             playerRepository.save(player);
         }

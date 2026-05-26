@@ -7,7 +7,6 @@ import it.unicam.cs.mpgc.rpg125936.domain.user.Player;
 import it.unicam.cs.mpgc.rpg125936.repository.EnemyRepository;
 import it.unicam.cs.mpgc.rpg125936.repository.PlayerRepository;
 import it.unicam.cs.mpgc.rpg125936.service.fight.FightService;
-import it.unicam.cs.mpgc.rpg125936.service.fight.LootService;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -33,7 +32,6 @@ public class FightController {
     @FXML private Label giveUpLabel;
 
     private FightService fightService;
-    private LootService lootService;
     private EnemyRepository enemyRepository;
     private PlayerRepository playerRepository;
     private Player player;
@@ -51,7 +49,6 @@ public class FightController {
         this.player = player;
         this.enemy = enemy;
         this.fightService = new FightService();
-        this.lootService = new LootService();
         this.playerRepository = new PlayerRepository();
         this.enemyRepository = new EnemyRepository();
 
@@ -119,10 +116,6 @@ public class FightController {
      * @param weaponIndex: indice relativo all'arma scelta per l'attacco
      */
     private void attack(int weaponIndex) {
-        if (fightService.getBattlePlayer().getHealthStatus().getHealth() <= 0 || fightService.getBattleEnemy().getHealthStatus().getHealth() <= 0) {
-            feedbackLabel.setText("Il combattimento \u00E8 gi\u00E0 finito.");
-            return;
-        }
 
         String roundLog = fightService.playRound(weaponIndex);
 
@@ -151,23 +144,32 @@ public class FightController {
             feedbackLabel.setText(roundLog);
         }
 
-        playerRepository.save(player);
+        player = playerRepository.save(player);
         enemyRepository.save(enemy);
 
     }
 
+    /**gestisce la vittoria del player
+     * imposta il nemico come sconfitto
+     * recupera l'inventario del nemico e ne trasferisce una copia nell'inventario dell'utente
+     */
     private void handleVictory() {
-        Enemy originalEnemy = fightService.getBattleEnemy();
-        originalEnemy.setDefeated(true);
-        enemyRepository.save(originalEnemy);
-        List<FightItem> loot = lootService.getDroppableItems(originalEnemy);
-        for (FightItem item : loot) {
-            lootService.collectItem(player, item);
-            feedbackLabel.setText(feedbackLabel.getText() + "\nHai raccolto: " + item.getName());
+        Enemy enemy = fightService.getBattleEnemy();
+        enemy.setDefeated(true);
+        enemyRepository.save(enemy);
+        for (Item item : enemy.getInventory()) {
+            if (item instanceof FightItem fi) {
+                player.addItem(fi.copy());
+                feedbackLabel.setText(feedbackLabel.getText() + "\nHai raccolto: " + fi.getName());
+            }
         }
-        playerRepository.save(player);
+        player = playerRepository.save(player);
     }
 
+    /**gestisce il ritorno alla schermata precedente;
+     * se il player non ha vite, viene mostrata la mainView, altrimenti
+     * viene mostrata mondo1View
+     */
     @FXML
     private void goBack() {
         String view;
@@ -186,11 +188,15 @@ public class FightController {
         }
     }
 
+    /**gestisce la resa del player:
+     * viene tolta una vita al player
+     * viene mostrata mondo1View
+     */
     @FXML
     private void giveUp(){
         String view = "/view/mondo1-view.fxml";
         player.decreaseLives();
-        playerRepository.save(player);
+        player = playerRepository.save(player);
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(view));
             Scene scene = new Scene(loader.load(), 1024, 768);
