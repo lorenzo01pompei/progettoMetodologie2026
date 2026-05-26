@@ -30,7 +30,10 @@
         </TitledPane>
         <TitledPane text="VITE" expanded="false">
             <content>
-                <VBox fx:id="lifeList" spacing="8" style="-fx-padding: 10;" />
+                <VBox spacing="8" style=" -fx-padding: 10;">
+                    <VBox fx:id="lifeList" spacing="8" style="-fx-padding: 10;" />
+                    <VBox fx:id="hpRefill" spacing="8" style="-fx-padding: 10;" />
+                </VBox>
             </content>
         </TitledPane>
     </VBox>

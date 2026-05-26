@@ -4,6 +4,7 @@ import it.unicam.cs.mpgc.rpg125936.domain.item.AbstractItem;
 import it.unicam.cs.mpgc.rpg125936.domain.item.Item;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Embeddable;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 
@@ -13,7 +14,7 @@ import java.util.List;
 @Embeddable
 public class Inventory {
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, targetEntity = AbstractItem.class)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, targetEntity = AbstractItem.class, fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private List<Item> items;
 

@@ -27,6 +27,12 @@ public class Mondo1Controller {
     private Mondo1 mondo1;
     private Player player;
 
+
+    /**inizializza il mondo:
+      carica lo status del player
+      carica i nemici con relativo status
+      configura i bottoni per combattere i relativi nemici ancora imbattuti
+     */
     @FXML
     public void initialize() {
         GameSetup gameSetup = GameSetup.getInstance();
@@ -34,17 +40,24 @@ public class Mondo1Controller {
         mondo1 = (Mondo1) gameSetup.getWorlds().get(0);
 
         titleLabel.setText("Mondo 1");
-        playerHpLabel.setText("HP: " + (int) player.getHealth());
+        playerHpLabel.setText("HP: " + player.getHealthStatus().getHealth());
         playerLivesLabel.setText("Vite: " + player.getLives());
 
         for (Enemy enemy : mondo1.getEnemies()) {
             String className = enemy.getClass().getSimpleName();
-            Label info = new Label(className + " - " + enemy.getName() + " (HP: " + (int) enemy.getHealth() + ")");
+            Label info = new Label(className + " - " + enemy.getName() + " (HP: " + enemy.getHealthStatus().getHealth() + ")");
             info.setStyle("-fx-font-size: 15; -fx-font-weight: bold;");
 
             Button fightBtn = new Button("Combatti");
             fightBtn.setStyle("-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-font-size: 14; -fx-padding: 8 20;");
-            fightBtn.setOnAction(e -> handleFight(enemy));
+
+            if (enemy.isDefeated()) {
+                fightBtn.setDisable(true);
+                fightBtn.setText("Sconfitto");
+                fightBtn.setStyle("-fx-background-color: #7f8c8d; -fx-text-fill: white; -fx-font-size: 14; -fx-padding: 8 20;");
+            } else {
+                fightBtn.setOnAction(e -> handleFight(enemy));
+            }
 
             HBox row = new HBox(15, info, fightBtn);
             row.setStyle("-fx-border-color: #ccc; -fx-border-width: 0 0 1 0; -fx-padding: 12 0;");
@@ -52,6 +65,10 @@ public class Mondo1Controller {
         }
     }
 
+    /**gestisce l'ingaggio del combattimento
+      carica la schermata di fightView
+      delega il combattimento al metodo startFight
+     */
     private void handleFight(Enemy enemy) {
         boolean hasWeapon = false;
         for (var item : player.getInventory()) {
@@ -76,11 +93,13 @@ public class Mondo1Controller {
         }
     }
 
+    //gestisce gli scavi nella miniera; non ancora implementato
     @FXML
     private void handleMine() {
-        // logica miniera
+        // logica della miniera
     }
 
+    //gestisce il ritorno alla lobby caricando mainView
     @FXML
     private void handleBack() {
         try {

@@ -43,19 +43,11 @@ public class User {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public double getHealth() {
-        return healthStatus.getHealth();
-    }
-
     public Health getHealthStatus() {
         return healthStatus;
     }
 
-    public void setHealth(double health) {
+    public void setHealth(int health) {
         healthStatus.setHealth(health);
     }
 
@@ -113,7 +105,7 @@ public class User {
         return materialStorage.removeMaterials(materialName, quantity);
     }
 
-    public void decreaseHealth(double danno){
+    public void decreaseHealth(int danno){
         this.healthStatus.decreaseHealth(danno);
     }
 

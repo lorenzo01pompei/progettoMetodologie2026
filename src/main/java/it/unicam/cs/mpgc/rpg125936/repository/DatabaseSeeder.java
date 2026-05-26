@@ -9,7 +9,7 @@ public class DatabaseSeeder {
 
     public static void seed() {
         Session session = HibernateUtil.getSessionFactory().openSession();
-        Transaction tx = session.beginTransaction();
+        Transaction t = session.beginTransaction();
 
         long gunCount = (long) session.createQuery("SELECT COUNT(g) FROM Gun g").getSingleResult();
         if (gunCount == 0) {
@@ -27,7 +27,7 @@ public class DatabaseSeeder {
             session.persist(new Spell("Meteora", 90.0));
         }
 
-        tx.commit();
+        t.commit();
         session.close();
     }
 }

@@ -54,7 +54,7 @@ public class Gun extends AbstractItem implements FightItem {
     }
 
     public String useInFight(User target, String attackerName){
-        target.decreaseHealth(this.getDamage());
+        target.decreaseHealth((int) this.getDamage());
         return attackerName + " attacca con " + this.getName() + " infliggendo " + this.getDamage() + " danni!";
     }
 

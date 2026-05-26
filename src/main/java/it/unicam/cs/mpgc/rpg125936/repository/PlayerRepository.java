@@ -6,7 +6,7 @@ import org.hibernate.Transaction;
 
 import java.util.List;
 
-public class UserRepository {
+public class PlayerRepository {
 
     public void save(Player player) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
@@ -19,8 +19,20 @@ public class UserRepository {
     public Player loadPlayer() {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             List<Player> players = session.createQuery("FROM Player", Player.class).list();
-            return players.isEmpty() ? null : players.get(0);
+            if (players.isEmpty()){
+                return null;
+            }else{
+                return players.get(0);
+            }
+
         }
     }
-    
+
+    public boolean hasSavedGame() {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            Long count = session.createQuery("SELECT COUNT(p) FROM Player p", Long.class).getSingleResult();
+            return count > 0;
+        }
+    }
+
 }

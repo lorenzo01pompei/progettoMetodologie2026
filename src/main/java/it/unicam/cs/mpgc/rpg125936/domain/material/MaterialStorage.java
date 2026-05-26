@@ -10,7 +10,7 @@ import java.util.Map;
 @Embeddable
 public class MaterialStorage {
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, targetEntity = Material.class)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, targetEntity = Material.class, fetch = FetchType.EAGER)
     @JoinColumn(name = "material_player_id")
     private List<Material> materials;
 

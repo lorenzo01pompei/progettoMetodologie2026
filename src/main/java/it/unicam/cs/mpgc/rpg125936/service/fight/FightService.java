@@ -10,18 +10,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-/**
- * Classe che gestisce il combattimento.
- * Utilizza il pattern Prototype (tramite clonazione) per creare istanze isolate
- * di Player ed Enemy ad ogni scontro, mantenendo le statistiche originali
- * recuperabili dopo il combattimento.
- */
+///classe che gestisce il combattimento.
 public class FightService {
 
     private Random random;
 
-    private Player originalPlayer;
-    private Enemy originalEnemy;
 
     private Player battlePlayer;
     private Enemy battleEnemy;
@@ -32,15 +25,12 @@ public class FightService {
         this.random = new Random();
     }
 
-    /**
-     * Inizia una nuova sessione di combattimento
+    /**inizia una nuova sessione di combattimento
      *
-     * @param player l'istanza del giocatore originale che sta per combattere.
-     * @param enemy  l'istanza del nemico originale da affrontare.
+     * @param player l'istanza del giocatore che sta per combattere.
+     * @param enemy  l'istanza del nemico da affrontare.
      */
     public void startFight(Player player, Enemy enemy) {
-        this.originalPlayer = player;
-        this.originalEnemy = enemy;
 
         this.battlePlayer = player;
         this.battleEnemy = enemy;
@@ -48,14 +38,13 @@ public class FightService {
         this.active = true;
     }
 
-    /**
-     * Avvia un round di combattimento con l'arma scelta tra quelle nell'inventario.
+    /**avvia un round di combattimento con l'arma scelta tra quelle nell'inventario.
      *
      * @param inventoryIndex l'indice dell'arma nell'inventario del player da usare in questo turno.
      * @return una stringa con il log del round, oppure null se il combattimento è terminato.
      */
     public String playRound(int inventoryIndex) {
-        if (!active || battlePlayer.getHealth() <= 0 || battleEnemy.getHealth() <= 0) {
+        if (!active || battlePlayer.getHealthStatus().getHealth() <= 0 || battleEnemy.getHealthStatus().getHealth() <= 0) {
             endFight();
             return null;
         }
@@ -77,7 +66,7 @@ public class FightService {
             log.append(msg);
         }
 
-        if (battleEnemy.getHealth() <= 0) {
+        if (battleEnemy.getHealthStatus().getHealth() <= 0) {
             endFight();
             return null;
         }
@@ -93,7 +82,7 @@ public class FightService {
             }
         }
 
-        if (battlePlayer.getHealth() <= 0) {
+        if (battlePlayer.getHealthStatus().getHealth() <= 0) {
             endFight();
             return null;
         }
@@ -110,18 +99,27 @@ public class FightService {
     private void endFight() {
         this.active = false;
 
-        if (battlePlayer.getHealth() <= 0) {
-            int remaining = originalPlayer.getLives() - 1;
-            originalPlayer.setLives(remaining);
-            if (remaining > 0) {
-                originalPlayer.setHealth(100);
+
+        if (battlePlayer.getHealthStatus().getHealth() <= 0) {
+            int remainingLife=battlePlayer.getLives()-1;
+            battlePlayer.setLives(remainingLife);
+            if (remainingLife > 0) {
+                battlePlayer.setHealth(100);
             } else {
-                originalPlayer.setHealth(0);
+                battlePlayer.setHealth(0);
             }
-        } else {
-            originalPlayer.setHealth((int) battlePlayer.getHealth());
-            originalPlayer.setLives(battlePlayer.getLives());
         }
+
+        if(battlePlayer.getHealthStatus().getLives()==0){
+            battlePlayer.setHealth(0);
+        }
+
+        if (battleEnemy.getHealthStatus().getHealth() <= 0) {
+            battleEnemy.setHealth(0);
+        }
+
+
+
     }
 
     /**
@@ -169,9 +167,9 @@ public class FightService {
      * Utile per accedere al loot (inventario) dopo la sconfitta.
      *
      * @return il nemico originale (non clonato)
-     */
+
     public Enemy getOriginalEnemy() {
         return originalEnemy;
     }
-
+*/
 }

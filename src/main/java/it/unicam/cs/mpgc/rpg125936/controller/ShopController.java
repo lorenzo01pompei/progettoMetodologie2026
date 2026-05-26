@@ -1,6 +1,5 @@
 package it.unicam.cs.mpgc.rpg125936.controller;
 
-import it.unicam.cs.mpgc.rpg125936.domain.health.Health;
 import it.unicam.cs.mpgc.rpg125936.domain.user.Player;
 import it.unicam.cs.mpgc.rpg125936.service.shop.*;
 import javafx.fxml.FXML;
@@ -16,6 +15,7 @@ public class ShopController {
     @FXML private VBox toolList;
     @FXML private VBox spellList;
     @FXML private VBox lifeList;
+    @FXML private VBox hpRefill;
 
     private Player player;
     private ShopService shopService;
@@ -36,12 +36,10 @@ public class ShopController {
         loadShop();
     }
 
-    /**
-     Usato per caricare il contenuto dello shop all'interno della lobbby
-     e consentire l'acquisto di oggetti al suo interno tramite bottoni
+    /**carica le armi nello shop ne consente l'acquisto tramite bottoni
      che delegano il lavoro agli appositi metodi
      */
-    private void loadShop() {
+    private void loadWeapons() {
         weaponList.getChildren().clear();
         for (WeaponOffer offer : shopService.getWeaponCatalog()) {
             Label info = new Label(offer.getName() + "  \u2022  Danno: " + offer.getDamage());
@@ -55,7 +53,12 @@ public class ShopController {
             row.setStyle("-fx-border-color: #e0d5b0; -fx-border-width: 0 0 1 0; -fx-padding: 8 0;");
             weaponList.getChildren().add(row);
         }
+    }
 
+    /**carica gli attrezzi nello shop e ne consente l'acquisto tramite bottoni
+     che delegano il lavoro agli appositi metodi
+     */
+    private void loadTools() {
         toolList.getChildren().clear();
         for (ToolOffer offer : shopService.getToolCatalog()) {
             Label info = new Label(offer.getName() + "  \u2022  Usi: " + offer.getMaxUses());
@@ -69,7 +72,12 @@ public class ShopController {
             row.setStyle("-fx-border-color: #e0d5b0; -fx-border-width: 0 0 1 0; -fx-padding: 8 0;");
             toolList.getChildren().add(row);
         }
+    }
 
+    /**carica gli incantesimi nello shop e ne consente l'acquisto tramite bottoni
+     che delegano il lavoro agli appositi metodi
+     */
+    private void loadSpells() {
         spellList.getChildren().clear();
         for (SpellOffer offer : shopService.getSpellCatalog()) {
             Label info = new Label(offer.getName() + "  \u2022  Danno: " + offer.getDamage());
@@ -83,7 +91,12 @@ public class ShopController {
             row.setStyle("-fx-border-color: #e0d5b0; -fx-border-width: 0 0 1 0; -fx-padding: 8 0;");
             spellList.getChildren().add(row);
         }
+    }
 
+    /**carica una vita nello shop e ne consente l'acquisto tramite bottone
+     che delega il lavoro all'apposito metodo
+     */
+    private void loadLife(){
         lifeList.getChildren().clear();
         int lifePrice = player.getHealthStatus().getLivesPrice();
         Button buyLifeBtn = new Button("Compra una vita (" + lifePrice + " monete)");
@@ -92,8 +105,28 @@ public class ShopController {
         lifeList.getChildren().add(buyLifeBtn);
     }
 
-    /**
-     * usato per comprare un arma dallo shop ed aggiungerla nell'inventario
+    /**consente il ripristino della salute tramite bottone
+     che delega il lavoro all'apposito metodo
+     */
+    private void loadHp(){
+        hpRefill.getChildren().clear();
+        int hpPrice = player.getHealthStatus().getHpPrice();
+        Button buyHpBtn = new Button("Rigenera salute (" + hpPrice + " monete)");
+        buyHpBtn.setStyle("-fx-background-color: #e67e22; -fx-text-fill: white; -fx-font-size: 13;");
+        buyHpBtn.setOnAction(e -> buyHp());
+        hpRefill.getChildren().add(buyHpBtn);
+    }
+
+    ///delega il caricamento del contenuto dello shop all'interno della lobbby
+    private void loadShop() {
+        loadWeapons();
+        loadTools();
+        loadSpells();
+        loadLife();
+        loadHp();
+    }
+
+    /**usato per comprare un arma dallo shop ed aggiungerla nell'inventario
      * @param offer: arma che si vuole comprare
      */
     private void buyWeapon(WeaponOffer offer) {
@@ -102,9 +135,8 @@ public class ShopController {
         if (onPurchase != null) onPurchase.run();
     }
 
-    /**
-     * usato per comprare un incantesimo dallo shop ed aggiungerlo nell'inventario
-     * @param offer: arma che si vuole comprare
+    /**usato per comprare un incantesimo dallo shop ed aggiungerlo nell'inventario
+     * @param offer: incantesimo che si vuole comprare
      */
     private void buySpell(SpellOffer offer) {
         PurchaseDTO result = shopService.buySpell(player, offer.getId());
@@ -112,8 +144,18 @@ public class ShopController {
         if (onPurchase != null) onPurchase.run();
     }
 
-    /**
-     * usato per comprare una vita dallo shop
+
+    /**usato per comprare un attrezzo dallo shop ed aggiungerlo nell'inventario
+     * @param offer: attrezzo che si vuole comprare
+     */
+    private void buyTool(ToolOffer offer) {
+        PurchaseDTO result = shopService.buyTool(player, offer.getId());
+        if (onFeedback != null) onFeedback.accept(result.getMessage());
+        if (onPurchase != null) onPurchase.run();
+    }
+
+
+    /**usato per comprare una vita dallo shop
      */
     private void buyLives() {
         PurchaseDTO result = shopService.buyLives(player);
@@ -122,12 +164,10 @@ public class ShopController {
     }
 
 
-    /**
-     * usato per comprare un attrezzo dallo shop ed aggiungerlo nell'inventario
-     * @param offer: attrezzo che si vuole comprare
+    /**usato per rigenerare la vita del player
      */
-    private void buyTool(ToolOffer offer) {
-        PurchaseDTO result = shopService.buyTool(player, offer.getId());
+    private void buyHp() {
+        PurchaseDTO result = shopService.refillLife(player);
         if (onFeedback != null) onFeedback.accept(result.getMessage());
         if (onPurchase != null) onPurchase.run();
     }

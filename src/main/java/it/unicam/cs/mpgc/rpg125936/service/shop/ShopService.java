@@ -138,8 +138,25 @@ public class ShopService {
         }else{
             return new PurchaseDTO(false, "Non puoi comprare vite, ne hai già il massimo numero.");
         }
+    }
 
-
+    /**Rigenera la vita del player.
+     *
+     * @param player  il giocatore acquirente
+     * @return @PurchaseDTO con esito e messaggio descrittivo
+     */
+    public PurchaseDTO refillLife(Player player) {
+        int price = player.getHealthStatus().getHpPrice();
+        if (player.getMoney() < price) {
+            return new PurchaseDTO(false, "Soldi insufficienti. Servono " + price + " monete.");
+        }
+        if(price>0){
+            player.addMoney(-price);
+            player.setHealth(player.getHealthStatus().getInitialHealth());
+            return new PurchaseDTO(true, "Hai ripristinato la salute per " + price + " monete.");
+        }else{
+            return new PurchaseDTO(false, "Non puoi aggiungere salute, sei già al massimo.");
+        }
     }
 
     /**

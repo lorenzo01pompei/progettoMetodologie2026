@@ -36,6 +36,11 @@ public class MainController {
     private ShopService shopService;
     private List<Mondo> worlds;
 
+    /**inizializza il gioco caricando:
+        gameSetup, player, lobby, shopService, worlds
+        Carica il contenuto dello shop, l'inventario e lo status del player
+        Adegua il comportamento dei bottoni nella mainView
+     */
     @FXML
     public void initialize() {
         gameSetup = GameSetup.getInstance();
@@ -53,13 +58,7 @@ public class MainController {
         updateWorldButtons();
     }
 
-
-    @FXML
-    private void handleLobby() {
-        // già nella lobby, ricarica
-        feedbackLabel.setText("Sei già nella Lobby.");
-    }
-
+    //gestisce le richiesta di trasferimento al mondo1 caricando mondo1View
     @FXML
     private void handleMondo1() {
         try {
@@ -72,16 +71,19 @@ public class MainController {
         }
     }
 
+    //gestisce le richiesta di trasferimento al mondo2; non ancora implementato
     @FXML
     private void handleMondo2() {
         feedbackLabel.setText("Mondo 2 bloccato.");
     }
 
+    //gestisce le richiesta di trasferimento al mondo3; non ancora implementato
     @FXML
     private void handleMondo3() {
         feedbackLabel.setText("Mondo 3 bloccato.");
     }
 
+    //carica l'inventario del player in una label che viene inserita nell'inventoryPanel
     private void loadInventory() {
         inventoryPanel.getChildren().clear();
         for (Item item : player.getInventory()) {
@@ -99,13 +101,15 @@ public class MainController {
         }
     }
 
+    //aggiorna lo status del player
     private void updateProfile() {
         playerNameLabel.setText(player.getName());
-        healthLabel.setText("HP: " + (int) player.getHealth());
+        healthLabel.setText("HP: " + player.getHealthStatus().getHealth());
         livesLabel.setText("Vite: " + player.getLives());
         moneyLabel.setText("Monete: " + (int) player.getMoney());
     }
 
+    //aggiorna il funzionamento dei bottoni relativi ai mondi controllando se sono sbloccati o meno
     private void updateWorldButtons() {
         for (int i = 0; i < worlds.size(); i++) {
             Button btn = switch (i) {

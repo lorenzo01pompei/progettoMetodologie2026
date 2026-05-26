@@ -7,13 +7,13 @@ import jakarta.persistence.Embeddable;
 public class Health {
 
     @Column(name = "current_health")
-    private double health;
+    private int health;
     @Column(name = "lives")
     private int lives;
     @Column(name = "initial_health", updatable =false)
-    private double initialHealth;
+    private int initialHealth;
 
-    public Health(double health, int lives){
+    public Health(int health, int lives){
         this.health = health;
         this.lives = lives;
         this.initialHealth = health;
@@ -21,11 +21,14 @@ public class Health {
 
     public Health(){}
 
-    public double getHealth() {
+    public int getInitialHealth() {
+        return initialHealth;
+    }
+    public int getHealth() {
         return health;
     }
 
-    public void setHealth(double health) {
+    public void setHealth(int health) {
         this.health = health;
     }
 
@@ -37,11 +40,14 @@ public class Health {
         this.lives = lives;
     }
 
+    public int getHpPrice() {
+        return 1*(this.getInitialHealth()-this.getHealth());
+    }
     public int getLivesPrice() {
         return 40;
     }
 
-    public void decreaseHealth(double damage){
+    public void decreaseHealth(int damage){
         this.health -= damage;
     }
 
