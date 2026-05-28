@@ -9,12 +9,11 @@ public class Mondo2 extends Mondo {
 
     public Mondo2(boolean isUnlocked) {
         super("Mondo 2", isUnlocked);
+        this.miniera = new Miniera("Miniera del Mondo 2", 12.0, 5.0, 2.0);
     }
 
     @Override
     protected void createDefaultEnemies() {
-        this.miniera = new Miniera("Miniera del Mondo 2", 12.0, 5.0, 2.0);
-
         Enemy nemico1 = new Mago("Mago di Fuoco");
         Enemy nemico2 = new Colosso("Golem di Magma");
         Enemy boss = new Boss("Signore del Vulcano");

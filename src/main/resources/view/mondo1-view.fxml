@@ -33,6 +33,7 @@
             <Button fx:id="backBtn" onAction="#handleBack" style="-fx-background-color: #7f8c8d; -fx-text-fill: white; -fx-font-size: 14; -fx-padding: 10 25;" text="Torna alla Lobby" />
             <Region HBox.hgrow="ALWAYS" />
             <Button fx:id="mineBtn" onAction="#handleMine" style="-fx-background-color: #8e44ad; -fx-text-fill: white; -fx-font-size: 14; -fx-padding: 10 25;" text="Scava" />
+            <Label fx:id="materialLabel" style="-fx-text-fill: #e74c3c; -fx-font-size: 14;" text="" />
         </HBox>
     </bottom>
 

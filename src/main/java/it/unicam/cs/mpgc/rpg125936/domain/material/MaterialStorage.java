@@ -3,7 +3,6 @@ package it.unicam.cs.mpgc.rpg125936.domain.material;
 import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -53,19 +52,14 @@ public class MaterialStorage {
     }
 
     public boolean removeMaterials(String materialName, int quantity) {
-        // Controlliamo prima se ne abbiamo abbastanza
         if (countMaterial(materialName) < quantity) {
             return false;
         }
 
         int removed = 0;
-        // Usiamo un Iterator per rimuovere gli oggetti in sicurezza dalla lista
-        Iterator<Material> iterator = materials.iterator();
-
-        while (iterator.hasNext() && removed < quantity) {
-            Material m = iterator.next();
-            if (m.getName().equals(materialName)) {
-                iterator.remove();
+        for (int i = materials.size() - 1; i >= 0 && removed < quantity; i--) {
+            if (materials.get(i).getName().equals(materialName)) {
+                materials.remove(i);
                 removed++;
             }
         }

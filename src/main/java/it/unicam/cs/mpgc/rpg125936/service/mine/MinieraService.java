@@ -8,8 +8,7 @@ import it.unicam.cs.mpgc.rpg125936.domain.user.Player;
 
 import java.util.Random;
 
-/**
- * classe di servizio che gestisce l'azione di scavo nella Miniera.
+/**classe di servizio che gestisce l'azione di scavo nella Miniera.
  * Restituisce oggetti @MiningResultDTOcon l'esito dell'operazione.
  */
 public class MinieraService {
@@ -17,8 +16,7 @@ public class MinieraService {
     private final Random random;
     private final Miniera miniera;
 
-    /**
-     * Crea un servizio associato a una specifica miniera.
+    /**crea un servizio associato a una specifica miniera.
      * @param miniera la miniera in cui si svolge l'azione di scavo
      */
     public MinieraService(Miniera miniera) {
@@ -26,8 +24,7 @@ public class MinieraService {
         this.miniera = miniera;
     }
 
-    /**
-     * Esegue un'azione di scavo: cerca un piccone nell'inventario del giocatore,
+    /**esegue un'azione di scavo: cerca un piccone nell'inventario del giocatore,
      * lo consuma di un'unità di durabilità e cerca di ottenere un materiale.
      *
      * @param player il giocatore che esegue lo scavo
@@ -40,23 +37,22 @@ public class MinieraService {
             return new MiningResultDTO(false, "Non hai un piccone utilizzabile! Torna alla Lobby per comprarne uno.", null, 0);
         }
 
-        tool.decreaseDurability();
-        Material found = rollMaterial();
-        if (found != null) {
-            player.addMaterial(found);
-            return new MiningResultDTO(true, "Hai trovato " + found.getName(), found, tool.getDurability());
-        }
-
-        return new MiningResultDTO(true, "Nulla di fatto, solo sassi...", null, tool.getDurability());
+        if(tool.interact(miniera)){
+            Material found = rollMaterial();
+            if (found != null) {
+                player.addMaterial(found);
+                return new MiningResultDTO(true, "Hai trovato " + found.getName() + "\nUtilizzi piccone rimasti: "+tool.getDurability(), found, tool.getDurability());
+            }
+        };
+        return new MiningResultDTO(true, "Nulla di fatto, solo sassi...\nUtilizzi piccone rimasti: "+tool.getDurability(), null, tool.getDurability());
     }
 
-    /**
-     * Cerca un piccone con durabilità residua nell'inventario del giocatore.
+    /**cerca un piccone con durabilità residua nell'inventario del giocatore.
      *
      * @param player il giocatore
      * @return il primo piccone utilizzabile trovato, oppure null se non c'è
      */
-    private Pickaxe findPickaxe(Player player) {
+    public Pickaxe findPickaxe(Player player) {
         for (Item item : player.getInventory()) {
             if (item instanceof Pickaxe p && p.getDurability() > 0) {
                 return p;
@@ -65,12 +61,11 @@ public class MinieraService {
         return null;
     }
 
-    /**
-     * Determina tramite probabilità cumulative quale materiale viene estratto.
+    /**determina tramite probabilità cumulative quale materiale viene estratto.
      *
      * @return il materiale trovato, oppure null se lo scavo non ha prodotto nulla
      */
-    private Material rollMaterial() {
+    public Material rollMaterial() {
         double chance = random.nextDouble() * 100;
         if (chance < miniera.getGoldProb()) {
             return new Material("Lingotto d'Oro", 10.0);

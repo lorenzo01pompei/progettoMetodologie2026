@@ -1,7 +1,6 @@
 package it.unicam.cs.mpgc.rpg125936.domain.location;
 
 import it.unicam.cs.mpgc.rpg125936.domain.user.Enemy;
-import it.unicam.cs.mpgc.rpg125936.domain.user.Player;
 import it.unicam.cs.mpgc.rpg125936.repository.EnemyRepository;
 import it.unicam.cs.mpgc.rpg125936.repository.HibernateUtil;
 import org.hibernate.Session;
@@ -69,14 +68,6 @@ public abstract class Mondo implements GameLocation {
         return false;
     }
 
-    @Override
-    public void enter(Player player) {
-        if (!unlocked) {
-            System.out.println("La porta per il " + name + " è ancora bloccata!");
-            return;
-        }
-        System.out.println("Sei entrato nel " + name + ".");
-    }
-
     protected abstract void createDefaultEnemies();
+
 }

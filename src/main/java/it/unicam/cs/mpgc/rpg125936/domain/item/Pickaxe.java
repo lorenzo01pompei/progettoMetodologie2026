@@ -16,7 +16,7 @@ import jakarta.persistence.Entity;
 public class Pickaxe extends AbstractItem implements ToolItem {
 
     @Column(name= "durability")
-    private double durability;
+    private int durability;
     @Column(name= "price")
     private double price;
 
@@ -28,11 +28,11 @@ public class Pickaxe extends AbstractItem implements ToolItem {
         this.price =40;
     }
 
-    public double getDurability() {
+    public int getDurability() {
         return durability;
     }
 
-    public void setDurability(double durability) {
+    public void setDurability(int durability) {
         this.durability = durability;
     }
 

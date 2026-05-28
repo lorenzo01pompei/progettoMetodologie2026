@@ -1,10 +1,15 @@
 package it.unicam.cs.mpgc.rpg125936.controller;
 
-import it.unicam.cs.mpgc.rpg125936.domain.location.Mondo1;
 import it.unicam.cs.mpgc.rpg125936.domain.item.FightItem;
+import it.unicam.cs.mpgc.rpg125936.domain.location.Miniera;
+import it.unicam.cs.mpgc.rpg125936.domain.location.Mondo1;
 import it.unicam.cs.mpgc.rpg125936.domain.user.Enemy;
 import it.unicam.cs.mpgc.rpg125936.domain.user.Player;
 import it.unicam.cs.mpgc.rpg125936.service.game.GameSetupService;
+import it.unicam.cs.mpgc.rpg125936.service.mine.MinieraService;
+import it.unicam.cs.mpgc.rpg125936.service.mine.MiningResultDTO;
+import it.unicam.cs.mpgc.rpg125936.service.mine.MinieraService;
+import it.unicam.cs.mpgc.rpg125936.service.mine.MiningResultDTO;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -20,12 +25,15 @@ public class Mondo1Controller {
     @FXML private Label feedbackLabel;
     @FXML private Label playerHpLabel;
     @FXML private Label playerLivesLabel;
+    @FXML private Label materialLabel;
     @FXML private VBox enemyList;
     @FXML private Button backBtn;
     @FXML private Button mineBtn;
 
     private Mondo1 mondo1;
+    private Miniera miniera;
     private Player player;
+    private MinieraService minieraService;
 
 
     /**inizializza il mondo:
@@ -38,6 +46,8 @@ public class Mondo1Controller {
         GameSetupService gameSetup = GameSetupService.getInstance();
         player = gameSetup.getPlayer();
         mondo1 = (Mondo1) gameSetup.getWorlds().get(0);
+        miniera = gameSetup.getWorlds().get(0).getMiniera();
+        minieraService = new MinieraService(miniera);
 
         titleLabel.setText("Mondo 1");
         playerHpLabel.setText("HP: " + player.getHealthStatus().getHealth());
@@ -93,10 +103,10 @@ public class Mondo1Controller {
         }
     }
 
-    ///gestisce gli scavi nella miniera; non ancora implementato
     @FXML
     private void handleMine() {
-        // logica della miniera
+        MiningResultDTO result = minieraService.dig(player);
+        feedbackLabel.setText(result.getMessage());
     }
 
     ///gestisce il ritorno alla lobby caricando mainView
