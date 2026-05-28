@@ -4,6 +4,7 @@ import it.unicam.cs.mpgc.rpg125936.domain.location.Lobby;
 import it.unicam.cs.mpgc.rpg125936.domain.location.Mondo;
 import it.unicam.cs.mpgc.rpg125936.domain.item.FightItem;
 import it.unicam.cs.mpgc.rpg125936.domain.item.Item;
+import it.unicam.cs.mpgc.rpg125936.domain.material.Material;
 import it.unicam.cs.mpgc.rpg125936.domain.user.Player;
 import it.unicam.cs.mpgc.rpg125936.service.game.GameSetupService;
 import it.unicam.cs.mpgc.rpg125936.service.shop.ShopService;
@@ -25,6 +26,7 @@ public class MainController {
     @FXML private Label livesLabel;
     @FXML private Label moneyLabel;
     @FXML private VBox inventoryPanel;
+    @FXML private VBox materialPanel;
     @FXML private Button mondo1Btn;
     @FXML private Button mondo2Btn;
     @FXML private Button mondo3Btn;
@@ -54,6 +56,7 @@ public class MainController {
         shopController.setOnFeedback(msg -> feedbackLabel.setText(msg));
 
         loadInventory();
+        loadMaterials();
         updateProfile();
         updateWorldButtons();
     }
@@ -100,6 +103,21 @@ public class MainController {
             inventoryPanel.getChildren().add(new Label("Nessun oggetto."));
         }
     }
+
+    ///carica l'inventario del player in una label che viene inserita nell'inventoryPanel
+    private void loadMaterials() {
+        materialPanel.getChildren().clear();
+        for (List<Material> materials : player.getMaterials()) {
+            Label lbl;
+            lbl = new Label("\u2022 " + materials.getFirst().getName() + ": " + materials.size());
+            lbl.setStyle("-fx-font-size: 14; -fx-padding: 2 0;");
+            materialPanel.getChildren().add(lbl);
+        }
+        if (player.getMaterials().isEmpty()) {
+            materialPanel.getChildren().add(new Label("Nessun oggetto."));
+        }
+    }
+
 
     ///aggiorna lo status di salute del player
     private void updateProfile() {

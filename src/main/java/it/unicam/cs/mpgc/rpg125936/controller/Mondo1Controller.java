@@ -77,7 +77,7 @@ public class Mondo1Controller {
 
     /**gestisce l'ingaggio del combattimento
       carica la schermata di fightView
-      delega il combattimento al metodo startFight
+      delega il combattimento al fightController
      */
     private void handleFight(Enemy enemy) {
         boolean hasWeapon = false;
@@ -103,6 +103,9 @@ public class Mondo1Controller {
         }
     }
 
+    /** delega l'esecuzione di una singola scavata in miniera
+     * e ne riporta il risultato
+     */
     @FXML
     private void handleMine() {
         MiningResultDTO result = minieraService.dig(player);
