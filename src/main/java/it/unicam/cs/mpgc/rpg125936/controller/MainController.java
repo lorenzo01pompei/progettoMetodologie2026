@@ -1,5 +1,6 @@
 package it.unicam.cs.mpgc.rpg125936.controller;
 
+import it.unicam.cs.mpgc.rpg125936.domain.item.ToolItem;
 import it.unicam.cs.mpgc.rpg125936.domain.location.Lobby;
 import it.unicam.cs.mpgc.rpg125936.domain.location.Mondo;
 import it.unicam.cs.mpgc.rpg125936.domain.item.FightItem;
@@ -52,7 +53,7 @@ public class MainController {
         worlds = gameSetup.getWorlds();
 
         shopController.init(player, shopService);
-        shopController.setOnPurchase(() -> { loadInventory(); updateProfile(); });
+        shopController.setOnPurchase(() -> { loadInventory(); updateProfile(); loadMaterials(); });
         shopController.setOnFeedback(msg -> feedbackLabel.setText(msg));
 
         loadInventory();
@@ -92,8 +93,11 @@ public class MainController {
         for (Item item : player.getInventory()) {
             Label lbl;
             if (item instanceof FightItem fi) {
-                lbl = new Label("\u2022 " + fi.getName() + " (Danno: " + (int) fi.getDamage() + ")");
-            } else {
+                lbl = new Label("\u2022 " + fi.getName() + " (Danno: " + fi.getDamage() + ")");
+            } else if(item instanceof ToolItem fi) {
+                lbl = new Label("\u2022 " + fi.getName() + " (Utilizzi rimasti: " + fi.getDurability() + ")");
+
+            }else{
                 lbl = new Label("\u2022 " + item.getClass().getSimpleName());
             }
             lbl.setStyle("-fx-font-size: 14; -fx-padding: 2 0;");

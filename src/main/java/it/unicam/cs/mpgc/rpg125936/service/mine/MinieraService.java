@@ -68,13 +68,13 @@ public class MinieraService {
     public Material rollMaterial() {
         double chance = random.nextDouble() * 100;
         if (chance < miniera.getGoldProb()) {
-            return new Material("Lingotto d'Oro", 10.0);
+            return new Material("Lingotto d'Oro", 10);
         }
         if (chance < miniera.getGoldProb() + miniera.getSilverProb()) {
-            return new Material("Lingotto d'Argento", 5.0);
+            return new Material("Lingotto d'Argento", 5);
         }
         if (chance < miniera.getGoldProb() + miniera.getSilverProb() + miniera.getCopperProb()) {
-            return new Material("Lingotto di Rame", 2.0);
+            return new Material("Lingotto di Rame", 2);
         }
         return null;
     }

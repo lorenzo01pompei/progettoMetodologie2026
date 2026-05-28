@@ -14,16 +14,16 @@ public class Shop {
     private final List<WeaponOffer> weapons = new ArrayList<>();
     private final List<ToolOffer> tools = new ArrayList<>();
     private final List<SpellOffer> spells = new ArrayList<>();
-    private final Map<String, Double> materialPrices = new LinkedHashMap<>();
+    private final Map<String, Integer> materialPrices = new LinkedHashMap<>();
 
     public Shop() {
         loadWeaponsFromDB();
         loadToolsFromDB();
         loadSpellsFromDB();
 
-        materialPrices.put("Lingotto d'Oro", 10.0);
-        materialPrices.put("Lingotto d'Argento", 5.0);
-        materialPrices.put("Lingotto di Rame", 2.0);
+        materialPrices.put("Lingotto d'Oro", 10);
+        materialPrices.put("Lingotto d'Argento", 5);
+        materialPrices.put("Lingotto di Rame", 2);
     }
 
     private void loadWeaponsFromDB() {
@@ -62,7 +62,7 @@ public class Shop {
         return spells;
     }
 
-    public Map<String, Double> getMaterialPrices() {
+    public Map<String, Integer> getMaterialPrices() {
         return materialPrices;
     }
 

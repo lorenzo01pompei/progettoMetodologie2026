@@ -14,11 +14,11 @@ public class Material extends AbstractItem {
     private String name;
 
     @Column(name = "price")
-    private double price;
+    private int price;
 
     public Material() {}
 
-    public Material(String name, double price) {
+    public Material(String name, int price) {
         this.name = name;
         this.price = price;
     }
@@ -27,7 +27,7 @@ public class Material extends AbstractItem {
         return name;
     }
 
-    public double getPrice() {
+    public int getPrice() {
         return price;
     }
 

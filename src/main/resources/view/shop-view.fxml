@@ -5,6 +5,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
+<?import javafx.scene.layout.Pane?>
 <VBox spacing="10" style="-fx-background-color: #fdf6e3; -fx-padding: 20;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unicam.cs.mpgc.rpg125936.controller.ShopController">
     <Label style="-fx-font-weight: bold;" text="NEGOZIO">
         <font>
@@ -37,4 +38,17 @@
             </content>
         </TitledPane>
     </VBox>
+
+    <Label style="-fx-font-weight: bold;" text="VENDI">
+            <font>
+                <Font size="20" />
+            </font>
+    </Label>
+
+    <VBox spacing="5">
+        <Pane>
+            <VBox fx:id="materialSell" spacing="8" style="-fx-padding: 10;" />
+        </Pane>
+    </VBox>
+
 </VBox>

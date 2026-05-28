@@ -101,8 +101,8 @@ public class User {
         return materialStorage.countMaterial(materialName);
     }
 
-    public boolean removeMaterials(String materialName, int quantity) {
-        return materialStorage.removeMaterials(materialName, quantity);
+    public void removeMaterials() {
+         materialStorage.removeAll();
     }
 
     public void decreaseHealth(int danno){

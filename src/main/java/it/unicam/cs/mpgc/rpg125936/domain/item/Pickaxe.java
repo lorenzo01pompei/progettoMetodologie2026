@@ -15,6 +15,8 @@ import jakarta.persistence.Entity;
 @DiscriminatorValue("PICKAXE")
 public class Pickaxe extends AbstractItem implements ToolItem {
 
+    @Column(name= "name")
+    private String name;
     @Column(name= "durability")
     private int durability;
     @Column(name= "price")
@@ -24,8 +26,14 @@ public class Pickaxe extends AbstractItem implements ToolItem {
      * Costruttore di default. Imposta la durabilità iniziale a 500.
      */
     public Pickaxe(){
+        this.name="Piccone";
         this.durability = 500;
         this.price =40;
+    }
+
+    @Override
+    public String getName() {
+        return name;
     }
 
     public int getDurability() {

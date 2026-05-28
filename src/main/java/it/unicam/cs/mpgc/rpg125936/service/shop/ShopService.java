@@ -3,6 +3,7 @@ package it.unicam.cs.mpgc.rpg125936.service.shop;
 import it.unicam.cs.mpgc.rpg125936.domain.item.Gun;
 import it.unicam.cs.mpgc.rpg125936.domain.item.Pickaxe;
 import it.unicam.cs.mpgc.rpg125936.domain.item.Spell;
+import it.unicam.cs.mpgc.rpg125936.domain.material.Material;
 import it.unicam.cs.mpgc.rpg125936.domain.shop.Shop;
 import it.unicam.cs.mpgc.rpg125936.domain.shop.SpellOffer;
 import it.unicam.cs.mpgc.rpg125936.domain.shop.ToolOffer;
@@ -69,7 +70,7 @@ public class ShopService {
      *
      * @return mappa (nome materiale &rarr; valore unitario in monete)
      */
-    public Map<String, Double> getMaterialPrice() {
+    public Map<String, Integer> getMaterialPrice() {
         return shop.getMaterialPrices();
     }
 
@@ -174,29 +175,30 @@ public class ShopService {
         }
     }
 
-    /**
-     * Vende una quantità di materiale per il giocatore.
+    /**vende tutti i materiali in possesso del player.
      *
      * @param player       il giocatore venditore
-     * @param materialName nome del materiale da vendere
-     * @param quantity     quantità da vendere
      * @return {@link SellDTO} con esito, messaggio e importo guadagnato
      */
-    public SellDTO sellMaterial(Player player, String materialName, int quantity) {
-        if (quantity <= 0) {
-            return new SellDTO(false, "La quantità deve essere maggiore di zero.", 0);
+    public SellDTO sellMaterial(Player player) {
+        if (player.getMaterials().size() <= 0) {
+            return new SellDTO(false, "Non hai materiali da vendere", 0);
         }
-        Double rate = shop.getMaterialPrices().get(materialName);
-        if (rate == null) {
-            return new SellDTO(false, "Materiale \"" + materialName + "\" non vendibile.", 0);
+
+        int earned =0;
+        for(List<Material> materials : player.getMaterials()){
+            earned += calculateMaterialValue(materials);
         }
-        int available = player.countMaterial(materialName);
-        if (available < quantity) {
-            return new SellDTO(false, "Hai solo " + available + " " + materialName + ", ne servono " + quantity + ".", 0);
-        }
-        player.removeMaterials(materialName, quantity);
-        double earned = quantity * rate;
+        player.removeMaterials();
         player.addMoney(earned);
-        return new SellDTO(true, "Venduti " + quantity + "x " + materialName + " per " + earned + " monete.", earned);
+
+        return new SellDTO(true, "Materiali venduti per: " + earned + " monete.", earned);
+    }
+
+    ///calcola il valore di una lista di materiali
+    public int calculateMaterialValue(List<Material> materials){
+        int quantity = materials.size();
+        int materialPrice = shop.getMaterialPrices().get(materials.getFirst().getName());
+        return quantity*materialPrice;
     }
 }

@@ -5,6 +5,7 @@ import it.unicam.cs.mpgc.rpg125936.domain.shop.SpellOffer;
 import it.unicam.cs.mpgc.rpg125936.domain.shop.ToolOffer;
 import it.unicam.cs.mpgc.rpg125936.domain.shop.WeaponOffer;
 import it.unicam.cs.mpgc.rpg125936.service.shop.PurchaseDTO;
+import it.unicam.cs.mpgc.rpg125936.service.shop.SellDTO;
 import it.unicam.cs.mpgc.rpg125936.service.shop.ShopService;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -20,6 +21,7 @@ public class ShopController {
     @FXML private VBox spellList;
     @FXML private VBox lifeList;
     @FXML private VBox hpRefill;
+    @FXML private VBox materialSell;
 
     private Player player;
     private ShopService shopService;
@@ -45,15 +47,25 @@ public class ShopController {
         loadWeapons();
         loadTools();
         loadSpells();
+        loadSelling();
         loadLife();
         loadHp();
     }
 
-    /**elabora l'esito di un acquisto e notifica UI e listener
+    /**elabora l'esito di un acquisto e notifica la UI
      *
      * @param result esito dell'operazione di acquisto
      */
     private void buyItem(PurchaseDTO result) {
+        if (onFeedback != null) onFeedback.accept(result.getMessage());
+        if (onPurchase != null) onPurchase.run();
+    }
+
+    /**elabora l'esito di una vendita e notifica la UI
+     *
+     * @param result esito dell'operazione di acquisto
+     */
+    private void sellMaterial(SellDTO result) {
         if (onFeedback != null) onFeedback.accept(result.getMessage());
         if (onPurchase != null) onPurchase.run();
     }
@@ -138,6 +150,15 @@ public class ShopController {
         buyHpBtn.setStyle("-fx-background-color: #e67e22; -fx-text-fill: white; -fx-font-size: 13;");
         buyHpBtn.setOnAction(e -> buyItem(shopService.refillLife(player)));
         hpRefill.getChildren().add(buyHpBtn);
+    }
+
+    private void loadSelling(){
+        materialSell.getChildren().clear();
+        Button sellMaterialBtn = new Button("Vendi i tuoi materiali");
+        sellMaterialBtn.setStyle("-fx-background-color: #e67e22; -fx-text-fill: white; -fx-font-size: 13;");
+        sellMaterialBtn.setOnAction(e -> sellMaterial(shopService.sellMaterial(player)));
+        materialSell.getChildren().add(sellMaterialBtn);
+
     }
 
 }

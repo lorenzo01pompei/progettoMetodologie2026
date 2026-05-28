@@ -51,18 +51,7 @@ public class MaterialStorage {
         return count;
     }
 
-    public boolean removeMaterials(String materialName, int quantity) {
-        if (countMaterial(materialName) < quantity) {
-            return false;
-        }
-
-        int removed = 0;
-        for (int i = materials.size() - 1; i >= 0 && removed < quantity; i--) {
-            if (materials.get(i).getName().equals(materialName)) {
-                materials.remove(i);
-                removed++;
-            }
-        }
-        return true;
+    public void removeAll() {
+        materials.removeAll(materials);
     }
 }
