@@ -12,26 +12,18 @@ public class DatabaseSeeder {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction t = session.beginTransaction();
 
-        long gunCount = (long) session.createQuery("SELECT COUNT(g) FROM Gun g").getSingleResult();
-        if (gunCount == 0) {
-            session.persist(new Gun("Pugnale Arrugginito", 10.0, 5.0));
-            session.persist(new Gun("Spada di Ferro", 25.0, 15.0));
-            session.persist(new Gun("Ascia da Battaglia", 40.0, 30.0));
-            session.persist(new Gun("Spada dell'Eroe", 75.0, 100.0));
-        }
+        session.createNativeQuery("DELETE FROM items WHERE item_type IN ('GUN','SPELL','PICKAXE') AND user_id IS NULL")
+                .executeUpdate();
 
-        long spellCount = (long) session.createQuery("SELECT COUNT(s) FROM Spell s").getSingleResult();
-        if (spellCount == 0) {
-            session.persist(new Spell("Scintilla", 15.0, 10.0));
-            session.persist(new Spell("Palla di Fuoco", 35.0, 25.0));
-            session.persist(new Spell("Fulmine", 50.0, 40.0));
-            session.persist(new Spell("Meteora", 90.0, 80.0));
-        }
-
-        long pickaxeCount = (long) session.createQuery("SELECT COUNT(p) FROM Pickaxe p").getSingleResult();
-        if (pickaxeCount == 0) {
-            session.persist(new Pickaxe());
-        }
+        session.persist(new Gun("Pugnale Arrugginito", 10.0, 5.0));
+        session.persist(new Gun("Spada di Ferro", 25.0, 15.0));
+        session.persist(new Gun("Ascia da Battaglia", 40.0, 30.0));
+        session.persist(new Gun("Spada dell'Eroe", 75.0, 100.0));
+        session.persist(new Spell("Scintilla", 15.0, 10.0));
+        session.persist(new Spell("Palla di Fuoco", 35.0, 25.0));
+        session.persist(new Spell("Fulmine", 50.0, 40.0));
+        session.persist(new Spell("Meteora", 90.0, 80.0));
+        session.persist(new Pickaxe());
 
         t.commit();
         session.close();

@@ -9,7 +9,7 @@ public class GunRepository {
 
     public List<Gun> findAll() {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            return session.createQuery("FROM Gun", Gun.class).list();
+            return session.createNativeQuery("SELECT * FROM items WHERE item_type = 'GUN' AND user_id IS NULL", Gun.class).list();
         }
     }
 

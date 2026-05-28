@@ -9,7 +9,7 @@ public class SpellRepository {
 
     public List<Spell> findAll() {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            return session.createQuery("FROM Spell", Spell.class).list();
+            return session.createNativeQuery("SELECT * FROM items WHERE item_type = 'SPELL' AND user_id IS NULL", Spell.class).list();
         }
     }
 

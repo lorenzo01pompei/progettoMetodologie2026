@@ -9,7 +9,7 @@ public class PickaxeRepository {
 
     public List<Pickaxe> findAll() {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            return session.createQuery("FROM Pickaxe", Pickaxe.class).list();
+            return session.createNativeQuery("SELECT * FROM items WHERE item_type = 'PICKAXE' AND user_id IS NULL", Pickaxe.class).list();
         }
     }
 
