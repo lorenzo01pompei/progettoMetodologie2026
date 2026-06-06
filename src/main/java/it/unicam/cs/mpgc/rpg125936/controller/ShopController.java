@@ -13,6 +13,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 public class ShopController {
 
@@ -78,14 +79,14 @@ public class ShopController {
         weaponList.getChildren().clear();
         for (WeaponOffer offer : shopService.getWeaponCatalog()) {
             Label info = new Label(offer.getName() + "  \u2022  Danno: " + offer.getDamage());
-            info.setStyle("-fx-font-weight: bold; -fx-font-size: 14;");
+            info.setStyle(StyleConstants.LABEL_BOLD);
 
             Button buyBtn = new Button("Compra (" + (int) offer.getPrice() + " monete)");
-            buyBtn.setStyle("-fx-background-color: #27ae60; -fx-text-fill: white; -fx-font-size: 13;");
+            buyBtn.setStyle(StyleConstants.BUY_GREEN);
             buyBtn.setOnAction(e -> buyItem(shopService.buyWeapon(player, offer.getId())));
 
             VBox row = new VBox(5, info, buyBtn);
-            row.setStyle("-fx-border-color: #e0d5b0; -fx-border-width: 0 0 1 0; -fx-padding: 8 0;");
+            row.setStyle(StyleConstants.SHOP_ROW);
             weaponList.getChildren().add(row);
         }
     }
@@ -97,14 +98,14 @@ public class ShopController {
         toolList.getChildren().clear();
         for (ToolOffer offer : shopService.getToolCatalog()) {
             Label info = new Label(offer.getName() + "  \u2022  Usi: " + offer.getMaxUses());
-            info.setStyle("-fx-font-weight: bold; -fx-font-size: 14;");
+            info.setStyle(StyleConstants.LABEL_BOLD);
 
             Button buyBtn = new Button("Compra (" + (int) offer.getPrice() + " monete)");
-            buyBtn.setStyle("-fx-background-color: #27ae60; -fx-text-fill: white; -fx-font-size: 13;");
+            buyBtn.setStyle(StyleConstants.BUY_GREEN);
             buyBtn.setOnAction(e -> buyItem(shopService.buyTool(player, offer.getId())));
 
             VBox row = new VBox(5, info, buyBtn);
-            row.setStyle("-fx-border-color: #e0d5b0; -fx-border-width: 0 0 1 0; -fx-padding: 8 0;");
+            row.setStyle(StyleConstants.SHOP_ROW);
             toolList.getChildren().add(row);
         }
     }
@@ -116,46 +117,38 @@ public class ShopController {
         spellList.getChildren().clear();
         for (SpellOffer offer : shopService.getSpellCatalog()) {
             Label info = new Label(offer.getName() + "  \u2022  Danno: " + offer.getDamage());
-            info.setStyle("-fx-font-weight: bold; -fx-font-size: 14;");
+            info.setStyle(StyleConstants.LABEL_BOLD);
 
             Button buyBtn = new Button("Compra (" + (int) offer.getPrice() + " monete)");
-            buyBtn.setStyle("-fx-background-color: #27ae60; -fx-text-fill: white; -fx-font-size: 13;");
+            buyBtn.setStyle(StyleConstants.BUY_GREEN);
             buyBtn.setOnAction(e -> buyItem(shopService.buySpell(player, offer.getId())));
 
             VBox row = new VBox(5, info, buyBtn);
-            row.setStyle("-fx-border-color: #e0d5b0; -fx-border-width: 0 0 1 0; -fx-padding: 8 0;");
+            row.setStyle(StyleConstants.SHOP_ROW);
             spellList.getChildren().add(row);
         }
     }
 
-    /**carica una vita nello shop e ne consente l'acquisto tramite bottone
-     che delega il lavoro all'apposito metodo
-     */
-    private void loadLife(){
-        lifeList.getChildren().clear();
-        int lifePrice = player.getHealthStatus().getLivesPrice();
-        Button buyLifeBtn = new Button("Compra una vita (" + lifePrice + " monete)");
-        buyLifeBtn.setStyle("-fx-background-color: #e67e22; -fx-text-fill: white; -fx-font-size: 13;");
-        buyLifeBtn.setOnAction(e -> buyItem(shopService.buyLives(player)));
-        lifeList.getChildren().add(buyLifeBtn);
+    private void addShopButton(VBox container, String label, int price, Supplier<PurchaseDTO> action) {
+        container.getChildren().clear();
+        Button btn = new Button(label + " (" + price + " monete)");
+        btn.setStyle(StyleConstants.BUTTON_ORANGE);
+        btn.setOnAction(e -> buyItem(action.get()));
+        container.getChildren().add(btn);
     }
 
-    /**consente il ripristino della salute tramite bottone
-     che delega il lavoro all'apposito metodo
-     */
+    private void loadLife(){
+        addShopButton(lifeList, "Compra una vita", player.getHealthStatus().getLivesPrice(), () -> shopService.buyLives(player));
+    }
+
     private void loadHp(){
-        hpRefill.getChildren().clear();
-        int hpPrice = player.getHealthStatus().getHpPrice();
-        Button buyHpBtn = new Button("Rigenera salute (" + hpPrice + " monete)");
-        buyHpBtn.setStyle("-fx-background-color: #e67e22; -fx-text-fill: white; -fx-font-size: 13;");
-        buyHpBtn.setOnAction(e -> buyItem(shopService.refillLife(player)));
-        hpRefill.getChildren().add(buyHpBtn);
+        addShopButton(hpRefill, "Rigenera salute", player.getHealthStatus().getHpPrice(), () -> shopService.refillLife(player));
     }
 
     private void loadSelling(){
         materialSell.getChildren().clear();
         Button sellMaterialBtn = new Button("Vendi i tuoi materiali");
-        sellMaterialBtn.setStyle("-fx-background-color: #e67e22; -fx-text-fill: white; -fx-font-size: 13;");
+        sellMaterialBtn.setStyle(StyleConstants.BUTTON_ORANGE);
         sellMaterialBtn.setOnAction(e -> sellMaterial(shopService.sellMaterial(player)));
         materialSell.getChildren().add(sellMaterialBtn);
 

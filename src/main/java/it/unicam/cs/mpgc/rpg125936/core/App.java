@@ -11,6 +11,7 @@ import javafx.stage.Stage;
 
 public class App extends Application {
 
+    ///carica la schermata del menu principale dal file FXML e la mostra nella finestra.
     @Override
     public void start(Stage primaryStage) throws Exception {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/menu-view.fxml"));
@@ -20,6 +21,7 @@ public class App extends Application {
         primaryStage.show();
     }
 
+    ///salva il giocatore corrente nel database quando la finestra viene chiusa.
    @Override
    public void stop(){
         PlayerRepository playerRepository = new PlayerRepository();
@@ -29,6 +31,7 @@ public class App extends Application {
         }
    }
 
+    ///Entry point dell'applicazione. Inizializza il database e avvia il runtime JavaFX.
     public static void main(String[] args) {
         DatabaseSeeder.seed();
         launch(args);

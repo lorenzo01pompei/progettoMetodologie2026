@@ -100,7 +100,7 @@ public class MainController {
             }else{
                 lbl = new Label("\u2022 " + item.getClass().getSimpleName());
             }
-            lbl.setStyle("-fx-font-size: 14; -fx-padding: 2 0;");
+            lbl.setStyle(StyleConstants.ITEM_LABEL);
             inventoryPanel.getChildren().add(lbl);
         }
         if (player.getInventory().isEmpty()) {
@@ -114,7 +114,7 @@ public class MainController {
         for (List<Material> materials : player.getMaterials()) {
             Label lbl;
             lbl = new Label("\u2022 " + materials.getFirst().getName() + ": " + materials.size());
-            lbl.setStyle("-fx-font-size: 14; -fx-padding: 2 0;");
+            lbl.setStyle(StyleConstants.ITEM_LABEL);
             materialPanel.getChildren().add(lbl);
         }
         if (player.getMaterials().isEmpty()) {
@@ -143,8 +143,8 @@ public class MainController {
             if (btn != null) {
                 boolean unlocked = worlds.get(i).isUnlocked();
                 btn.setStyle(unlocked
-                    ? "-fx-background-color: #27ae60; -fx-text-fill: white;"
-                    : "-fx-background-color: #7f8c8d; -fx-text-fill: white;");
+                    ? StyleConstants.WORLD_UNLOCKED
+                    : StyleConstants.WORLD_LOCKED);
             }
         }
     }

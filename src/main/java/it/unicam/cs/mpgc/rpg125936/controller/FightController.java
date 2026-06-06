@@ -103,7 +103,7 @@ public class FightController {
             if (item instanceof FightItem fi) {
                 int actualIndex = i;
                 Button btn = new Button(fi.getName() + " (Danno: " + fi.getDamage() + ")");
-                btn.setStyle("-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-size: 14; -fx-padding: 10 20;");
+                btn.setStyle(StyleConstants.WEAPON_BLUE);
                 btn.setOnAction(e -> attack(actualIndex));
                 weaponList.getChildren().add(btn);
             }
