@@ -2,20 +2,17 @@ package it.unicam.cs.mpgc.rpg125936.controller;
 
 import it.unicam.cs.mpgc.rpg125936.domain.item.FightItem;
 import it.unicam.cs.mpgc.rpg125936.domain.location.Miniera;
-import it.unicam.cs.mpgc.rpg125936.domain.location.Mondo1;
+import it.unicam.cs.mpgc.rpg125936.domain.location.Mondo;
 import it.unicam.cs.mpgc.rpg125936.domain.user.Enemy;
 import it.unicam.cs.mpgc.rpg125936.domain.user.Player;
-import it.unicam.cs.mpgc.rpg125936.service.game.GameSetupService;
 import it.unicam.cs.mpgc.rpg125936.service.mine.MinieraService;
 import it.unicam.cs.mpgc.rpg125936.service.mine.MiningResultDTO;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 
 public class Mondo1Controller {
 
@@ -28,30 +25,34 @@ public class Mondo1Controller {
     @FXML private Button backBtn;
     @FXML private Button mineBtn;
 
-    private Mondo1 mondo1;
+    private Mondo mondo;
     private Miniera miniera;
     private Player player;
     private MinieraService minieraService;
 
 
-    /**inizializza il mondo:
-      carica lo status di salute del player
-      carica i nemici con relativo status di salute
-      configura i bottoni per combattere i relativi nemici ancora imbattuti
+    /**inizializza la schermata del mondo:
+     * imposta giocatore, mondo, miniera e servizio mining;
+     * mostra nome del mondo, HP e vite del giocatore;
+     * genera per ogni nemico una riga con label info e bottone "Combatti";
+     * una volta sconfitto, il bottone cambia in "Sconfitto"
+     *
+     * @param player giocatore corrente
+     * @param mondo  mondo da visualizzare (es. Mondo1, Mondo2, …)
      */
-    @FXML
-    public void initialize() {
-        GameSetupService gameSetup = GameSetupService.getInstance();
-        player = gameSetup.getPlayer();
-        mondo1 = (Mondo1) gameSetup.getWorlds().get(0);
-        miniera = gameSetup.getWorlds().get(0).getMiniera();
-        minieraService = new MinieraService(miniera);
+    public void init(Player player, Mondo mondo) {
+        this.player = player;
+        this.mondo = mondo;
+        this.miniera = mondo.getMiniera();
+        this.minieraService = new MinieraService(miniera);
 
-        titleLabel.setText("Mondo 1");
+        titleLabel.setText(mondo.getName());
         playerHpLabel.setText("HP: " + player.getHealthStatus().getHealth());
         playerLivesLabel.setText("Vite: " + player.getLives());
 
-        for (Enemy enemy : mondo1.getEnemies()) {
+        //per ogni nemico viene mostrato lo status di salute e il pulsante per combatterlo
+        //se il nemico è sconfitto viene disabilitato il bottone e cambiata la scritta
+        for (Enemy enemy : mondo.getEnemies()) {
             String className = enemy.getClass().getSimpleName();
             Label info = new Label(className + " - " + enemy.getName() + " (HP: " + enemy.getHealthStatus().getHealth() + ")");
             info.setStyle(StyleConstants.ENEMY_LABEL);
@@ -66,6 +67,7 @@ public class Mondo1Controller {
             } else {
                 fightBtn.setOnAction(e -> handleFight(enemy));
             }
+
 
             HBox row = new HBox(15, info, fightBtn);
             row.setStyle(StyleConstants.ENEMY_ROW);
@@ -89,19 +91,12 @@ public class Mondo1Controller {
             feedbackLabel.setText("Non hai armi nell'inventario! Acquistane una dal negozio.");
             return;
         }
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/fight-view.fxml"));
-            Scene scene = new Scene(loader.load(), 1024, 768);
-            FightController fightController = loader.getController();
-            fightController.startFight(player, enemy);
-            Stage stage = (Stage) backBtn.getScene().getWindow();
-            stage.setScene(scene);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        FXMLLoader loader = SceneLoader.switchTo("/view/fight-view.fxml", backBtn);
+        FightController fightController = loader.getController();
+        fightController.startFight(player, mondo, enemy);
     }
 
-    /** delega l'esecuzione di una singola scavata in miniera
+    /**delega l'esecuzione di una singola scavata in miniera
      * e ne riporta il risultato
      */
     @FXML
@@ -113,13 +108,6 @@ public class Mondo1Controller {
     ///gestisce il ritorno alla lobby caricando mainView
     @FXML
     private void handleBack() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/main-view.fxml"));
-            Scene scene = new Scene(loader.load(), 1024, 768);
-            Stage stage = (Stage) backBtn.getScene().getWindow();
-            stage.setScene(scene);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        SceneLoader.switchTo("/view/main-view.fxml", backBtn);
     }
 }

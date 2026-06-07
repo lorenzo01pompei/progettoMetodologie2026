@@ -2,6 +2,7 @@ package it.unicam.cs.mpgc.rpg125936.controller;
 
 import it.unicam.cs.mpgc.rpg125936.domain.item.FightItem;
 import it.unicam.cs.mpgc.rpg125936.domain.item.Item;
+import it.unicam.cs.mpgc.rpg125936.domain.location.Mondo;
 import it.unicam.cs.mpgc.rpg125936.domain.user.Enemy;
 import it.unicam.cs.mpgc.rpg125936.domain.user.Player;
 import it.unicam.cs.mpgc.rpg125936.repository.EnemyRepository;
@@ -9,11 +10,9 @@ import it.unicam.cs.mpgc.rpg125936.repository.PlayerRepository;
 import it.unicam.cs.mpgc.rpg125936.service.fight.FightService;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +35,7 @@ public class FightController {
     private PlayerRepository playerRepository;
     private Player player;
     private Enemy enemy;
+    private Mondo currentMondo;
 
     /**inizializza le variabili d'ambiente prima di iniziare il combattimento;
      * se il player ha almeno 1 vita viene delegato il lavoro al fightService e
@@ -45,8 +45,9 @@ public class FightController {
      * @param player: giocatore che sceglie di iniziare il combattimento
      * @param enemy: nemico da combattere
      */
-    public void startFight(Player player, Enemy enemy) {
+    public void startFight(Player player, Mondo currentMondo, Enemy enemy) {
         this.player = player;
+        this.currentMondo = currentMondo;
         this.enemy = enemy;
         this.fightService = new FightService();
         this.playerRepository = new PlayerRepository();
@@ -172,19 +173,12 @@ public class FightController {
      */
     @FXML
     private void goBack() {
-        String view;
         if (player.getLives() <= 0) {
-            view = "/view/main-view.fxml";
+            SceneLoader.switchTo("/view/main-view.fxml", backButton);
         } else {
-            view = "/view/mondo1-view.fxml";
-        }
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(view));
-            Scene scene = new Scene(loader.load(), 1024, 768);
-            Stage stage = (Stage) backButton.getScene().getWindow();
-            stage.setScene(scene);
-        } catch (Exception ex) {
-            ex.printStackTrace();
+            FXMLLoader loader = SceneLoader.switchTo("/view/mondo1-view.fxml", backButton);
+            Mondo1Controller mc = loader.getController();
+            mc.init(player, currentMondo);
         }
     }
 
@@ -194,18 +188,11 @@ public class FightController {
      */
     @FXML
     private void giveUp(){
-        String view = "/view/mondo1-view.fxml";
         player.decreaseLives();
         player = playerRepository.save(player);
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(view));
-            Scene scene = new Scene(loader.load(), 1024, 768);
-            Stage stage = (Stage) giveUpButton.getScene().getWindow();
-            stage.setScene(scene);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
+        FXMLLoader loader = SceneLoader.switchTo("/view/mondo1-view.fxml", giveUpButton);
+        Mondo1Controller mc = loader.getController();
+        mc.init(player, currentMondo);
     }
-
 
 }

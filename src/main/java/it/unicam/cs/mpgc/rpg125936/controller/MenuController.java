@@ -4,10 +4,7 @@ import it.unicam.cs.mpgc.rpg125936.repository.HibernateUtil;
 import it.unicam.cs.mpgc.rpg125936.repository.PlayerRepository;
 import it.unicam.cs.mpgc.rpg125936.service.game.GameSetupService;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.stage.Stage;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
@@ -54,13 +51,6 @@ public class MenuController {
 
     ///carica la lobby del gioco
     private void loadGameView() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/main-view.fxml"));
-            Scene scene = new Scene(loader.load(), 1024, 768);
-            Stage stage = (Stage) continueBtn.getScene().getWindow();
-            stage.setScene(scene);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        SceneLoader.switchTo("/view/main-view.fxml", continueBtn);
     }
 }

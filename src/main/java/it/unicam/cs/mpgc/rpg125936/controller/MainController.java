@@ -11,11 +11,9 @@ import it.unicam.cs.mpgc.rpg125936.service.game.GameSetupService;
 import it.unicam.cs.mpgc.rpg125936.service.shop.ShopService;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 
 import java.util.List;
 
@@ -66,10 +64,9 @@ public class MainController {
     @FXML
     private void handleMondo1() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/mondo1-view.fxml"));
-            Scene scene = new Scene(loader.load(), 1024, 768);
-            Stage stage = (Stage) mondo1Btn.getScene().getWindow();
-            stage.setScene(scene);
+            FXMLLoader loader = SceneLoader.switchTo("/view/mondo1-view.fxml", mondo1Btn);
+            Mondo1Controller mc = loader.getController();
+            mc.init(player, worlds.get(0));
         } catch (Exception e) {
             feedbackLabel.setText("Errore: " + e.getMessage());
         }
