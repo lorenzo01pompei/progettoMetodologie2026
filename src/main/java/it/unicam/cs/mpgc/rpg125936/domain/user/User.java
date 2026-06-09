@@ -9,7 +9,14 @@ import jakarta.persistence.*;
 
 
 import java.util.List;
+import java.util.Map;
 
+/**
+ * Entita base per tutti gli utenti del gioco (giocatori e nemici).
+ * Contiene i componenti Health, Inventory e MaterialStorage,
+ * delegando a ciascuno la gestione specifica. Le sottoclassi
+ * Player ed Enemy estendono il comportamento base.
+ */
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(name = "user_type", discriminatorType = DiscriminatorType.STRING)
@@ -74,13 +81,13 @@ public class User {
         this.inventory.addItem(item);
     }
 
-    public List<List<Material>> getMaterials() {
+    public Map<String, List<Material>> getMaterials() {
         return materialStorage.getMaterials();
     }
 
-    public void setMaterials(List<List<Material>> materials) {
+    public void setMaterials(Map<String, List<Material>> materials) {
         this.materialStorage = new MaterialStorage();
-        for (List<Material> list : materials) {
+        for (List<Material> list : materials.values()) {
             for (Material m : list) {
                 this.materialStorage.addMaterial(m);
             }
@@ -97,18 +104,12 @@ public class User {
         this.materialStorage.addMaterial(material);
     }
 
-    public int countMaterial(String materialName) {
-        return materialStorage.countMaterial(materialName);
-    }
-
     public void removeMaterials() {
          materialStorage.removeAll();
     }
 
-    public void decreaseHealth(int danno){
-        this.healthStatus.decreaseHealth(danno);
+    public void decreaseHealth(int damage){
+        this.healthStatus.decreaseHealth(damage);
     }
-
-
 
 }

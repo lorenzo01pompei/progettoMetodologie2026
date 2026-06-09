@@ -6,33 +6,22 @@ import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 
+/**
+ * Item di tipo materiale grezzo (lingotti di rame, argento, oro) ottenibile
+ * estraendo nelle miniere. Puo essere scambiato per monete nel negozio.
+ */
 @Entity
 @DiscriminatorValue("MATERIAL")
 public class Material extends AbstractItem {
 
-    @Column(name = "name")
-    private String name;
-
-    @Column(name = "price")
-    private int price;
-
     public Material() {}
 
-    public Material(String name, int price) {
-        this.name = name;
-        this.price = price;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public int getPrice() {
-        return price;
+    public Material(String name, double price) {
+        super(name, price);
     }
 
     @Override
     public Item copy() {
-        return new Material(this.name, this.price);
+        return new Material(getName(), getPrice());
     }
 }

@@ -78,12 +78,12 @@ public class ShopController {
     private void loadWeapons() {
         weaponList.getChildren().clear();
         for (WeaponOffer offer : shopService.getWeaponCatalog()) {
-            Label info = new Label(offer.getName() + "  \u2022  Danno: " + offer.getDamage());
+            Label info = new Label(offer.getDescription());
             info.setStyle(StyleConstants.LABEL_BOLD);
 
             Button buyBtn = new Button("Compra (" + (int) offer.getPrice() + " monete)");
             buyBtn.setStyle(StyleConstants.BUY_GREEN);
-            buyBtn.setOnAction(e -> buyItem(shopService.buyWeapon(player, offer.getId())));
+            buyBtn.setOnAction(e -> buyItem(shopService.buyWeapon(player, offer)));
 
             VBox row = new VBox(5, info, buyBtn);
             row.setStyle(StyleConstants.SHOP_ROW);
@@ -97,12 +97,12 @@ public class ShopController {
     private void loadTools() {
         toolList.getChildren().clear();
         for (ToolOffer offer : shopService.getToolCatalog()) {
-            Label info = new Label(offer.getName() + "  \u2022  Usi: " + offer.getMaxUses());
+            Label info = new Label(offer.getDescription());
             info.setStyle(StyleConstants.LABEL_BOLD);
 
             Button buyBtn = new Button("Compra (" + (int) offer.getPrice() + " monete)");
             buyBtn.setStyle(StyleConstants.BUY_GREEN);
-            buyBtn.setOnAction(e -> buyItem(shopService.buyTool(player, offer.getId())));
+            buyBtn.setOnAction(e -> buyItem(shopService.buyTool(player, offer)));
 
             VBox row = new VBox(5, info, buyBtn);
             row.setStyle(StyleConstants.SHOP_ROW);
@@ -116,12 +116,12 @@ public class ShopController {
     private void loadSpells() {
         spellList.getChildren().clear();
         for (SpellOffer offer : shopService.getSpellCatalog()) {
-            Label info = new Label(offer.getName() + "  \u2022  Danno: " + offer.getDamage());
+            Label info = new Label(offer.getDescription());
             info.setStyle(StyleConstants.LABEL_BOLD);
 
             Button buyBtn = new Button("Compra (" + (int) offer.getPrice() + " monete)");
             buyBtn.setStyle(StyleConstants.BUY_GREEN);
-            buyBtn.setOnAction(e -> buyItem(shopService.buySpell(player, offer.getId())));
+            buyBtn.setOnAction(e -> buyItem(shopService.buySpell(player, offer)));
 
             VBox row = new VBox(5, info, buyBtn);
             row.setStyle(StyleConstants.SHOP_ROW);

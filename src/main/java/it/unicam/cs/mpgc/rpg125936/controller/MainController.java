@@ -108,9 +108,8 @@ public class MainController {
     ///carica l'inventario del player in una label che viene inserita nell'inventoryPanel
     private void loadMaterials() {
         materialPanel.getChildren().clear();
-        for (List<Material> materials : player.getMaterials()) {
-            Label lbl;
-            lbl = new Label("\u2022 " + materials.getFirst().getName() + ": " + materials.size());
+        for (var entry : player.getMaterials().entrySet()) {
+            Label lbl = new Label("\u2022 " + entry.getKey() + ": " + entry.getValue().size());
             lbl.setStyle(StyleConstants.ITEM_LABEL);
             materialPanel.getChildren().add(lbl);
         }

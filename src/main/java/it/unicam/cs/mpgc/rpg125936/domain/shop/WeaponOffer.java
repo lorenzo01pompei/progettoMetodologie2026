@@ -1,26 +1,29 @@
 package it.unicam.cs.mpgc.rpg125936.domain.shop;
 
 import it.unicam.cs.mpgc.rpg125936.domain.item.Gun;
+import it.unicam.cs.mpgc.rpg125936.domain.item.Item;
 
-public class WeaponOffer {
-    private final long id;
-    private final String name;
+/**
+ * Offerta per l'acquisto di un'arma. Mostra il danno nella descrizione
+ * e crea l'istanza di Gun corrispondente.
+ */
+public class WeaponOffer extends Offer {
     private final double damage;
-    private final double price;
 
     public WeaponOffer(long id, String name, double damage, double price) {
-        this.id = id;
-        this.name = name;
+        super(id, name, price);
         this.damage = damage;
-        this.price = price;
     }
 
-    public long getId() { return id; }
-    public String getName() { return name; }
     public double getDamage() { return damage; }
-    public double getPrice() { return price; }
 
-    public Gun createItem() {
-        return new Gun(name, damage, price);
+    @Override
+    public String getDescription() {
+        return getName() + "  \u2022  Danno: " + damage;
+    }
+
+    @Override
+    public Item createItem() {
+        return new Gun(getName(), damage, getPrice());
     }
 }

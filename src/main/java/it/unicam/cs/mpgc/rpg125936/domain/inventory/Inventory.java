@@ -11,6 +11,11 @@ import jakarta.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Contiene la lista di item posseduti da un utente..
+ * Fornisce operazioni di aggiunta, rimozione e recupero degli item, incapsulando
+ * la gestione della collezione e separate dalla logica di gioco.
+ */
 @Embeddable
 public class Inventory {
 
@@ -24,10 +29,6 @@ public class Inventory {
 
     public void addItem(Item item){
         this.items.add(item);
-    }
-
-    public void removeItem(Item item){
-        this.items.remove(item);
     }
 
     public List<Item> getItems(){

@@ -6,6 +6,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Contenitore per i materiali posseduti da un utente.
+ * Memorizza una lista di Material.
+ */
 @Embeddable
 public class MaterialStorage {
 
@@ -17,41 +21,23 @@ public class MaterialStorage {
         this.materials = new ArrayList<>();
     }
 
-    public List<List<Material>> getMaterials() {
+    /// restituisce una Map<String, List<Material>> raggruppata per nome del materiale
+    public Map<String, List<Material>> getMaterials() {
         Map<String, List<Material>> materialList = new HashMap<>();
 
         for (Material m : materials) {
-            String nomeMateriale = m.getName();
-
-            if (!materialList.containsKey(nomeMateriale)) {
-                //se il materiale non è presente in lista, viene creata una lista vuota
-                //e viene salvata nella mappa
-                materialList.put(nomeMateriale, new ArrayList<>());
-            }
-
-            List<Material> singleList = materialList.get(nomeMateriale);
-
-            singleList.add(m);
+            String materialName = m.getName();
+            materialList.computeIfAbsent(materialName, k -> new ArrayList<>()).add(m);
         }
 
-        return new ArrayList<>(materialList.values());
+        return materialList;
     }
 
     public void addMaterial(Material material) {
         this.materials.add(material);
     }
 
-    public int countMaterial(String materialName) {
-        int count = 0;
-        for (Material m : materials) {
-            if (m.getName().equals(materialName)) {
-                count++;
-            }
-        }
-        return count;
-    }
-
     public void removeAll() {
-        materials.removeAll(materials);
+        materials.clear();
     }
 }

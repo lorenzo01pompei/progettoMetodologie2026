@@ -5,21 +5,29 @@ import it.unicam.cs.mpgc.rpg125936.domain.user.Colosso;
 import it.unicam.cs.mpgc.rpg125936.domain.user.Enemy;
 import it.unicam.cs.mpgc.rpg125936.domain.user.Mago;
 
+import java.util.List;
+
+/**
+ * Mondo di difficolta base. Probabilita di minerali basse e nemici standard
+ * (Mago, Colosso, Boss).
+ */
 public class Mondo1 extends Mondo {
+
+    private static final double COPPER_PROB = 6.0;
+    private static final double SILVER_PROB = 2.0;
+    private static final double GOLD_PROB = 1.0;
 
     public Mondo1(boolean isUnlocked) {
         super("Mondo 1", isUnlocked);
-        this.miniera = new Miniera("Miniera del Mondo 1", 6.0, 2.0, 1.0);
+        setMiniera(new Miniera("Miniera del Mondo 1", COPPER_PROB, SILVER_PROB, GOLD_PROB));
     }
 
     @Override
-    protected void createDefaultEnemies() {
-        Enemy nemico1 = new Mago("Stregone Oscuro");
-        Enemy nemico2 = new Colosso("Gigante di Pietra");
-        Enemy boss = new Boss("Il Re delle Caverne");
-
-        this.enemies.add(nemico1);
-        this.enemies.add(nemico2);
-        this.enemies.add(boss);
+    public List<Enemy> createDefaultEnemies() {
+        return List.of(
+                new Mago("Stregone Oscuro"),
+                new Colosso("Gigante di Pietra"),
+                new Boss("Il Re delle Caverne")
+        );
     }
 }

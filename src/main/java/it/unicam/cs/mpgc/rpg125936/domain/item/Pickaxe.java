@@ -6,69 +6,47 @@ import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 
 /**
- * Rappresenta un piccone (strumento) che il giocatore può utilizzare all'interno del gioco.
- * Implementa l'interfaccia ToolItem, il che gli permette di interagire in modo specifico
- * con determinati ambienti (come la Miniera).
+ * Strumento che permette di interagire con le Miniere.
+ * Ogni uso consuma un punto di durabilita; quando la durabilita arriva a zero
+ * il piccone non puo piu essere utilizzato.
  */
-
 @Entity
 @DiscriminatorValue("PICKAXE")
 public class Pickaxe extends AbstractItem implements ToolItem {
 
-    @Column(name= "name")
-    private String name;
     @Column(name= "durability")
     private int durability;
-    @Column(name= "price")
-    private double price;
 
-    /**
-     * Costruttore di default. Imposta la durabilità iniziale a 500.
-     */
-    public Pickaxe(){
-        this.name="Piccone";
-        this.durability = 500;
-        this.price =40;
+    public static final String DEFAULT_NAME = "Piccone";
+    public static final int DEFAULT_DURABILITY = 500;
+    public static final double DEFAULT_PRICE = 40;
+
+    public Pickaxe(String name, int durability, double price) {
+        super(name, price);
+        this.durability = durability;
     }
 
-    @Override
-    public String getName() {
-        return name;
+    public Pickaxe() {
+        this(DEFAULT_NAME, DEFAULT_DURABILITY, DEFAULT_PRICE);
     }
 
     public int getDurability() {
         return durability;
     }
 
-    public void setDurability(int durability) {
-        this.durability = durability;
-    }
 
-    public double getPrice() {
-        return price;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
-    }
-
-    /**Decrementa la durabilità del piccone di 1 unità, a patto che non sia già a 0.
-     */
     public void decreaseDurability(){
         if(durability!=0){
             this.durability-=1;
         }
     }
 
-    /**metodo che riceve la posizione corrente e determina se l'oggetto può essere utilizzato.
-     *
-     * Passando l'istanza di GameLocation (l'ambiente in cui ci si trova), l'oggetto "Piccone"
-     * il piccone verifica di trovarsi effettivamente in una Miniera. Se l'utente provasse ad usare
-     * il piccone nella Lobby o in una ipotetica Foresta, l'interazione fallirebbe, restituendo false.
-     *
-     * @param location Il luogo corrente in cui si sta provando a usare l'oggetto.
-     * @return true se l'interazione è andata a buon fine (ci si trova in miniera e il piccone ha durabilità),
-     *         false in caso contrario.
+    /**
+     * se questo metodo viene applicato ad una location che può essere minata
+     * e viene invocato su un oggetto con durabilità > 0
+     * viene diminuita la durabilità del piccone
+     * @param location è il luogo in cui viene usato il piccone
+     * @return
      */
     @Override
     public boolean interact(GameLocation location){
@@ -79,16 +57,9 @@ public class Pickaxe extends AbstractItem implements ToolItem {
         return false;
     }
 
-    /**
-     * Crea un clone del piccone con la stessa durabilità attuale.
-     * Utilizzato per isolare gli item durante i combattimenti o altre logiche di clonazione.
-     * @return un nuovo oggetto Pickaxe clonato.
-     */
     @Override
     public Item copy() {
-        Pickaxe p = new Pickaxe();
-        p.setDurability(this.durability);
-        return p;
+        return new Pickaxe(getName(), this.durability, getPrice());
     }
 
 }

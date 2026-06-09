@@ -1,66 +1,44 @@
 package it.unicam.cs.mpgc.rpg125936.domain.item;
 
 import it.unicam.cs.mpgc.rpg125936.domain.user.User;
-import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 
+/**Arma da combattimento che infligge danno alla salute dell'avversario.
+ * Il danno puo essere ridotto temporaneamente dagli incantesimi nemici
+ */
 @Entity
 @DiscriminatorValue("GUN")
-public class Gun extends AbstractItem implements FightItem {
-
-    @Column(name= "name")
-    private String name;
-    @Column(name= "damage")
-    private double damage;
-    @Column(name= "price")
-    private double price;
+public class Gun extends AbstractFightItem {
 
     public Gun(String name, double damage, double price) {
-        this.name = name;
-        this.damage = damage;
-        this.price = price;
+        super(name, damage, price);
     }
 
-    public Gun(){}
+    public Gun() {}
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public double getDamage() {
-        return damage;
-    }
-
-    public void setDamage(double damage) {
-        this.damage = damage;
-    }
-
-    public double getPrice() {
-        return price;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
-    }
-
+    ///riduce il danno dell'arma, metodo invocato dopo aver subito un attacco da un incantesimo
     @Override
-    public void applyDamageReduction(double amount){
-        this.damage -= amount;
+    public boolean reduceDamage(double amount) {
+        setDamage(getDamage() - amount);
+        if (getDamage() <= 0) {
+            setDamage(0);
+            return true;
+        }
+        return false;
     }
 
+    ///gestisce l'uso dell'arma in un combattimento, riduce la vita dell'avversario
+    ///e ritorna una descrizione dell'attacco fatto
+    @Override
     public String useInFight(User target, String attackerName){
-        target.decreaseHealth((int) this.getDamage());
-        return attackerName + " attacca con " + this.getName() + " infliggendo " + this.getDamage() + " danni!";
+        target.decreaseHealth((int) getDamage());
+        return attackerName + " attacca con " + getName() + " infliggendo " + getDamage() + " danni!";
     }
 
     @Override
     public Item copy() {
-        return new Gun(this.name, this.damage, this.price);
+        return new Gun(getName(), getDamage(), getPrice());
     }
 
 }

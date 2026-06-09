@@ -9,6 +9,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * Giocatore controllato dall'utente.
+ * Gestisce le caratteristiche base di User, il suo denaro e lo sblocco dei mondi.
+ */
 @Entity
 @Table(name="players")
 public class Player extends User{

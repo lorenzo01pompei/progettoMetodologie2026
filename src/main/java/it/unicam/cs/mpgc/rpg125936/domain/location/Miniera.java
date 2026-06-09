@@ -1,5 +1,9 @@
 package it.unicam.cs.mpgc.rpg125936.domain.location;
 
+/**
+ * Location che puo essere minata dal giocatore utilizzando un Piccone.
+ * Definisce le probabilita di ottenere rame, argento e oro durante l'estrazione.
+ */
 public class Miniera implements GameLocation {
     private final String name;
 

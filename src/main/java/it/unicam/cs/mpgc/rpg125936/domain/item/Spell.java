@@ -1,73 +1,44 @@
 package it.unicam.cs.mpgc.rpg125936.domain.item;
 
 import it.unicam.cs.mpgc.rpg125936.domain.user.User;
-import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 
+import java.util.Iterator;
+
+/**
+ * Incantesimo da combattimento che riduce il danno delle armi nemiche
+ * Se il danno di un'arma scende a zero, l'arma viene
+ * distrutta e rimossa dall'inventario del bersaglio.
+ */
 @Entity
 @DiscriminatorValue("SPELL")
-public class Spell extends AbstractItem implements FightItem {
-
-    @Column(name= "name")
-    private String name;
-    @Column(name= "damage")
-    private double damage;
-    @Column(name= "price")
-    private double price;
+public class Spell extends AbstractFightItem {
 
     public Spell(String name, double damage, double price) {
-        this.name = name;
-        this.damage = damage;
-        this.price = price;
+        super(name, damage, price);
     }
 
     public Spell(){}
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public double getDamage() {
-        return damage;
-    }
-
-    public void setDamage(double damage) {
-        this.damage = damage;
-    }
-
-    public double getPrice() {
-        return price;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
-    }
-
     @Override
-    public void applyDamageReduction(double amount) {
-    }
-
     public String useInFight(User target, String attackerName){
-        String feedback = attackerName + " lancia " + this.getName() + ": il danno delle armi dell'avversario viene ridotto di " + this.damage + " punti!";
-        for(Item i : target.getInventory()) {
-            if(i instanceof FightItem fightItem) {
-                if(fightItem.getDamage()-this.damage<=0){
-                    target.getInventory().remove(fightItem);
-                    return feedback + '\n' + attackerName + " ha distrutto l'arma " + fightItem.getName() + " di " + target.getName() +", non puo piu essere utilizzata";
+        StringBuilder feedback = new StringBuilder(attackerName + " lancia " + getName() + ": il danno delle armi dell'avversario viene ridotto di " + getDamage() + " punti!");
+        Iterator<Item> iterator = target.getInventory().iterator();
+        while (iterator.hasNext()) {
+            Item item = iterator.next();
+            if (item instanceof FightItem fi) {
+                if (fi.reduceDamage(getDamage())) {
+                    iterator.remove();
+                    feedback.append("\n").append(attackerName).append(" ha distrutto l'arma ").append(fi.getName()).append(" di ").append(target.getName()).append(", non puo piu essere utilizzata");
                 }
-                fightItem.applyDamageReduction(this.damage);
             }
         }
-        return feedback;
+        return feedback.toString();
     }
 
     @Override
     public Item copy() {
-        return new Spell(this.name, this.damage, this.price);
+        return new Spell(getName(), getDamage(), getPrice());
     }
 }

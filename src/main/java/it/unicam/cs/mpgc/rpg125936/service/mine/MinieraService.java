@@ -4,6 +4,7 @@ import it.unicam.cs.mpgc.rpg125936.domain.location.Miniera;
 import it.unicam.cs.mpgc.rpg125936.domain.item.Item;
 import it.unicam.cs.mpgc.rpg125936.domain.item.Pickaxe;
 import it.unicam.cs.mpgc.rpg125936.domain.material.Material;
+import it.unicam.cs.mpgc.rpg125936.domain.material.MaterialNames;
 import it.unicam.cs.mpgc.rpg125936.domain.user.Player;
 
 import java.util.Random;
@@ -68,13 +69,13 @@ public class MinieraService {
     public Material rollMaterial() {
         double chance = random.nextDouble() * 100;
         if (chance < miniera.getGoldProb()) {
-            return new Material("Lingotto d'Oro", 10);
+            return new Material(MaterialNames.GOLD, 10);
         }
         if (chance < miniera.getGoldProb() + miniera.getSilverProb()) {
-            return new Material("Lingotto d'Argento", 5);
+            return new Material(MaterialNames.SILVER, 5);
         }
         if (chance < miniera.getGoldProb() + miniera.getSilverProb() + miniera.getCopperProb()) {
-            return new Material("Lingotto di Rame", 2);
+            return new Material(MaterialNames.COPPER, 2);
         }
         return null;
     }
