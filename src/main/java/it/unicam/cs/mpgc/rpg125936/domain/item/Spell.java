@@ -38,6 +38,11 @@ public class Spell extends AbstractFightItem {
     }
 
     @Override
+    public boolean isConsumedAfterUse() {
+        return true;
+    }
+
+    @Override
     public Item copy() {
         return new Spell(getName(), getDamage(), getPrice());
     }

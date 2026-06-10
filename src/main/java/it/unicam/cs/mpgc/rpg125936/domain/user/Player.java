@@ -48,7 +48,12 @@ public class Player extends User{
         if(this.getLives()!=0){
             this.setLives(this.getLives()-1);
         }
+    }
 
+    public void handleDeath() {
+        int remainingLives = getLives() - 1;
+        setLives(remainingLives);
+        setHealth(remainingLives > 0 ? getHealthStatus().getInitialHealth() : 0);
     }
 
     public boolean isWorldUnlocked(String worldName) {

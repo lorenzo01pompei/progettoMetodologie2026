@@ -13,4 +13,8 @@ public interface FightItem extends Item {
     default boolean reduceDamage(double amount) {
         return false;
     }
+
+    default boolean isConsumedAfterUse() {
+        return false;
+    }
 }

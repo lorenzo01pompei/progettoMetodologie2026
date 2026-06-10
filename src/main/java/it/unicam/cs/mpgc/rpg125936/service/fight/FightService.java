@@ -2,7 +2,6 @@ package it.unicam.cs.mpgc.rpg125936.service.fight;
 
 import it.unicam.cs.mpgc.rpg125936.domain.item.FightItem;
 import it.unicam.cs.mpgc.rpg125936.domain.item.Item;
-import it.unicam.cs.mpgc.rpg125936.domain.item.Spell;
 import it.unicam.cs.mpgc.rpg125936.domain.user.Enemy;
 import it.unicam.cs.mpgc.rpg125936.domain.user.Player;
 
@@ -10,79 +9,54 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-///classe che gestisce il combattimento.
+/**
+ * Classe che gestisce il combattimento a turni tra un giocatore e un nemico.
+ */
 public class FightService {
 
-    private Random random;
-
-
+    private final Random random = new Random();
     private Player battlePlayer;
     private Enemy battleEnemy;
-
     private boolean active;
 
     public FightService() {
-        this.random = new Random();
     }
 
-    /**inizia una nuova sessione di combattimento
-     *
-     * @param player l'istanza del giocatore che sta per combattere.
-     * @param enemy  l'istanza del nemico da affrontare.
+    /**
+     * Avvia una nuova sessione di combattimento tra giocatore e nemico.
+     * @param player il giocatore che combatte
+     * @param enemy  il nemico da affrontare
      */
     public void startFight(Player player, Enemy enemy) {
-
         this.battlePlayer = player;
         this.battleEnemy = enemy;
-
         this.active = true;
     }
 
-    /**avvia un round di combattimento con l'arma scelta tra quelle nell'inventario.
+    /**
+     * Esegue un round di combattimento.
+     * <p>
+     * Fasi: attacca il giocatore con l'arma selezionata; se il nemico e ancora
+     * in vita, risponde il nemico.
      *
-     * @param inventoryIndex l'indice dell'arma nell'inventario del player da usare in questo turno.
-     * @return una stringa con il log del round, oppure null se il combattimento è terminato.
+     * @param inventoryIndex indice dell'arma nell'inventario del giocatore da usare
+     * @return log testuale del round, oppure {@code null} se il combattimento e terminato
      */
     public String playRound(int inventoryIndex) {
-        if (!active || battlePlayer.getHealthStatus().getHealth() <= 0 || battleEnemy.getHealthStatus().getHealth() <= 0) {
+        if (!active || isPlayerDead() || isEnemyDead()) {
             endFight();
             return null;
         }
 
         StringBuilder log = new StringBuilder();
-
-        //scelta arma
-        FightItem playerItem = null;
-        if (inventoryIndex >= 0 && inventoryIndex < battlePlayer.getInventory().size()) {
-            Item item = battlePlayer.getInventory().get(inventoryIndex);
-            if (item instanceof FightItem fi) {
-                playerItem = fi;
-            }
-        }
-
-        //turno player
-        if (playerItem != null) {
-            String msg = playerItem.useInFight(battleEnemy, battlePlayer.getName());
-            log.append(msg);
-        }
-
-        if (battleEnemy.getHealthStatus().getHealth() <= 0) {
+        executePlayerTurn(inventoryIndex, log);
+        if (isEnemyDead()) {
             endFight();
             return null;
         }
 
-        //turno enemy
-        FightItem enemyItem = getRandomFightItem(battleEnemy);
-        if (enemyItem != null) {
-            String msg = enemyItem.useInFight(battlePlayer, battleEnemy.getName());
-            log.append("\n").append(msg);
-
-            if (enemyItem instanceof Spell) {
-                battleEnemy.getInventory().remove(enemyItem);
-            }
-        }
-
-        if (battlePlayer.getHealthStatus().getHealth() <= 0) {
+        executeEnemyTurn(log);
+        if (isPlayerDead()) {
             endFight();
             return null;
         }
@@ -90,86 +64,89 @@ public class FightService {
         return log.toString();
     }
 
+    /// esegue il turno del giocatore: recupera l'arma dall'inventario e la usa contro il nemico
+    private void executePlayerTurn(int inventoryIndex, StringBuilder log) {
+        FightItem weapon = getPlayerWeapon(inventoryIndex);
+        if (weapon != null) {
+            log.append(weapon.useInFight(battleEnemy, battlePlayer.getName()));
+        }
+    }
+
+    /// esegue il turno del nemico: sceglie un'arma casuale dall'inventario, la usa contro il giocatore
+    /// e la rimuove se consumata (come gli incantesimi monouso)
+    private void executeEnemyTurn(StringBuilder log) {
+        FightItem weapon = getRandomEnemyWeapon();
+        if (weapon != null) {
+            log.append("\n").append(weapon.useInFight(battlePlayer, battleEnemy.getName()));
+            removeIfConsumed(weapon);
+        }
+    }
+
+    /// seleziona casualmente un FightItem dall'inventario del nemico
+    private FightItem getRandomEnemyWeapon() {
+        List<FightItem> weapons = new ArrayList<>();
+        for (Item item : battleEnemy.getInventory()) {
+            if (item instanceof FightItem fi) {
+                weapons.add(fi);
+            }
+        }
+        if (weapons.isEmpty()) return null;
+        return weapons.get(random.nextInt(weapons.size()));
+    }
+
+    /// recupera l'arma del giocatore dall'inventario in base all'indice,
+    /// restituisce null se l'indice e fuori range o l'item non e un FightItem
+    private FightItem getPlayerWeapon(int index) {
+        if (index < 0 || index >= battlePlayer.getInventory().size()) return null;
+        Item item = battlePlayer.getInventory().get(index);
+        return (item instanceof FightItem fi) ? fi : null;
+    }
+
+    /// rimuove dall'inventario nemico le armi che vanno consumate dopo l'uso
+    private void removeIfConsumed(FightItem weapon) {
+        if (weapon.isConsumedAfterUse()) {
+            battleEnemy.getInventory().remove(weapon);
+        }
+    }
+
     /**
-     * Termina la sessione di combattimento in corso.
-     * Se il player è morto, scala una vita e ripristina la salute (se ha ancora vite).
-     * Le statistiche del nemico non vengono sincronizzate,
-     * permettendo il ripristino al riavvio del combattimento.
+     * Termina la sessione di combattimento.
+     * Se il giocatore e morto, ne gestisce la perdita di una vita tramite {@link Player#handleDeath()}.
+     * Se il nemico e morto, azzera i suoi HP per segnalarne la sconfitta.
      */
     private void endFight() {
         this.active = false;
-
-
-        if (battlePlayer.getHealthStatus().getHealth() <= 0) {
-            int remainingLife=battlePlayer.getLives()-1;
-            battlePlayer.setLives(remainingLife);
-            if (remainingLife > 0) {
-                battlePlayer.setHealth(100);
-            } else {
-                battlePlayer.setHealth(0);
-            }
+        if (isPlayerDead()) {
+            battlePlayer.handleDeath();
         }
-
-        if(battlePlayer.getHealthStatus().getLives()==0){
-            battlePlayer.setHealth(0);
+        if (isEnemyDead()) {
+            battleEnemy.getHealthStatus().setHealth(0);
         }
+    }
 
-        if (battleEnemy.getHealthStatus().getHealth() <= 0) {
-            battleEnemy.setHealth(0);
-        }
+    /// true se il giocatore non ha piu HP
+    private boolean isPlayerDead() {
+        return battlePlayer.getHealthStatus().getHealth() <= 0;
+    }
 
-
-
+    /// true se il nemico non ha piu HP
+    private boolean isEnemyDead() {
+        return battleEnemy.getHealthStatus().getHealth() <= 0;
     }
 
     /**
-     * Seleziona casualmente un oggetto di tipo FightItem dall'inventario del nemico.
-     *
-     * @param enemy Il nemico da cui estrarre l'arma.
-     * @return Il FightItem scelto casualmente, oppure null se il nemico non ha item.
-     */
-    private FightItem getRandomFightItem(Enemy enemy) {
-        List<FightItem> fightItems = new ArrayList<>();
-        for (Item item : enemy.getInventory()) {
-            if (item instanceof FightItem) {
-                fightItems.add((FightItem) item);
-            }
-        }
-
-        // L'enemy non ha armi per combattere
-        if (fightItems.isEmpty()) {
-            return null;
-        }
-
-        //scelta casuale dell'arma
-        int index = random.nextInt(fightItems.size());
-        return fightItems.get(index);
-    }
-
-    /**
-     * Restituisce l'istanza clonata del Player che sta attualmente combattendo.
-     * @return Il battlePlayer.
+     * Restituisce l'istanza del giocatore che sta combattendo,
+     * utile al controller per leggere HP e vite aggiornati.
      */
     public Player getBattlePlayer() {
         return battlePlayer;
     }
 
     /**
-     * Restituisce l'istanza clonata dell'Enemy che sta attualmente combattendo.
-     * @return Il battleEnemy.
+     * Restituisce l'istanza del nemico che sta combattendo,
+     * utile al controller per leggere HP aggiornati.
      */
     public Enemy getBattleEnemy() {
         return battleEnemy;
     }
-
-    /**
-     * Restituisce l'istanza originale del nemico affrontato.
-     * Utile per accedere al loot (inventario) dopo la sconfitta.
-     *
-     * @return il nemico originale (non clonato)
-
-    public Enemy getOriginalEnemy() {
-        return originalEnemy;
-    }
-*/
 }
