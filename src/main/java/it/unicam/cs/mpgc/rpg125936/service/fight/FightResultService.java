@@ -31,6 +31,9 @@ public class FightResultService {
 
     public Player handleGiveUp(Player player) {
         player.decreaseLives();
+        if (player.getLives() <= 0) {
+            player.setHealth(0);
+        }
         return playerRepository.save(player);
     }
 }

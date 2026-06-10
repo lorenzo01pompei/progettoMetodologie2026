@@ -37,3 +37,15 @@ create local temporary table HT_Users(id bigint not null, primary key (id)) [421
 2026-06-11 00:34:51.714437+02:00 jdbc[3]: exception
 org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "HT_USERS" already exists; SQL statement:
 create local temporary table HT_Users(id bigint not null, primary key (id)) [42101-224]
+2026-06-11 00:58:37.436497+02:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "HT_USERS" already exists; SQL statement:
+create local temporary table HT_Users(id bigint not null, primary key (id)) [42101-224]
+2026-06-11 01:00:23.090639+02:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "HT_USERS" already exists; SQL statement:
+create local temporary table HT_Users(id bigint not null, primary key (id)) [42101-224]
+2026-06-11 01:02:25.244276+02:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "HT_USERS" already exists; SQL statement:
+create local temporary table HT_Users(id bigint not null, primary key (id)) [42101-224]
+2026-06-11 01:03:32.933410+02:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "HT_USERS" already exists; SQL statement:
+create local temporary table HT_Users(id bigint not null, primary key (id)) [42101-224]

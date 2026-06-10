@@ -8,14 +8,14 @@ package it.unicam.cs.mpgc.rpg125936.service.shop;
 public class SellDTO {
     private final boolean result;
     private final String message;
-    private final double money;
+    private final int money;
 
     /**
      * @param result  true se la vendita è andata a buon fine
      * @param message messaggio descrittivo per l'utente
      * @param money   denaro guadagnato dalla vendita
      */
-    public SellDTO(boolean result, String message, double money) {
+    public SellDTO(boolean result, String message, int money) {
         this.result = result;
         this.message = message;
         this.money = money;
@@ -28,5 +28,5 @@ public class SellDTO {
     public String getMessage() { return message; }
 
     /** @return denaro guadagnato dalla vendita */
-    public double getMoney() { return money; }
+    public int getMoney() { return money; }
 }

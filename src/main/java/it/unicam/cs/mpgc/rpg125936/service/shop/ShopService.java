@@ -1,6 +1,7 @@
 package it.unicam.cs.mpgc.rpg125936.service.shop;
 
 import it.unicam.cs.mpgc.rpg125936.domain.material.Material;
+import it.unicam.cs.mpgc.rpg125936.domain.shop.Offer;
 import it.unicam.cs.mpgc.rpg125936.domain.shop.Shop;
 import it.unicam.cs.mpgc.rpg125936.domain.shop.SpellOffer;
 import it.unicam.cs.mpgc.rpg125936.domain.shop.ToolOffer;
@@ -45,69 +46,70 @@ public class ShopService {
     }
 
     /**
-     * Restituisce la lista di strumenti acquistabili nel negozio.
+     * Restituisce la lista di incantesimi acquistabili nel negozio.
      *
-     * @return lista immutabile di {@link ToolOffer}
+     * @return lista di {@link SpellOffer}
      */
     public List<SpellOffer> getSpellCatalog() {
         return shop.getSpells();
     }
 
-    /**
-     * Restituisce la legenda per la conversione dei materiali in monete.
-     *
-     * @return mappa (nome materiale &rarr; valore unitario in monete)
-     */
-    public Map<String, Integer> getMaterialPrice() {
-        return shop.getMaterialPrices();
-    }
 
     /**
-     * Acquista un'arma per il giocatore.
+     * Delega a buyOffer l'acquisto di un'arma per il giocatore.
      *
-     * @param player   il giocatore acquirente
-     * @param weaponId id dell'arma da acquistare
+     * @param player il giocatore acquirente
+     * @param offer  offerta dell'arma da acquistare
      * @return {@link PurchaseDTO} con esito e messaggio descrittivo
      */
     public PurchaseDTO buyWeapon(Player player, WeaponOffer offer) {
-        if (player.getMoney() < offer.getPrice()) {
-            return new PurchaseDTO(false, "Soldi insufficienti. Servono " + offer.getPrice() + " monete.");
-        }
-        player.addMoney(-offer.getPrice());
-        player.addItem(offer.createItem());
-        return new PurchaseDTO(true, "Hai acquistato " + offer.getName() + " per " + offer.getPrice() + " monete.");
+        return buyOffer(player, offer, "arma");
     }
 
+    /**
+     * Delega a buyOffer l'acquisto di un incantesimo per il giocatore.
+     *
+     * @param player il giocatore acquirente
+     * @param offer  offerta dell'incantesimo da acquistare
+     * @return {@link PurchaseDTO} con esito e messaggio descrittivo
+     */
     public PurchaseDTO buySpell(Player player, SpellOffer offer) {
-        if (player.getMoney() < offer.getPrice()) {
-            return new PurchaseDTO(false, "Soldi insufficienti. Servono " + offer.getPrice() + " monete.");
-        }
-        player.addMoney(-offer.getPrice());
-        player.addItem(offer.createItem());
-        return new PurchaseDTO(true, "Hai acquistato " + offer.getName() + " per " + offer.getPrice() + " monete.");
+        return buyOffer(player, offer, "incantesimo");
     }
 
+    /**
+     * Delega a buyOffer l'acquisto di uno strumento per il giocatore.
+     *
+     * @param player il giocatore acquirente
+     * @param offer  offerta dello strumento da acquistare
+     * @return {@link PurchaseDTO} con esito e messaggio descrittivo
+     */
     public PurchaseDTO buyTool(Player player, ToolOffer offer) {
+        return buyOffer(player, offer, "strumento");
+    }
+
+    /// esegue l'acquisto effettivo: verifica il saldo, scala il denaro e aggiunge l'item al player
+    private PurchaseDTO buyOffer(Player player, Offer offer, String tipo) {
         if (player.getMoney() < offer.getPrice()) {
             return new PurchaseDTO(false, "Soldi insufficienti. Servono " + offer.getPrice() + " monete.");
         }
         player.addMoney(-offer.getPrice());
         player.addItem(offer.createItem());
-        return new PurchaseDTO(true, "Hai acquistato " + offer.getName() + " per " + offer.getPrice() + " monete.");
+        return new PurchaseDTO(true, "Hai acquistato " + offer.getName() + " (" + tipo + ") per " + offer.getPrice() + " monete.");
     }
 
     /**
      * Acquista una vita per il giocatore.
      *
      * @param player  il giocatore acquirente
-     * @return @PurchaseDTO con esito e messaggio descrittivo
+     * @return {@link PurchaseDTO} con esito e messaggio descrittivo
      */
     public PurchaseDTO buyLives(Player player) {
         int price = player.getHealthStatus().getLivesPrice();
         if (player.getMoney() < price) {
             return new PurchaseDTO(false, "Soldi insufficienti. Servono " + price + " monete.");
         }
-        if(player.getLives()<3){
+        if (player.getLives() < Player.MAX_LIVES) {
             player.addMoney(-price);
             player.setLives(player.getLives()+1);
             return new PurchaseDTO(true, "Hai acquistato una vita per " + price + " monete.");
@@ -116,17 +118,17 @@ public class ShopService {
         }
     }
 
-    /**Rigenera la vita del player.
+    /** Rigenera la salute del player.
      *
      * @param player  il giocatore acquirente
-     * @return @PurchaseDTO con esito e messaggio descrittivo
+     * @return {@link PurchaseDTO} con esito e messaggio descrittivo
      */
     public PurchaseDTO refillLife(Player player) {
         int price = player.getHealthStatus().getHpPrice();
         if (player.getMoney() < price) {
             return new PurchaseDTO(false, "Soldi insufficienti. Servono " + price + " monete.");
         }
-        if(price>0){
+        if (price > 0) {
             player.addMoney(-price);
             player.setHealth(player.getHealthStatus().getInitialHealth());
             return new PurchaseDTO(true, "Hai ripristinato la salute per " + price + " monete.");
@@ -135,7 +137,7 @@ public class ShopService {
         }
     }
 
-    /**vende tutti i materiali in possesso del player.
+    /** Vende tutti i materiali in possesso del player.
      *
      * @param player       il giocatore venditore
      * @return {@link SellDTO} con esito, messaggio e importo guadagnato
@@ -156,8 +158,8 @@ public class ShopService {
         return new SellDTO(true, "Materiali venduti per: " + earned + " monete.", earned);
     }
 
-    ///calcola il valore di una lista di materiali
-    private int calculateMaterialValue(String materialName, int quantity){
+    /// calcola il valore di una lista di materiali
+    private int calculateMaterialValue(String materialName, int quantity) {
         int materialPrice = shop.getMaterialPrices().get(materialName);
         return quantity * materialPrice;
     }

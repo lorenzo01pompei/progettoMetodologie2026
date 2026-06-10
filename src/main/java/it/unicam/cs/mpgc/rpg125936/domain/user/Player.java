@@ -17,6 +17,8 @@ import java.util.Set;
 @Table(name="players")
 public class Player extends User{
 
+    public static final int MAX_LIVES = 3;
+
     @Column(name = "money")
     private double money;
 
