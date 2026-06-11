@@ -8,9 +8,7 @@ import it.unicam.cs.mpgc.rpg125936.domain.shop.Shop;
 import it.unicam.cs.mpgc.rpg125936.domain.shop.SpellOffer;
 import it.unicam.cs.mpgc.rpg125936.domain.shop.ToolOffer;
 import it.unicam.cs.mpgc.rpg125936.domain.shop.WeaponOffer;
-import it.unicam.cs.mpgc.rpg125936.repository.GunRepository;
-import it.unicam.cs.mpgc.rpg125936.repository.PickaxeRepository;
-import it.unicam.cs.mpgc.rpg125936.repository.SpellRepository;
+import it.unicam.cs.mpgc.rpg125936.repository.ItemRepository;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -23,13 +21,6 @@ import java.util.Map;
  */
 public class ShopInitializer {
 
-    /// prezzo di vendita per unità di oro
-    private static final int GOLD_PRICE = 10;
-    /// prezzo di vendita per unità di argento
-    private static final int SILVER_PRICE = 5;
-    /// prezzo di vendita per unità di rame
-    private static final int COPPER_PRICE = 2;
-
     /**
      * Crea e restituisce un negozio completo di tutte le offerte e i listini prezzi.
      *
@@ -39,42 +30,39 @@ public class ShopInitializer {
         return new Shop(loadWeapons(), loadTools(), loadSpells(), loadMaterialPrices());
     }
 
-    /// carica dal database tutte le armi e le trasforma in WeaponOffer
+    /// carica dal database le armi del catalogo e le trasforma in WeaponOffer
     private List<WeaponOffer> loadWeapons() {
-        GunRepository repo = new GunRepository();
         List<WeaponOffer> result = new ArrayList<>();
-        for (Gun g : repo.findAll()) {
+        for (Gun g : new ItemRepository<>(Gun.class).findCatalog()) {
             result.add(new WeaponOffer(g.getId(), g.getName(), g.getDamage(), g.getPrice()));
         }
         return result;
     }
 
-    /// carica dal database tutti gli strumenti e li trasforma in ToolOffer
+    /// carica dal database gli strumenti del catalogo e li trasforma in ToolOffer
     private List<ToolOffer> loadTools() {
-        PickaxeRepository repo = new PickaxeRepository();
         List<ToolOffer> result = new ArrayList<>();
-        for (Pickaxe p : repo.findAll()) {
+        for (Pickaxe p : new ItemRepository<>(Pickaxe.class).findCatalog()) {
             result.add(new ToolOffer(p.getId(), p.getName(), p.getDurability(), p.getPrice()));
         }
         return result;
     }
 
-    /// carica dal database tutti gli incantesimi e li trasforma in SpellOffer
+    /// carica dal database gli incantesimi del catalogo e li trasforma in SpellOffer
     private List<SpellOffer> loadSpells() {
-        SpellRepository repo = new SpellRepository();
         List<SpellOffer> result = new ArrayList<>();
-        for (Spell s : repo.findAll()) {
+        for (Spell s : new ItemRepository<>(Spell.class).findCatalog()) {
             result.add(new SpellOffer(s.getId(), s.getName(), s.getDamage(), s.getPrice()));
         }
         return result;
     }
 
-    /// costruisce la mappa (nome materiale → prezzo unitario) per la vendita dei materiali
+    /// costruisce la mappa (nome materiale → prezzo unitario) iterando sull'enum MaterialNames
     private Map<String, Integer> loadMaterialPrices() {
         Map<String, Integer> prices = new LinkedHashMap<>();
-        prices.put(MaterialNames.GOLD, GOLD_PRICE);
-        prices.put(MaterialNames.SILVER, SILVER_PRICE);
-        prices.put(MaterialNames.COPPER, COPPER_PRICE);
+        for (MaterialNames m : MaterialNames.values()) {
+            prices.put(m.getDisplayName(), m.getValue());
+        }
         return prices;
     }
 }

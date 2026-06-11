@@ -14,10 +14,6 @@ import java.util.Random;
  */
 public class MinieraService {
 
-    private static final int GOLD_VALUE = 10;
-    private static final int SILVER_VALUE = 5;
-    private static final int COPPER_VALUE = 2;
-
     private final Random random;
     private final Miniera miniera;
 
@@ -73,13 +69,13 @@ public class MinieraService {
     public Material rollMaterial() {
         double chance = random.nextDouble() * 100;
         if (chance < miniera.getGoldProb()) {
-            return new Material(MaterialNames.GOLD, GOLD_VALUE);
+            return new Material(MaterialNames.GOLD.getDisplayName(), MaterialNames.GOLD.getValue());
         }
         if (chance < miniera.getGoldProb() + miniera.getSilverProb()) {
-            return new Material(MaterialNames.SILVER, SILVER_VALUE);
+            return new Material(MaterialNames.SILVER.getDisplayName(), MaterialNames.SILVER.getValue());
         }
         if (chance < miniera.getGoldProb() + miniera.getSilverProb() + miniera.getCopperProb()) {
-            return new Material(MaterialNames.COPPER, COPPER_VALUE);
+            return new Material(MaterialNames.COPPER.getDisplayName(), MaterialNames.COPPER.getValue());
         }
         return null;
     }

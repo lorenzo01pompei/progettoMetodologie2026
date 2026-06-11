@@ -3,6 +3,7 @@ package it.unicam.cs.mpgc.rpg125936.controller;
 import it.unicam.cs.mpgc.rpg125936.repository.HibernateUtil;
 import it.unicam.cs.mpgc.rpg125936.repository.PlayerRepository;
 import it.unicam.cs.mpgc.rpg125936.service.game.GameSetupService;
+import it.unicam.cs.mpgc.rpg125936.service.game.SaveGameService;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import org.hibernate.Session;
@@ -42,10 +43,10 @@ public class MenuController {
         loadGameView();
     }
 
-    ///carica i salvataggi da GameSetupService e invoca la game view per portare il player alla lobby
+    ///carica i salvataggi tramite SaveGameService e invoca la game view per portare il player alla lobby
     @FXML
     private void handleContinue() {
-        GameSetupService.loadFromSave();
+        new SaveGameService().loadFromSave(GameSetupService.getInstance());
         loadGameView();
     }
 

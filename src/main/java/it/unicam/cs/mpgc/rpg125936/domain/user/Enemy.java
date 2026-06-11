@@ -40,4 +40,13 @@ public class Enemy extends User {
     public void setWorldName(String worldName) {
         this.worldName = worldName;
     }
+
+    /**
+     * Equipaggia il nemico con gli item di default per il suo tipo.
+     * Le sottoclassi sovrascrivono questo metodo per definire il proprio loadout,
+     * eliminando la necessità di type-switch nel layer di servizio (OCP).
+     */
+    public void equipDefault() {
+        // nessun equipaggiamento di default
+    }
 }

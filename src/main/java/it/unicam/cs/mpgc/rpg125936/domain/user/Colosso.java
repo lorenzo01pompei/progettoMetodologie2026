@@ -1,11 +1,12 @@
 package it.unicam.cs.mpgc.rpg125936.domain.user;
 
+import it.unicam.cs.mpgc.rpg125936.repository.ItemRegistry;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 
 /**
- * Nemico di tipo Colosso. Ha salute alta media e viene equipaggiato
- * dal WorldInitializer con una singola arma pesante.
+ * Nemico di tipo Colosso. Ha salute alta.
+ * Si equipaggia autonomamente con una singola arma pesante.
  */
 @Entity
 @DiscriminatorValue("COLOSSO")
@@ -19,4 +20,9 @@ public class Colosso extends Enemy {
     }
 
     public Colosso(){}
+
+    @Override
+    public void equipDefault() {
+        addItem(ItemRegistry.getRandomGun());
+    }
 }

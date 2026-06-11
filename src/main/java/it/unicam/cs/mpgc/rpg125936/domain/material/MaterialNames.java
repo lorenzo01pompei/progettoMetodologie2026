@@ -1,11 +1,31 @@
 package it.unicam.cs.mpgc.rpg125936.domain.material;
 
 /**
- * Costanti con i nomi dei materiali utilizzabili nel gioco.
+ * Enum dei materiali estraibili nel gioco.
+ * Ogni costante accoppia il nome visualizzato al giocatore con il valore
+ * base in monete, eliminando la duplicazione tra MinieraService e ShopInitializer.
  */
-public final class MaterialNames {
-    public static final String GOLD = "Lingotto d'Oro";
-    public static final String SILVER = "Lingotto d'Argento";
-    public static final String COPPER = "Lingotto di Rame";
-    private MaterialNames() {}
+public enum MaterialNames {
+
+    GOLD("Lingotto d'Oro", 10),
+    SILVER("Lingotto d'Argento", 5),
+    COPPER("Lingotto di Rame", 2);
+
+    private final String displayName;
+    private final int value;
+
+    MaterialNames(String displayName, int value) {
+        this.displayName = displayName;
+        this.value = value;
+    }
+
+    /** @return il nome visualizzato al giocatore (es. "Lingotto d'Oro") */
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    /** @return il valore base in monete del materiale */
+    public int getValue() {
+        return value;
+    }
 }

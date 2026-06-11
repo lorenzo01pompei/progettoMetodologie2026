@@ -1,11 +1,12 @@
 package it.unicam.cs.mpgc.rpg125936.domain.user;
 
+import it.unicam.cs.mpgc.rpg125936.repository.ItemRegistry;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 
 /**
- * Nemico di tipo Boss. Ha salute molto alta e viene equipaggiato
- * da WorldInitializer con 2 armi e un incantesimo.
+ * Nemico di tipo Boss. Ha salute molto alta.
+ * Si equipaggia autonomamente con 2 armi da fuoco e un incantesimo.
  */
 @Entity
 @DiscriminatorValue("BOSS")
@@ -19,4 +20,11 @@ public class Boss extends Enemy {
     }
 
     public Boss(){}
+
+    @Override
+    public void equipDefault() {
+        addItem(ItemRegistry.getRandomGun());
+        addItem(ItemRegistry.getRandomGun());
+        addItem(ItemRegistry.getRandomSpell());
+    }
 }
