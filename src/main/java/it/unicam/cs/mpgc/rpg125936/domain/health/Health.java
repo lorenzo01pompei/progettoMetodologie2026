@@ -4,10 +4,9 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 
 /**
- * Gestisce i punti vita e le vite di un giocatore/nemico.
+ * Gestisce i punti vita e le vite di un player e dell'enemy.
  * Tiene traccia della salute corrente, della salute iniziale (per calcolare i costi di cura)
- * e del numero di vite rimanenti. Fornisce metodi per subire danno e calcolare il prezzo
- * del recupero, separando la logica di salute dalla logica di gioco.
+ * e del numero di vite rimanenti. Fornisce metodi per subire danno e calcolare il prezzo del recupero
  */
 @Embeddable
 public class Health {

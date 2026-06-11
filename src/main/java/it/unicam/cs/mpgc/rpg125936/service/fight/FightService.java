@@ -35,7 +35,6 @@ public class FightService {
 
     /**
      * Esegue un round di combattimento.
-     * <p>
      * Fasi: attacca il giocatore con l'arma selezionata; se il nemico e ancora
      * in vita, risponde il nemico.
      *
@@ -65,20 +64,22 @@ public class FightService {
     }
 
     /// esegue il turno del giocatore: recupera l'arma dall'inventario e la usa contro il nemico
+    /// e la rimuove se consumata (incantesimi monouso)
     private void executePlayerTurn(int inventoryIndex, StringBuilder log) {
         FightItem weapon = getPlayerWeapon(inventoryIndex);
         if (weapon != null) {
             log.append(weapon.useInFight(battleEnemy, battlePlayer.getName()));
+            removeIfConsumed(weapon, battlePlayer);
         }
     }
 
     /// esegue il turno del nemico: sceglie un'arma casuale dall'inventario, la usa contro il giocatore
-    /// e la rimuove se consumata (come gli incantesimi monouso)
+    /// e la rimuove se consumata (incantesimi monouso)
     private void executeEnemyTurn(StringBuilder log) {
         FightItem weapon = getRandomEnemyWeapon();
         if (weapon != null) {
             log.append("\n").append(weapon.useInFight(battlePlayer, battleEnemy.getName()));
-            removeIfConsumed(weapon);
+            removeIfConsumed(weapon, battleEnemy);
         }
     }
 
@@ -102,16 +103,16 @@ public class FightService {
         return (item instanceof FightItem fi) ? fi : null;
     }
 
-    /// rimuove dall'inventario nemico le armi che vanno consumate dopo l'uso
-    private void removeIfConsumed(FightItem weapon) {
+    /// rimuove dall'inventario le armi che vanno consumate dopo l'uso
+    private void removeIfConsumed(FightItem weapon, it.unicam.cs.mpgc.rpg125936.domain.user.User user) {
         if (weapon.isConsumedAfterUse()) {
-            battleEnemy.getInventory().remove(weapon);
+            user.getInventory().remove(weapon);
         }
     }
 
     /**
      * Termina la sessione di combattimento.
-     * Se il giocatore e morto, ne gestisce la perdita di una vita tramite {@link Player#handleDeath()}.
+     * Se il giocatore e morto, ne delega la perdita di una vita
      * Se il nemico e morto, azzera i suoi HP per segnalarne la sconfitta.
      */
     private void endFight() {

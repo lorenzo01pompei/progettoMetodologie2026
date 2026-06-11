@@ -1,6 +1,6 @@
 package it.unicam.cs.mpgc.rpg125936.service.game;
 
-import it.unicam.cs.mpgc.rpg125936.domain.location.Mondo;
+import it.unicam.cs.mpgc.rpg125936.domain.location.World;
 import it.unicam.cs.mpgc.rpg125936.domain.user.Enemy;
 import it.unicam.cs.mpgc.rpg125936.repository.EnemyRepository;
 import it.unicam.cs.mpgc.rpg125936.repository.HibernateUtil;
@@ -15,20 +15,20 @@ public class WorldInitializer {
     private final EnemyRepository enemyRepository = new EnemyRepository();
 
     /**
-     * Inizializza il mondo con i suoi nemici.
-     * Se esistono nemici persistiti per questo mondo li carica dal DB;
+     * Inizializza il world con i suoi nemici.
+     * Se esistono nemici persistiti per questo world li carica dal DB;
      * altrimenti crea i nemici di default, li equipaggia e li salva.
      *
-     * @param mondo il mondo da inizializzare
+     * @param world il world da inizializzare
      */
-    public void init(Mondo mondo) {
-        List<Enemy> existsEnemies = enemyRepository.findByWorld(mondo.getName());
+    public void init(World world) {
+        List<Enemy> existsEnemies = enemyRepository.findByWorld(world.getName());
         if (!existsEnemies.isEmpty()) {
-            mondo.setEnemies(existsEnemies);
+            world.setEnemies(existsEnemies);
         } else {
-            List<Enemy> defaultEnemies = mondo.createDefaultEnemies();
-            persistEnemies(defaultEnemies, mondo.getName());
-            mondo.setEnemies(defaultEnemies);
+            List<Enemy> defaultEnemies = world.createDefaultEnemies();
+            saveEnemies(defaultEnemies, world.getName());
+            world.setEnemies(defaultEnemies);
         }
     }
 
@@ -37,9 +37,9 @@ public class WorldInitializer {
      * Prima del salvataggio ogni nemico viene equipaggiato tramite equipDefault()
      *
      * @param enemies   nemici da salvare
-     * @param worldName nome del mondo a cui appartengono
+     * @param worldName nome del world a cui appartengono
      */
-    private void persistEnemies(List<Enemy> enemies, String worldName) {
+    private void saveEnemies(List<Enemy> enemies, String worldName) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             Transaction t = session.beginTransaction();
 

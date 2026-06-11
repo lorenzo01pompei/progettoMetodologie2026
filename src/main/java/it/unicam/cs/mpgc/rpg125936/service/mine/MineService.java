@@ -1,6 +1,6 @@
 package it.unicam.cs.mpgc.rpg125936.service.mine;
 
-import it.unicam.cs.mpgc.rpg125936.domain.location.Miniera;
+import it.unicam.cs.mpgc.rpg125936.domain.location.Mine;
 import it.unicam.cs.mpgc.rpg125936.domain.item.Item;
 import it.unicam.cs.mpgc.rpg125936.domain.item.Pickaxe;
 import it.unicam.cs.mpgc.rpg125936.domain.material.Material;
@@ -9,28 +9,25 @@ import it.unicam.cs.mpgc.rpg125936.domain.user.Player;
 
 import java.util.Random;
 
-/**classe di servizio che gestisce l'azione di scavo nella Miniera.
- * Restituisce oggetti @MiningResultDTOcon l'esito dell'operazione.
- */
-public class MinieraService {
+/// classe che delega l'azione di scavo nella Mine.
+
+public class MineService {
 
     private final Random random;
-    private final Miniera miniera;
+    private final Mine mine;
 
-    /**crea un servizio associato a una specifica miniera.
-     * @param miniera la miniera in cui si svolge l'azione di scavo
-     */
-    public MinieraService(Miniera miniera) {
+
+    public MineService(Mine mine) {
         this.random = new Random();
-        this.miniera = miniera;
+        this.mine = mine;
     }
 
-    /**esegue un'azione di scavo: cerca un piccone nell'inventario del giocatore,
+    /**esegue uno scavo: cerca un piccone nell'inventario del giocatore,
      * lo consuma di un'unità di durabilità e cerca di ottenere un materiale.
      *
      * @param player il giocatore che esegue lo scavo
      * @return MiningResultDTO contenente esito, messaggio descrittivo, materiale trovato (se presente)
-     *         e durabilità residua del piccone
+     * e durabilità rimasta del piccone
      */
     public MiningResultDTO dig(Player player) {
         Pickaxe tool = findPickaxe(player);
@@ -38,17 +35,28 @@ public class MinieraService {
             return new MiningResultDTO(false, "Non hai un piccone utilizzabile! Torna alla Lobby per comprarne uno.", null, 0);
         }
 
-        if(tool.interact(miniera)){
+        if (tool.interact(mine)) {
             Material found = rollMaterial();
+            String message = (found != null) ? "Hai trovato " + found.getName() : "Nulla di fatto, solo sassi...";
+            
             if (found != null) {
                 player.addMaterial(found);
-                return new MiningResultDTO(true, "Hai trovato " + found.getName() + "\nUtilizzi piccone rimasti: "+tool.getDurability(), found, tool.getDurability());
             }
-        };
-        return new MiningResultDTO(true, "Nulla di fatto, solo sassi...\nUtilizzi piccone rimasti: "+tool.getDurability(), null, tool.getDurability());
+
+            if (tool.getDurability() <= 0) {
+                player.getInventory().remove(tool);
+                message += "\nIl tuo piccone si è rotto!";
+            } else {
+                message += "\nUtilizzi piccone rimasti: " + tool.getDurability();
+            }
+
+            return new MiningResultDTO(true, message, found, tool.getDurability());
+        }
+        
+        return new MiningResultDTO(false, "Non è stato possibile scavare.", null, tool.getDurability());
     }
 
-    /**cerca un piccone con durabilità residua nell'inventario del giocatore.
+    /**cerca un piccone con ancora della durabilità rimasta nell'inventario del giocatore.
      *
      * @param player il giocatore
      * @return il primo piccone utilizzabile trovato, oppure null se non c'è
@@ -68,13 +76,13 @@ public class MinieraService {
      */
     public Material rollMaterial() {
         double chance = random.nextDouble() * 100;
-        if (chance < miniera.getGoldProb()) {
+        if (chance < mine.getGoldProb()) {
             return new Material(MaterialNames.GOLD.getDisplayName(), MaterialNames.GOLD.getValue());
         }
-        if (chance < miniera.getGoldProb() + miniera.getSilverProb()) {
+        if (chance < mine.getGoldProb() + mine.getSilverProb()) {
             return new Material(MaterialNames.SILVER.getDisplayName(), MaterialNames.SILVER.getValue());
         }
-        if (chance < miniera.getGoldProb() + miniera.getSilverProb() + miniera.getCopperProb()) {
+        if (chance < mine.getGoldProb() + mine.getSilverProb() + mine.getCopperProb()) {
             return new Material(MaterialNames.COPPER.getDisplayName(), MaterialNames.COPPER.getValue());
         }
         return null;

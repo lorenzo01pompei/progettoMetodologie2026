@@ -7,17 +7,16 @@ import java.util.List;
 
 /**
  * Location di combattimento. Ogni mondo concreto (Mondo1, Mondo2, Mondo3)
- * definisce la propria miniera; i nemici possono essere configurati sovrascrivendo
- * {@link #createDefaultEnemies()} (di default ritorna lista vuota).
+ * definisce la propria miniera con le proprie probabilità e caricando i propri nemici
  */
-public abstract class Mondo implements GameLocation {
+public abstract class World implements GameLocation {
 
     private final String name;
     private boolean unlocked;
     private List<Enemy> enemies;
-    private Miniera miniera;
+    private Mine mine;
 
-    public Mondo(String name, boolean isUnlocked) {
+    public World(String name, boolean isUnlocked) {
         this.name = name;
         this.unlocked = isUnlocked;
         this.enemies = new ArrayList<>();
@@ -31,6 +30,7 @@ public abstract class Mondo implements GameLocation {
         this.unlocked = unlocked;
     }
 
+
     public List<Enemy> getEnemies() {
         return enemies;
     }
@@ -39,12 +39,12 @@ public abstract class Mondo implements GameLocation {
         this.enemies = new ArrayList<>(enemies);
     }
 
-    public Miniera getMiniera() {
-        return miniera;
+    public Mine getMine() {
+        return mine;
     }
 
-    protected void setMiniera(Miniera miniera) {
-        this.miniera = miniera;
+    protected void setMine(Mine mine) {
+        this.mine = mine;
     }
 
     @Override

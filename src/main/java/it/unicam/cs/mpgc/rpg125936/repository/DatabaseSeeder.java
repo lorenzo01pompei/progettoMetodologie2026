@@ -12,7 +12,6 @@ public class DatabaseSeeder {
     /**
      * cancella i dati esistenti e reinserisce gli item di default
      * all'interno di un'unica transazione.
-     * In caso di errore la transazione viene annullata e viene lanciata una RuntimeException.
      */
     public static void seed() {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {

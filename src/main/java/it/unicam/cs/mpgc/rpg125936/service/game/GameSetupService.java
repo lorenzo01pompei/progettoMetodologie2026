@@ -1,10 +1,10 @@
 package it.unicam.cs.mpgc.rpg125936.service.game;
 
 import it.unicam.cs.mpgc.rpg125936.domain.location.Lobby;
-import it.unicam.cs.mpgc.rpg125936.domain.location.Mondo;
-import it.unicam.cs.mpgc.rpg125936.domain.location.Mondo1;
-import it.unicam.cs.mpgc.rpg125936.domain.location.Mondo2;
-import it.unicam.cs.mpgc.rpg125936.domain.location.Mondo3;
+import it.unicam.cs.mpgc.rpg125936.domain.location.World;
+import it.unicam.cs.mpgc.rpg125936.domain.location.World1;
+import it.unicam.cs.mpgc.rpg125936.domain.location.World2;
+import it.unicam.cs.mpgc.rpg125936.domain.location.World3;
 import it.unicam.cs.mpgc.rpg125936.domain.user.Player;
 import it.unicam.cs.mpgc.rpg125936.service.shop.ShopInitializer;
 
@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Service singleton che gestisce la configurazione iniziale del gioco.
+ * Classe singleton che gestisce la configurazione iniziale del gioco.
  * Crea il giocatore, la lobby con lo shop e tutti i mondi,
  * inizializzando ciascuno con i propri nemici e miniere.
  */
@@ -22,7 +22,7 @@ public class GameSetupService {
 
     private Player player;
     private final Lobby lobby;
-    private final List<Mondo> worlds;
+    private final List<World> worlds;
 
     /// Inizializza shop, lobby, player di default e chiama initWorlds().
 
@@ -38,22 +38,20 @@ public class GameSetupService {
 
     private void initWorlds() {
         WorldInitializer initializer = new WorldInitializer();
-        Mondo mondo1 = new Mondo1(true);
-        Mondo mondo2 = new Mondo2(true);
-        Mondo mondo3 = new Mondo3(true);
-        initializer.init(mondo1);
-        initializer.init(mondo2);
-        initializer.init(mondo3);
-        worlds.add(mondo1);
-        worlds.add(mondo2);
-        worlds.add(mondo3);
+        World world1 = new World1(true);
+        World world2 = new World2(true);
+        World world3 = new World3(true);
+        initializer.init(world1);
+        initializer.init(world2);
+        initializer.init(world3);
+        worlds.add(world1);
+        worlds.add(world2);
+        worlds.add(world3);
     }
 
     /**
      * Restituisce l'istanza di GameSetupService,
      * creandola se necessario
-     *
-     * @return istanza singleton di GameSetupService
      */
     public static GameSetupService getInstance() {
         if (instance == null) {
@@ -70,9 +68,7 @@ public class GameSetupService {
         instance = new GameSetupService();
     }
 
-    /**
-     * @return il giocatore corrente
-     */
+
     public Player getPlayer() {
         return player;
     }
@@ -80,24 +76,16 @@ public class GameSetupService {
     /**
      * Imposta il player corrente.
      * usato per ripristinare il player da un salvataggio.
-     *
-     * @param player il player da ripristinare
      */
     public void setPlayer(Player player) {
         this.player = player;
     }
 
-    /**
-     * @return la lobby del gioco, contenente lo shop
-     */
     public Lobby getLobby() {
         return lobby;
     }
 
-    /**
-     * @return lista dei mondi disponibili
-     */
-    public List<Mondo> getWorlds() {
+    public List<World> getWorlds() {
         return worlds;
     }
 }

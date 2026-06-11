@@ -21,11 +21,7 @@ import java.util.Map;
  */
 public class ShopInitializer {
 
-    /**
-     * Crea e restituisce un negozio completo di tutte le offerte e i listini prezzi.
-     *
-     * @return negozio inizializzato con armi, strumenti, incantesimi e prezzi materiali
-     */
+
     public Shop create() {
         return new Shop(loadWeapons(), loadTools(), loadSpells(), loadMaterialPrices());
     }
@@ -57,7 +53,7 @@ public class ShopInitializer {
         return result;
     }
 
-    /// costruisce la mappa (nome materiale → prezzo unitario) iterando sull'enum MaterialNames
+    /// costruisce la lista di nomi del materiale, e relativo prezzo scorrendo l'enumerazione MaterialNames
     private Map<String, Integer> loadMaterialPrices() {
         Map<String, Integer> prices = new LinkedHashMap<>();
         for (MaterialNames m : MaterialNames.values()) {

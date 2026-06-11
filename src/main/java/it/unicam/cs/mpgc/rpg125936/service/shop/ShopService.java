@@ -12,12 +12,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Servizio applicativo che gestisce le operazioni del negozio.
- * Gestisce acquisto di armi, acquisto di strumenti e vendita di materiali,
- * eseguendo tutte le validazioni necessarie e aggiornando lo stato del giocatore
- * (denaro, inventario, materiali).
- * <p>
- * Restituisce oggetti {@link PurchaseDTO} e {@link SellDTO}
+ * Classe che gestisce le operazioni del negozio.
+ * Gestisce acquisto di armi, acquisto di strumenti e vendita di materiali
  */
 public class ShopService {
 
@@ -27,63 +23,39 @@ public class ShopService {
         this.shop = shop;
     }
 
-    /**
-     * Restituisce la lista di armi acquistabili nel negozio.
-     *
-     * @return lista di {@link WeaponOffer}
-     */
+    ///Restituisce la lista di armi acquistabili nel negozio.
+
     public List<WeaponOffer> getWeaponCatalog() {
         return shop.getWeapons();
     }
 
-    /**
-     * Restituisce la lista di strumenti acquistabili nel negozio.
-     *
-     * @return lista immutabile di {@link ToolOffer}
-     */
+    ///Restituisce la lista di strumenti acquistabili nel negozio.
+
     public List<ToolOffer> getToolCatalog() {
         return shop.getTools();
     }
 
-    /**
-     * Restituisce la lista di incantesimi acquistabili nel negozio.
-     *
-     * @return lista di {@link SpellOffer}
-     */
+    /// Restituisce la lista di incantesimi acquistabili nel negozio.
+
     public List<SpellOffer> getSpellCatalog() {
         return shop.getSpells();
     }
 
 
-    /**
-     * Delega a buyOffer l'acquisto di un'arma per il giocatore.
-     *
-     * @param player il giocatore acquirente
-     * @param offer  offerta dell'arma da acquistare
-     * @return {@link PurchaseDTO} con esito e messaggio descrittivo
-     */
+    /// Delega a buyOffer l'acquisto di un'arma per il giocatore.
+
     public PurchaseDTO buyWeapon(Player player, WeaponOffer offer) {
         return buyOffer(player, offer, "arma");
     }
 
-    /**
-     * Delega a buyOffer l'acquisto di un incantesimo per il giocatore.
-     *
-     * @param player il giocatore acquirente
-     * @param offer  offerta dell'incantesimo da acquistare
-     * @return {@link PurchaseDTO} con esito e messaggio descrittivo
-     */
+    ///Delega a buyOffer l'acquisto di un incantesimo per il giocatore.
+
     public PurchaseDTO buySpell(Player player, SpellOffer offer) {
         return buyOffer(player, offer, "incantesimo");
     }
 
-    /**
-     * Delega a buyOffer l'acquisto di uno strumento per il giocatore.
-     *
-     * @param player il giocatore acquirente
-     * @param offer  offerta dello strumento da acquistare
-     * @return {@link PurchaseDTO} con esito e messaggio descrittivo
-     */
+    ///Delega a buyOffer l'acquisto di uno strumento per il giocatore.
+
     public PurchaseDTO buyTool(Player player, ToolOffer offer) {
         return buyOffer(player, offer, "strumento");
     }
@@ -98,12 +70,7 @@ public class ShopService {
         return new PurchaseDTO(true, "Hai acquistato " + offer.getName() + " (" + tipo + ") per " + offer.getPrice() + " monete.");
     }
 
-    /**
-     * Acquista una vita per il giocatore.
-     *
-     * @param player  il giocatore acquirente
-     * @return {@link PurchaseDTO} con esito e messaggio descrittivo
-     */
+    ///Acquista una vita per il giocatore.
     public PurchaseDTO buyLives(Player player) {
         int price = player.getHealthStatus().getLivesPrice();
         if (player.getMoney() < price) {
@@ -118,11 +85,7 @@ public class ShopService {
         }
     }
 
-    /** Rigenera la salute del player.
-     *
-     * @param player  il giocatore acquirente
-     * @return {@link PurchaseDTO} con esito e messaggio descrittivo
-     */
+    /// Rigenera la salute del player.
     public PurchaseDTO refillLife(Player player) {
         int price = player.getHealthStatus().getHpPrice();
         if (player.getMoney() < price) {
@@ -137,11 +100,8 @@ public class ShopService {
         }
     }
 
-    /** Vende tutti i materiali in possesso del player.
-     *
-     * @param player       il giocatore venditore
-     * @return {@link SellDTO} con esito, messaggio e importo guadagnato
-     */
+    ///Vende tutti i materiali in possesso del player.
+
     public SellDTO sellMaterial(Player player) {
         Map<String, List<Material>> materialMap = player.getMaterials();
         if (materialMap.isEmpty()) {

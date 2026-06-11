@@ -3,10 +3,7 @@ package it.unicam.cs.mpgc.rpg125936.domain.item;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 
-/**
- * Classe astratta che estrae il campo comune {@code damage} condiviso da Gun e Spell,
- * evitando di duplicarlo in entrambe le sottoclassi.
- */
+/// Classe astratta che estrae il campo comune damage condiviso da Gun e Spell,
 @Entity
 public abstract class AbstractFightItem extends AbstractItem implements FightItem {
 

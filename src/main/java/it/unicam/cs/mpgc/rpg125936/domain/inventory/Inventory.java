@@ -13,8 +13,7 @@ import java.util.List;
 
 /**
  * Contiene la lista di item posseduti da un utente..
- * Fornisce operazioni di aggiunta, rimozione e recupero degli item, incapsulando
- * la gestione della collezione e separate dalla logica di gioco.
+ * Fornisce operazioni di aggiunta, rimozione e recupero degli item
  */
 @Embeddable
 public class Inventory {

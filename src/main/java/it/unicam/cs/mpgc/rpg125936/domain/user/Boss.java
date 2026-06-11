@@ -1,12 +1,11 @@
 package it.unicam.cs.mpgc.rpg125936.domain.user;
 
-import it.unicam.cs.mpgc.rpg125936.repository.ItemRegistry;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 
 /**
  * Nemico di tipo Boss. Ha salute molto alta.
- * Si equipaggia autonomamente con 2 armi da fuoco e un incantesimo.
+ * ha con 2 armi da fuoco e un incantesimo.
  */
 @Entity
 @DiscriminatorValue("BOSS")

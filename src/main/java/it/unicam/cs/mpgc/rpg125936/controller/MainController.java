@@ -2,7 +2,7 @@ package it.unicam.cs.mpgc.rpg125936.controller;
 
 import it.unicam.cs.mpgc.rpg125936.domain.item.ToolItem;
 import it.unicam.cs.mpgc.rpg125936.domain.location.Lobby;
-import it.unicam.cs.mpgc.rpg125936.domain.location.Mondo;
+import it.unicam.cs.mpgc.rpg125936.domain.location.World;
 import it.unicam.cs.mpgc.rpg125936.domain.item.FightItem;
 import it.unicam.cs.mpgc.rpg125936.domain.item.Item;
 import it.unicam.cs.mpgc.rpg125936.domain.material.Material;
@@ -17,6 +17,10 @@ import javafx.scene.layout.VBox;
 
 import java.util.List;
 
+/**
+ * Controller della schermata della lobby, mostra le informazioni relative all'utente
+ * ed i bottoni per entrare nei vari mondi
+ */
 public class MainController {
 
     @FXML private Label feedbackLabel;
@@ -26,16 +30,16 @@ public class MainController {
     @FXML private Label moneyLabel;
     @FXML private VBox inventoryPanel;
     @FXML private VBox materialPanel;
-    @FXML private Button mondo1Btn;
-    @FXML private Button mondo2Btn;
-    @FXML private Button mondo3Btn;
+    @FXML private Button world1Btn;
+    @FXML private Button world2Btn;
+    @FXML private Button world3Btn;
     @FXML private ShopController shopController;
 
     private GameSetupService gameSetup;
     private Player player;
     private Lobby lobby;
     private ShopService shopService;
-    private List<Mondo> worlds;
+    private List<World> worlds;
 
     /**inizializza il gioco caricando:
         gameSetup, player, lobby, shopService, worlds
@@ -50,9 +54,8 @@ public class MainController {
         shopService = new ShopService(lobby.getShop());
         worlds = gameSetup.getWorlds();
 
-        shopController.init(player, shopService);
-        shopController.setOnPurchase(() -> { loadInventory(); updateProfile(); loadMaterials(); });
-        shopController.setOnFeedback(msg -> feedbackLabel.setText(msg));
+        shopController.init(player, shopService, this);
+
 
         loadInventory();
         loadMaterials();
@@ -60,31 +63,44 @@ public class MainController {
         updateWorldButtons();
     }
 
-    ///gestisce le richiesta di trasferimento al mondo1 caricando mondo1View
+    ///aggiorna gli elementi della UI dopo un acquisto/vendita nello shop
+    public void refreshUI() {
+        loadInventory();
+        updateProfile();
+        loadMaterials();
+    }
+
+    ///mostra un messaggio nella label di feedback
+    public void showFeedback(String msg) {
+        feedbackLabel.setText(msg);
+    }
+
+
+    ///gestisce le richiesta di trasferimento al mondo1 caricando world1View
     @FXML
-    private void handleMondo1() {
+    private void handleWorld1() {
         try {
-            FXMLLoader loader = SceneLoader.switchTo("/view/mondo1-view.fxml", mondo1Btn);
-            Mondo1Controller mc = loader.getController();
+            FXMLLoader loader = SceneLoader.switchTo("/view/world1-view.fxml", world1Btn);
+            World1Controller mc = loader.getController();
             mc.init(player, worlds.get(0));
         } catch (Exception e) {
             feedbackLabel.setText("Errore: " + e.getMessage());
         }
     }
 
-    ///gestisce le richiesta di trasferimento al mondo2; non ancora implementato
+    ///gestisce le richieste di trasferimento al world2;    /// placeholder per il secondo mondo
     @FXML
-    private void handleMondo2() {
+    private void handleWorld2() {
         feedbackLabel.setText("Mondo 2 bloccato.");
     }
 
-    ///gestisce le richiesta di trasferimento al mondo3; non ancora implementato
+    ///gestisce le richiesta di trasferimento al world3;    /// placeholder per il terzo mondo
     @FXML
-    private void handleMondo3() {
+    private void handleWorld3() {
         feedbackLabel.setText("Mondo 3 bloccato.");
     }
 
-    ///carica l'inventario del player in una label che viene inserita nell'inventoryPanel
+    ///carica l'inventario di item del player in una label che viene inserita nell'inventoryPanel
     private void loadInventory() {
         inventoryPanel.getChildren().clear();
         for (Item item : player.getInventory()) {
@@ -105,7 +121,7 @@ public class MainController {
         }
     }
 
-    ///carica l'inventario del player in una label che viene inserita nell'inventoryPanel
+    ///carica l'inventario di materiali del player in una label che viene inserita nell'inventoryPanel
     private void loadMaterials() {
         materialPanel.getChildren().clear();
         for (var entry : player.getMaterials().entrySet()) {
@@ -127,20 +143,20 @@ public class MainController {
         moneyLabel.setText("Monete: " + (int) player.getMoney());
     }
 
-    ///aggiorna il funzionamento dei bottoni relativi ai mondi controllando se sono sbloccati o meno
     private void updateWorldButtons() {
         for (int i = 0; i < worlds.size(); i++) {
             Button btn = switch (i) {
-                case 0 -> mondo1Btn;
-                case 1 -> mondo2Btn;
-                case 2 -> mondo3Btn;
+                case 0 -> world1Btn;
+                case 1 -> world2Btn;
+                case 2 -> world3Btn;
                 default -> null;
             };
             if (btn != null) {
-                boolean unlocked = worlds.get(i).isUnlocked();
-                btn.setStyle(unlocked
-                    ? StyleConstants.WORLD_UNLOCKED
-                    : StyleConstants.WORLD_LOCKED);
+                if(worlds.get(i).isUnlocked()){
+                    btn.setStyle(StyleConstants.WORLD_UNLOCKED);
+                }else{
+                    btn.setStyle(StyleConstants.WORLD_LOCKED);
+                }
             }
         }
     }

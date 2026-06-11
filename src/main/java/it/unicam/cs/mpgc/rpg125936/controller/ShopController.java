@@ -12,9 +12,12 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 
-import java.util.function.Consumer;
 import java.util.function.Supplier;
 
+/**
+ * Controller che gestisce la schermata dello shop mostrandone i contenuti
+ * e delegandone l'acquisto a ShopService
+ */
 public class ShopController {
 
     @FXML private VBox weaponList;
@@ -26,20 +29,12 @@ public class ShopController {
 
     private Player player;
     private ShopService shopService;
-    private Runnable onPurchase;
-    private Consumer<String> onFeedback;
+    private MainController mainController;
 
-    public void setOnPurchase(Runnable onPurchase) {
-        this.onPurchase = onPurchase;
-    }
-
-    public void setOnFeedback(Consumer<String> onFeedback) {
-        this.onFeedback = onFeedback;
-    }
-
-    public void init(Player player, ShopService shopService) {
+    public void init(Player player, ShopService shopService, MainController mainController) {
         this.player = player;
         this.shopService = shopService;
+        this.mainController = mainController;
         loadShop();
     }
 
@@ -58,17 +53,14 @@ public class ShopController {
      * @param result esito dell'operazione di acquisto
      */
     private void buyItem(PurchaseDTO result) {
-        if (onFeedback != null) onFeedback.accept(result.getMessage());
-        if (onPurchase != null) onPurchase.run();
+        mainController.showFeedback(result.getMessage());
+        mainController.refreshUI();
     }
 
-    /**elabora l'esito di una vendita e notifica la UI
-     *
-     * @param result esito dell'operazione di acquisto
-     */
+    ///elabora l'esito di una vendita e notifica la UI
     private void sellMaterial(SellDTO result) {
-        if (onFeedback != null) onFeedback.accept(result.getMessage());
-        if (onPurchase != null) onPurchase.run();
+        mainController.showFeedback(result.getMessage());
+        mainController.refreshUI();
     }
 
 
@@ -129,6 +121,7 @@ public class ShopController {
         }
     }
 
+    ///Logica di aggiunta di un bottone
     private void addShopButton(VBox container, String label, int price, Supplier<PurchaseDTO> action) {
         container.getChildren().clear();
         Button btn = new Button(label + " (" + price + " monete)");
@@ -137,14 +130,17 @@ public class ShopController {
         container.getChildren().add(btn);
     }
 
+    /// aggiunge un bottone per comprare una vita
     private void loadLife(){
         addShopButton(lifeList, "Compra una vita", player.getHealthStatus().getLivesPrice(), () -> shopService.buyLives(player));
     }
 
+    /// aggiunge un bottone per riempire gli hp mancanti
     private void loadHp(){
         addShopButton(hpRefill, "Rigenera salute", player.getHealthStatus().getHpPrice(), () -> shopService.refillLife(player));
     }
 
+    /// offre un bottone per vendere i materiali presenti nell'inventario
     private void loadSelling(){
         materialSell.getChildren().clear();
         Button sellMaterialBtn = new Button("Vendi i tuoi materiali");

@@ -9,6 +9,10 @@ import javafx.scene.control.Button;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+/**
+ * Controller che gestisce la schermata di avvio del gioco con scelta di
+ * fare una nuova partita o continuarne una esistente
+ */
 public class MenuController {
 
     @FXML private Button continueBtn;

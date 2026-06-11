@@ -6,6 +6,11 @@ import org.hibernate.Transaction;
 
 import java.util.List;
 
+/**
+ * Repository per gestire il salvataggio e il caricamento del player nel database
+ * - Assicura che esista un solo salvataggio attivo nel gioco.
+ * - Fornisce metodi per caricare la partita o verificare se esiste un salvataggio.
+ */
 public class PlayerRepository {
 
     public Player save(Player player) {

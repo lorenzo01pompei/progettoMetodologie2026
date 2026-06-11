@@ -8,26 +8,23 @@ import it.unicam.cs.mpgc.rpg125936.domain.user.Mago;
 import java.util.List;
 
 /**
- * Mondo di difficolta media. Probabilita di minerali medie e nemici piu insidiosi
- * (Mago, Colosso, Boss con poteri maggiorati).
+ * Mondo di difficolta media. Probabilita di minerali medie
+ *  e nemici da aggiungere
  */
-public class Mondo2 extends Mondo {
+public class World2 extends World {
 
     private static final double COPPER_PROB = 12.0;
     private static final double SILVER_PROB = 5.0;
     private static final double GOLD_PROB = 2.0;
 
-    public Mondo2(boolean isUnlocked) {
+    public World2(boolean isUnlocked) {
         super("Mondo 2", isUnlocked);
-        setMiniera(new Miniera("Miniera del Mondo 2", COPPER_PROB, SILVER_PROB, GOLD_PROB));
+        setMine(new Mine("Miniera del Mondo 2", COPPER_PROB, SILVER_PROB, GOLD_PROB));
     }
 
+    /// da implementare
     @Override
     public List<Enemy> createDefaultEnemies() {
-        return List.of(
-                new Mago("Sciamano della Foresta"),
-                new Colosso("Guardiano di Ferro"),
-                new Boss("Tiranno Oscuro")
-        );
+        return List.of();
     }
 }

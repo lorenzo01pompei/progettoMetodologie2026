@@ -7,7 +7,7 @@ import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 
 /**
- * Item di tipo materiale grezzo (lingotti di rame, argento, oro) ottenibile
+ * Materiale(lingotti di rame, argento, oro) ottenibile
  * estraendo nelle miniere. Puo essere scambiato per monete nel negozio.
  */
 @Entity

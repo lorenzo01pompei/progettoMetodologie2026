@@ -1,12 +1,11 @@
 package it.unicam.cs.mpgc.rpg125936.domain.user;
 
-import it.unicam.cs.mpgc.rpg125936.repository.ItemRegistry;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 
 /**
  * Nemico di tipo Mago. Ha salute bassa.
- * Si equipaggia autonomamente con due incantesimi e un'arma da fuoco.
+ * Ha due incantesimi e un'arma da fuoco.
  */
 @Entity
 @DiscriminatorValue("MAGO")

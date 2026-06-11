@@ -5,6 +5,7 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+/// classe che si occupa di cambiare caricamento di scena passata come parametro, insieme al Nodo chiamante
 public final class SceneLoader {
 
     private SceneLoader() {}

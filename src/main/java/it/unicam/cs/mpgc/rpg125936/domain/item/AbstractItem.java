@@ -3,7 +3,7 @@ package it.unicam.cs.mpgc.rpg125936.domain.item;
 import jakarta.persistence.*;
 
 /**
- * Classe astratta che centralizza i campi comuni (id, name, price) per tutti i tipi di item,
+ * Classe astratta che contiene i campi comuni (id, name, price) per tutti i tipi di item,
  * Mappa la tabella JPA "items" con discriminante "item_type" per distinguere Gun, Spell, Pickaxe, Material, ecc.
  */
 @Entity

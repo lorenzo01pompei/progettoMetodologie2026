@@ -19,7 +19,7 @@ public class Pickaxe extends AbstractItem implements ToolItem {
 
     public static final String DEFAULT_NAME = "Piccone";
     public static final int DEFAULT_DURABILITY = 500;
-    public static final double DEFAULT_PRICE = 40;
+    public static final double DEFAULT_PRICE = 30;
 
     public Pickaxe(String name, int durability, double price) {
         super(name, price);

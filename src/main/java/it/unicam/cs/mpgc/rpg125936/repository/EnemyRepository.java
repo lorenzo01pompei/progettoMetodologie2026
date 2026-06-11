@@ -6,6 +6,11 @@ import org.hibernate.Transaction;
 
 import java.util.List;
 
+/**
+ * Repository per gestire l'accesso ai nemici nel database.
+ * - Salva i progressi dei nemici ì
+ * - Recupera i nemici di un world specifico per popolare le aree di gioco.
+ */
 public class EnemyRepository {
 
     public void save(Enemy enemy) {

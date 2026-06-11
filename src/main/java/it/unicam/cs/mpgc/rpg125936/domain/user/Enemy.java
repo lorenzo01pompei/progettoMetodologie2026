@@ -5,13 +5,12 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 
 /**
- * Nemico affrontabile in combattimento. Ogni nemico appartiene a un mondo
- * e puo essere marcato come sconfitto.
+ * Nemico affrontabile in combattimento
  * Le sottoclassi definiscono salute e equipaggiamento specifici.
  */
 @Entity
 @Table(name="enemies")
-public class Enemy extends User {
+public abstract class Enemy extends User {
 
     @Column(name = "defeated")
     private boolean defeated;
@@ -33,10 +32,6 @@ public class Enemy extends User {
         this.defeated = defeated;
     }
 
-    public String getWorldName() {
-        return worldName;
-    }
-
     public void setWorldName(String worldName) {
         this.worldName = worldName;
     }
@@ -46,7 +41,5 @@ public class Enemy extends User {
      * Le sottoclassi sovrascrivono questo metodo per definire il proprio loadout,
      * eliminando la necessità di type-switch nel layer di servizio (OCP).
      */
-    public void equipDefault() {
-        // nessun equipaggiamento di default
-    }
+    public abstract void equipDefault();
 }

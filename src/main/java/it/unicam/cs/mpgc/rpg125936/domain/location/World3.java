@@ -8,27 +8,23 @@ import it.unicam.cs.mpgc.rpg125936.domain.user.Mago;
 import java.util.List;
 
 /**
- * Mondo di difficolta alta. Probabilita di minerali alte e la formazione
- * piu pericolosa (Mago, Colosso, Boss + un secondo Colosso).
+ * Mondo di difficolta alta. Probabilita di minerali alte e
+ * nemici
  */
-public class Mondo3 extends Mondo {
+public class World3 extends World {
 
     private static final double COPPER_PROB = 18.0;
     private static final double SILVER_PROB = 10.0;
     private static final double GOLD_PROB = 5.0;
 
-    public Mondo3(boolean isUnlocked) {
+    public World3(boolean isUnlocked) {
         super("Mondo 3", isUnlocked);
-        setMiniera(new Miniera("Miniera del Mondo 3", COPPER_PROB, SILVER_PROB, GOLD_PROB));
+        setMine(new Mine("Miniera del Mondo 3", COPPER_PROB, SILVER_PROB, GOLD_PROB));
     }
 
+    /// da implementare
     @Override
     public List<Enemy> createDefaultEnemies() {
-        return List.of(
-                new Mago("Mago Nero"),
-                new Colosso("Golem Antico"),
-                new Colosso("Guardiano degli Abissi"),
-                new Boss("Re Demone")
-        );
+        return List.of();
     }
 }

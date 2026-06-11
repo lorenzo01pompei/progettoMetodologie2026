@@ -4,7 +4,7 @@ import it.unicam.cs.mpgc.rpg125936.domain.item.FightItem;
 import it.unicam.cs.mpgc.rpg125936.domain.item.Item;
 import it.unicam.cs.mpgc.rpg125936.domain.user.Enemy;
 import it.unicam.cs.mpgc.rpg125936.domain.user.Player;
-import it.unicam.cs.mpgc.rpg125936.domain.location.Mondo;
+import it.unicam.cs.mpgc.rpg125936.domain.location.World;
 import it.unicam.cs.mpgc.rpg125936.service.fight.FightResultService;
 import it.unicam.cs.mpgc.rpg125936.service.fight.FightService;
 import javafx.fxml.FXML;
@@ -32,22 +32,22 @@ public class FightController {
     @FXML private Label giveUpLabel;
 
     private FightService fightService;
-    private FightResultService outcomeService;
+    private FightResultService fightResult;
     private Player player;
     private Enemy enemy;
-    private Mondo currentMondo;
+    private World currentWorld;
 
     /**
      * Avvia la schermata di combattimento.
      * Imposta giocatore e nemico; inizializza i servizi e aggiorna la UI.
      * Se il giocatore ha 0 vite, mostra un messaggio di blocco.
      */
-    public void startFight(Player player, Mondo currentMondo, Enemy enemy) {
+    public void startFight(Player player, World currentWorld, Enemy enemy) {
         this.player = player;
-        this.currentMondo = currentMondo;
+        this.currentWorld = currentWorld;
         this.enemy = enemy;
         this.fightService = new FightService();
-        this.outcomeService = new FightResultService();
+        this.fightResult = new FightResultService();
 
         playerNameLabel.setText(player.getName());
         enemyNameLabel.setText(enemy.getName());
@@ -95,7 +95,7 @@ public class FightController {
     }
 
     /**
-     * Esegue un round con l'arma all'indice scelto.
+     * Esegue un round con l'arma presente all'indice scelto nell'inventario.
      * Se il round conclude la battaglia, invoca endBattle
      * altrimenti aggiorna la UI.
      */
@@ -111,35 +111,32 @@ public class FightController {
         }
     }
 
-    /// termina la battaglia: disabilita i controlli, mostra il pulsante di ritorno
+    /// termina la battaglia: disabilita la scelta di armi e la res, mostra il pulsante di ritorno al mondo
     /// e gestisce vittoria o sconfitta tramite FightResultService
     private void endBattle() {
         weaponList.setDisable(true);
         backButton.setVisible(true);
         backButton.setManaged(true);
-        hideGiveUpControls();
+        giveUpLabel.setVisible(false);
+        giveUpButton.setVisible(false);
+        giveUpButton.setManaged(false);
 
         if (fightService.getBattleEnemy().getHealthStatus().getHealth() <= 0) {
             updateHp();
             feedbackLabel.setText("VITTORIA!");
-            player = outcomeService.handleVictory(player, enemy);
-            appendLootFeedback();
+            player = fightResult.handleVictory(player, enemy);
+            lootFeedback();
         } else {
             updateHp();
             feedbackLabel.setText("SCONFITTA!");
-            player = outcomeService.handleDefeat(player, enemy);
+            player = fightResult.handleDefeat(player, enemy);
         }
     }
 
-    /// nasconde label e bottone di resa
-    private void hideGiveUpControls() {
-        giveUpLabel.setVisible(false);
-        giveUpButton.setVisible(false);
-        giveUpButton.setManaged(false);
-    }
 
-    /// concatena al feedback i nomi delle armi raccolte dal nemico sconfitto
-    private void appendLootFeedback() {
+
+    /// mostra nel feedback i nomi delle armi raccolte dal nemico sconfitto
+    private void lootFeedback() {
         for (Item item : enemy.getInventory()) {
             if (item instanceof FightItem fi) {
                 feedbackLabel.setText(feedbackLabel.getText() + "\nHai raccolto: " + fi.getName());
@@ -147,25 +144,22 @@ public class FightController {
         }
     }
 
-    /// torna alla lobby se il giocatore ha 0 vite, altrimenti torna al mondo
+    /// torna alla schermata del mondo
     @FXML
     private void goBack() {
-        if (player.getLives() <= 0) {
-            SceneLoader.switchTo("/view/main-view.fxml", backButton);
-        } else {
-            FXMLLoader loader = SceneLoader.switchTo("/view/mondo1-view.fxml", backButton);
-            Mondo1Controller mc = loader.getController();
-            mc.init(player, currentMondo);
-        }
+        FXMLLoader loader = SceneLoader.switchTo("/view/world1-view.fxml", backButton);
+        World1Controller mc = loader.getController();
+        mc.init(player, currentWorld);
+
     }
 
-    /// gestisce la resa: toglie una vita e salva, poi mostra la schermata del mondo
+    /// delega la gestione della resa e mostra la schermata del mondo
     @FXML
     private void giveUp() {
-        player = outcomeService.handleGiveUp(player);
-        FXMLLoader loader = SceneLoader.switchTo("/view/mondo1-view.fxml", giveUpButton);
-        Mondo1Controller mc = loader.getController();
-        mc.init(player, currentMondo);
+        player = fightResult.handleGiveUp(player);
+        FXMLLoader loader = SceneLoader.switchTo("/view/world1-view.fxml", giveUpButton);
+        World1Controller mc = loader.getController();
+        mc.init(player, currentWorld);
     }
 
 }

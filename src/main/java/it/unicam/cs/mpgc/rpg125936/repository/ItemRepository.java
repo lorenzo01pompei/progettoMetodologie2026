@@ -23,11 +23,7 @@ public class ItemRepository<T> {
     }
 
     /**
-     * Restituisce tutti gli item del tipo specificato, inclusi quelli
-     * in possesso dei giocatori. Utile per operazioni che non dipendono
-     * dall'ownership (es. equipaggiare i nemici).
-     *
-     * @return lista di tutti gli item del tipo {@code T}
+     * Restituisce tutti gli item del tipo specificato
      */
     public List<T> findAll() {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
@@ -37,11 +33,8 @@ public class ItemRepository<T> {
 
     /**
      * Restituisce solo gli item del catalogo, ovvero quelli non assegnati
-     * ad alcun utente ({@code user_id IS NULL}).
-     * Usa il valore dell'annotazione {@link DiscriminatorValue} come discriminante
-     * nella query nativa, leggendolo direttamente dal tipo concreto.
-     *
-     * @return lista degli item del catalogo del tipo {@code T}
+     * ad alcun utente, utile per non ricaricare nel negozio le armi che
+     * il player aveva gia acquistato
      */
     public List<T> findCatalog() {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
@@ -52,15 +45,4 @@ public class ItemRepository<T> {
         }
     }
 
-    /**
-     * Cerca un item per id.
-     *
-     * @param id l'identificativo dell'item
-     * @return l'item trovato, oppure {@code null} se non esiste
-     */
-    public T findById(long id) {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            return session.get(type, id);
-        }
-    }
 }

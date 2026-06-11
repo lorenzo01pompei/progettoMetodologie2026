@@ -8,18 +8,18 @@ import it.unicam.cs.mpgc.rpg125936.domain.user.Mago;
 import java.util.List;
 
 /**
- * Mondo di difficolta base. Probabilita di minerali basse e nemici standard
- * (Mago, Colosso, Boss).
+ * Mondo di difficolta base. Probabilita di minerali basse
+ * e nemici da aggiungere
  */
-public class Mondo1 extends Mondo {
+public class World1 extends World {
 
     private static final double COPPER_PROB = 6.0;
     private static final double SILVER_PROB = 2.0;
     private static final double GOLD_PROB = 1.0;
 
-    public Mondo1(boolean isUnlocked) {
-        super("Mondo 1", isUnlocked);
-        setMiniera(new Miniera("Miniera del Mondo 1", COPPER_PROB, SILVER_PROB, GOLD_PROB));
+    public World1(boolean isUnlocked) {
+        super("Mondo1", isUnlocked);
+        setMine(new Mine("Miniera del Mondo 1", COPPER_PROB, SILVER_PROB, GOLD_PROB));
     }
 
     @Override

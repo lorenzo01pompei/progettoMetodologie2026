@@ -6,10 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Contenitore per i materiali posseduti da un utente.
- * Memorizza una lista di Material.
- */
+///Inventario per i materiali posseduti da un utente.
+
 @Embeddable
 public class MaterialStorage {
 

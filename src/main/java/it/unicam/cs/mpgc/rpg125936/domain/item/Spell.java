@@ -9,7 +9,7 @@ import java.util.Iterator;
 /**
  * Incantesimo da combattimento che riduce il danno delle armi nemiche
  * Se il danno di un'arma scende a zero, l'arma viene
- * distrutta e rimossa dall'inventario del bersaglio.
+ * distrutta e rimossa dall'inventario del nemico.
  */
 @Entity
 @DiscriminatorValue("SPELL")

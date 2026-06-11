@@ -5,8 +5,7 @@ import java.util.Map;
 
 /**
  * Negozio del gioco. Contiene le offerte di armi, strumenti e incantesimi
- * disponibili per l'acquisto, oltre ai prezzi di vendita dei materiali.
- * Classe costruita da ShopInitializer.
+ * che si possono comprare
  */
 public class Shop {
 

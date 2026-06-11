@@ -9,6 +9,12 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+/**
+ * Classe principale dell'intera applicazione RPG.
+ * -popola il DB
+ * -avvia l'interfaccia
+ * -salva quando viene chiusa
+ */
 public class App extends Application {
 
     ///carica la schermata del menu principale dal file FXML e la mostra nella finestra.
@@ -22,14 +28,14 @@ public class App extends Application {
     }
 
     ///salva il giocatore corrente nel database quando la finestra viene chiusa.
-   @Override
-   public void stop(){
+    @Override
+    public void stop(){
         PlayerRepository playerRepository = new PlayerRepository();
         Player player = GameSetupService.getInstance().getPlayer();
         if(player!=null){
             playerRepository.save(player);
         }
-   }
+    }
 
     ///Entry point dell'applicazione. Inizializza il database e avvia il runtime JavaFX.
     public static void main(String[] args) {

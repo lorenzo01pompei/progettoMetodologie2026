@@ -3,7 +3,9 @@ package it.unicam.cs.mpgc.rpg125936.domain.shop;
 import it.unicam.cs.mpgc.rpg125936.domain.item.Item;
 
 /**
- * Classe astratta che rappresenta un'offerta di acquisto nel negozio.
+ * Rappresenta un'offerta di acquisto all'interno del negozio.
+ * nel negozio vengono mostrate solo le informazioni necessarie (nome, prezzo)
+ * e all'acquisto viene istanziato un item da dare al player
  */
 public abstract class Offer {
     private final long id;

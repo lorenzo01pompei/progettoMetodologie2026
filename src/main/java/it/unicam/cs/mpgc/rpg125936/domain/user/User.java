@@ -14,8 +14,7 @@ import java.util.Map;
 /**
  * Entita base per tutti gli utenti del gioco (giocatori e nemici).
  * Contiene i componenti Health, Inventory e MaterialStorage,
- * delegando a ciascuno la gestione specifica. Le sottoclassi
- * Player ed Enemy estendono il comportamento base.
+ * delegando a ciascuno la gestione specifica.
  */
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -70,34 +69,12 @@ public class User {
         return inventory.getItems();
     }
 
-    public void setInventory(List<Item> items) {
-        this.inventory = new Inventory();
-        for (Item item : items) {
-            this.inventory.addItem(item);
-        }
-    }
-
     public void addItem(Item item){
         this.inventory.addItem(item);
     }
 
     public Map<String, List<Material>> getMaterials() {
         return materialStorage.getMaterials();
-    }
-
-    public void setMaterials(Map<String, List<Material>> materials) {
-        this.materialStorage = new MaterialStorage();
-        for (List<Material> list : materials.values()) {
-            for (Material m : list) {
-                this.materialStorage.addMaterial(m);
-            }
-        }
-    }
-
-    public void addMaterialList(List<Material> materialList) {
-        for (Material m : materialList) {
-            this.materialStorage.addMaterial(m);
-        }
     }
 
     public void addMaterial(Material material) {

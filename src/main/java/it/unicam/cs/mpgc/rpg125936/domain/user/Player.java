@@ -24,7 +24,7 @@ public class Player extends User{
 
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "player_unlocked_worlds", joinColumns = @JoinColumn(name = "player_id"))
-    @Column(name = "world_name") // Una sola colonna per il nome del mondo
+    @Column(name = "world_name") // Una sola colonna per il nome del world
     private Set<String> unlockedWorlds;
 
 

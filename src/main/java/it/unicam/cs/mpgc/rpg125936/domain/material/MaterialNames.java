@@ -1,9 +1,8 @@
 package it.unicam.cs.mpgc.rpg125936.domain.material;
 
 /**
- * Enum dei materiali estraibili nel gioco.
- * Ogni costante accoppia il nome visualizzato al giocatore con il valore
- * base in monete, eliminando la duplicazione tra MinieraService e ShopInitializer.
+ * Enumerazione dei materiali estraibili nel gioco.
+ * Ogni costante indica per il materiale il suo valore
  */
 public enum MaterialNames {
 
@@ -19,12 +18,11 @@ public enum MaterialNames {
         this.value = value;
     }
 
-    /** @return il nome visualizzato al giocatore (es. "Lingotto d'Oro") */
+    /// @return il nome swl materiale (lingotto di ...)
     public String getDisplayName() {
         return displayName;
     }
 
-    /** @return il valore base in monete del materiale */
     public int getValue() {
         return value;
     }

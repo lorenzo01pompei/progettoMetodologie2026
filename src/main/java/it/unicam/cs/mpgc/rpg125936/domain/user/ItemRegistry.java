@@ -1,17 +1,16 @@
-package it.unicam.cs.mpgc.rpg125936.repository;
+package it.unicam.cs.mpgc.rpg125936.domain.user;
 
 import it.unicam.cs.mpgc.rpg125936.domain.item.FightItem;
 import it.unicam.cs.mpgc.rpg125936.domain.item.Gun;
 import it.unicam.cs.mpgc.rpg125936.domain.item.Spell;
+import it.unicam.cs.mpgc.rpg125936.repository.ItemRepository;
 
 import java.util.List;
 import java.util.Random;
 
 /**
- * Registro statico per l'accesso casuale agli item di combattimento.
- * Ogni chiamata apre una sessione Hibernate per caricare il catalogo corrente.
- * Usato da {@link it.unicam.cs.mpgc.rpg125936.domain.user.Enemy#equipDefault()}
- * per equipaggiare i nemici in fase di inizializzazione del mondo.
+ * Gestisce l'accesso casuale agli item di combattimento.
+ * per equipaggiare i nemici in fase di inizializzazione del world.
  */
 public class ItemRegistry {
 
